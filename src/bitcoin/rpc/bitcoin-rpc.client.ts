@@ -16,8 +16,21 @@ export class BitcoinRpcClient {
     return this.rpcCall('getnewaddress', label);
   }
 
-  public dumpPrivateKey(address: string): Promise<string> {
+  public async dumpPrivateKey(address: string): Promise<string> {
     return this.rpcCall('dumpprivkey', address);
+  }
+
+  public async getReceivedByAddress(
+    address: string,
+    minconf = 3,
+  ): Promise<bigint> {
+    const balance = await this.rpcCall<number>(
+      'getreceivedbyaddress',
+      address,
+      minconf,
+    );
+
+    return BigInt((balance * 10 ** 8).toFixed(0));
   }
 
   private async rpcCall<R>(method: string, ...params: unknown[]): Promise<R> {

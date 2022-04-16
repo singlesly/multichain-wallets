@@ -12,6 +12,14 @@ export class BitcoinRpcClient {
     return this.rpcCall('createwallet', name);
   }
 
+  public async getNewAddress(label = ''): Promise<string> {
+    return this.rpcCall('getnewaddress', label);
+  }
+
+  public dumpPrivateKey(address: string): Promise<string> {
+    return this.rpcCall('dumpprivkey', address);
+  }
+
   private async rpcCall<R>(method: string, ...params: unknown[]): Promise<R> {
     const response = await lastValueFrom(
       this.http.post<{ result: R }>('', {

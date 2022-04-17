@@ -37,4 +37,9 @@ export class TemporaryWallet {
 
   @DeleteDateColumn()
   public readonly deletedAt?: Date;
+
+  constructor(pubKey: string, privateKey: string) {
+    this.pubKey = pubKey;
+    this.privateKey = privateKey;
+  }
 }

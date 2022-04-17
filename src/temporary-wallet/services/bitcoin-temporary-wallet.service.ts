@@ -5,14 +5,23 @@ import {
   TemporaryWalletService,
   Wallet,
 } from '../temporary-wallet.service';
+import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
 
 @Injectable()
 export class BitcoinTemporaryWalletService implements TemporaryWalletService {
-  constructor(private readonly bitcoinRpcClient: BitcoinRpcClient) {}
+  constructor(
+    private readonly bitcoinRpcClient: BitcoinRpcClient,
+    private readonly createTemporaryWalletService: CreateTemporaryWalletService,
+  ) {}
 
   public async createWallet(): Promise<Wallet> {
     const address = await this.bitcoinRpcClient.getNewAddress();
     const privateKey = await this.bitcoinRpcClient.dumpPrivateKey(address);
+
+    await this.createTemporaryWalletService.create({
+      pubKey: address,
+      privateKey: privateKey,
+    });
 
     return {
       address,

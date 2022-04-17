@@ -1,5 +1,5 @@
-export class NetworkEnum {
-  BTC = 'BTC';
-  ETH = 'ETH';
-  TRON = 'TRON';
+export enum NetworkEnum {
+  BTC = 'BTC',
+  ETH = 'ETH',
+  TRON = 'TRON',
 }

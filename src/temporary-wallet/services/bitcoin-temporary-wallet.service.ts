@@ -6,6 +6,8 @@ import {
   Wallet,
 } from '../temporary-wallet.service';
 import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
+import { NetworkEnum } from '../../common/network.enum';
+import { CoinEnum } from '../../common/coin.enum';
 
 @Injectable()
 export class BitcoinTemporaryWalletService implements TemporaryWalletService {
@@ -21,6 +23,8 @@ export class BitcoinTemporaryWalletService implements TemporaryWalletService {
     await this.createTemporaryWalletService.create({
       pubKey: address,
       privateKey: privateKey,
+      network: NetworkEnum.BTC,
+      coin: CoinEnum.BTC,
     });
 
     return {

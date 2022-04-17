@@ -54,8 +54,15 @@ export class TemporaryWallet {
   @DeleteDateColumn()
   public readonly deletedAt?: Date;
 
-  constructor(pubKey: string, privateKey: string) {
+  constructor(
+    pubKey: string,
+    privateKey: string,
+    network: NetworkEnum,
+    coin: CoinEnum,
+  ) {
     this.pubKey = pubKey;
     this.privateKey = privateKey;
+    this.network = network;
+    this.coin = coin;
   }
 }

@@ -6,6 +6,8 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { NetworkEnum } from '../../../common/network.enum';
+import { CoinEnum } from '../../../common/coin.enum';
 
 @Entity('temporary_wallets')
 export class TemporaryWallet {
@@ -28,6 +30,20 @@ export class TemporaryWallet {
     nullable: false,
   })
   public readonly privateKey: string;
+
+  @Column({
+    type: 'enum',
+    enum: NetworkEnum,
+    nullable: false,
+  })
+  public readonly network: NetworkEnum;
+
+  @Column({
+    type: 'enum',
+    enum: CoinEnum,
+    nullable: false,
+  })
+  public readonly coin: CoinEnum;
 
   @CreateDateColumn()
   public readonly createdAt: Date;

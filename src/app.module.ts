@@ -3,6 +3,7 @@ import { BitcoinModule } from './bitcoin/bitcoin.module';
 import { DatabaseModule } from './database/database.module';
 import { EncryptModule } from './encrypt/encrypt.module';
 import { TemporaryWalletModule } from './temporary-wallet/temporary-wallet.module';
+import { RouterModule } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -10,6 +11,12 @@ import { TemporaryWalletModule } from './temporary-wallet/temporary-wallet.modul
     DatabaseModule,
     EncryptModule,
     TemporaryWalletModule,
+    RouterModule.register([
+      {
+        path: '/api/bridge',
+        module: TemporaryWalletModule,
+      },
+    ]),
   ],
   controllers: [],
   providers: [],

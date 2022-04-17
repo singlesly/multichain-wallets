@@ -1,15 +1,11 @@
-import { Module, OnApplicationBootstrap } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { BitcoinModule } from './bitcoin/bitcoin.module';
-import { BitcoinRpcClient } from './bitcoin/rpc/bitcoin-rpc.client';
 import { DatabaseModule } from './database/database.module';
+import { EncryptModule } from './encrypt/encrypt.module';
 
 @Module({
-  imports: [BitcoinModule, DatabaseModule],
+  imports: [BitcoinModule, DatabaseModule, EncryptModule],
   controllers: [],
   providers: [],
 })
-export class AppModule implements OnApplicationBootstrap {
-  constructor(private readonly bitcoinRpcClient: BitcoinRpcClient) {}
-
-  async onApplicationBootstrap(): Promise<void> {}
-}
+export class AppModule {}

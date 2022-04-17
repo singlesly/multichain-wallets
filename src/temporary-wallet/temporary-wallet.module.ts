@@ -7,10 +7,11 @@ import { BridgeController } from './controller/bridge.controller';
 import { BitcoinTemporaryWalletService } from './services/bitcoin-temporary-wallet.service';
 import { CreateTemporaryWalletService } from './services/create-temporary-wallet.service';
 import { TemporaryWalletPgRepository } from './repositories/temporary-wallet-pg.repository';
+import { WalletController } from './controller/wallet.controller';
 
 @Module({
   imports: [BitcoinModule, TypeOrmModule.forFeature([TemporaryWallet])],
-  controllers: [BridgeController],
+  controllers: [BridgeController, WalletController],
   providers: [
     TemporaryWalletServiceFactory,
     BitcoinTemporaryWalletService,

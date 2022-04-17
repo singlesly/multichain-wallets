@@ -6,7 +6,7 @@ import { BitcoinTemporaryWalletService } from '../services/bitcoin-temporary-wal
 
 @Injectable()
 export class TemporaryWalletServiceFactory {
-  private readonly supportedMap = {
+  public readonly supportedMap = {
     [NetworkEnum.BTC]: {
       [CoinEnum.BTC]: this.bitcoinTemporaryWalletService,
     },

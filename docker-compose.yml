@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  bitcom-crypto-bridge:
+    build:
+      dockerfile: docker/app/Dockerfile
+      context: .
+    container_name: bitcom-crypto-bridge
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src
+    environment:
+      - MODE=dev
+    ports:
+      - "3000:3000"
+
+  bitcom-crypto-bridge-postgres:
+    image: postgres:12.3-alpine
+    container_name: bitcom-crypto-bridge-postgres
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}

@@ -9,21 +9,21 @@ export class BitcoinRpcClient {
   public async createWallet(
     name: string,
   ): Promise<{ name: string; warning: string }> {
-    return this.rpcCall('createwallet', name);
+    return this.rpcCall('createwallet', '', name);
   }
 
   public async loadWallet(
     name: string,
   ): Promise<{ name: string; warning: string }> {
-    return this.rpcCall('loadwallet', name);
+    return this.rpcCall('loadwallet', '', name);
   }
 
   public async getNewAddress(label = ''): Promise<string> {
-    return this.rpcCall('getnewaddress', label);
+    return this.rpcCall('getnewaddress', 'wallet/main', label);
   }
 
   public async dumpPrivateKey(address: string): Promise<string> {
-    return this.rpcCall('dumpprivkey', address);
+    return this.rpcCall('dumpprivkey', 'wallet/main', address);
   }
 
   public async getReceivedByAddress(
@@ -32,6 +32,7 @@ export class BitcoinRpcClient {
   ): Promise<bigint> {
     const balance = await this.rpcCall<number>(
       'getreceivedbyaddress',
+      'wallet/main',
       address,
       minconf,
     );
@@ -39,9 +40,13 @@ export class BitcoinRpcClient {
     return BigInt((balance * 10 ** 8).toFixed(0));
   }
 
-  private async rpcCall<R>(method: string, ...params: unknown[]): Promise<R> {
+  private async rpcCall<R>(
+    method: string,
+    url = '',
+    ...params: unknown[]
+  ): Promise<R> {
     const response = await lastValueFrom(
-      this.http.post<{ result: R }>('', {
+      this.http.post<{ result: R }>(url, {
         jsonrpc: '1.0',
         id: 'crypto-bridge',
         method,

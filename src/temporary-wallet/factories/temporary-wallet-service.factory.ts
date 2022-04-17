@@ -3,6 +3,7 @@ import { TemporaryWalletService } from '../temporary-wallet.service';
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
 import { BitcoinTemporaryWalletService } from '../services/bitcoin-temporary-wallet.service';
+import { EthereumTemporaryWalletService } from '../services/ethereum-temporary-wallet.service';
 
 @Injectable()
 export class TemporaryWalletServiceFactory {
@@ -10,10 +11,14 @@ export class TemporaryWalletServiceFactory {
     [NetworkEnum.BTC]: {
       [CoinEnum.BTC]: this.bitcoinTemporaryWalletService,
     },
+    [NetworkEnum.ETH]: {
+      [CoinEnum.ETH]: this.ethereumTemporaryWalletService,
+    },
   };
 
   constructor(
     private readonly bitcoinTemporaryWalletService: BitcoinTemporaryWalletService,
+    private readonly ethereumTemporaryWalletService: EthereumTemporaryWalletService,
   ) {}
 
   public for(

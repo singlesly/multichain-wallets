@@ -9,6 +9,7 @@ import { CreateTemporaryWalletService } from './services/create-temporary-wallet
 import { TemporaryWalletPgRepository } from './repositories/temporary-wallet-pg.repository';
 import { WalletController } from './controller/wallet.controller';
 import { EthereumModule } from '../ethereum/ethereum.module';
+import { EthereumTemporaryWalletService } from './services/ethereum-temporary-wallet.service';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { EthereumModule } from '../ethereum/ethereum.module';
   providers: [
     TemporaryWalletServiceFactory,
     BitcoinTemporaryWalletService,
+    EthereumTemporaryWalletService,
     CreateTemporaryWalletService,
     TemporaryWalletPgRepository,
   ],

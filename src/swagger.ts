@@ -10,5 +10,5 @@ export async function useSwagger(app: INestApplication): Promise<void> {
 
   const document = SwaggerModule.createDocument(app, config);
 
-  SwaggerModule.setup('', app, document);
+  SwaggerModule.setup('/api/docs', app, document);
 }

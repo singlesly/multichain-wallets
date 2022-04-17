@@ -6,6 +6,8 @@ services:
       dockerfile: docker/app/Dockerfile
       context: .
     container_name: bitcom-crypto-bridge
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     volumes:

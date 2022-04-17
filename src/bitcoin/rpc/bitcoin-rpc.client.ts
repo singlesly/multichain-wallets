@@ -12,6 +12,12 @@ export class BitcoinRpcClient {
     return this.rpcCall('createwallet', name);
   }
 
+  public async loadWallet(
+    name: string,
+  ): Promise<{ name: string; warning: string }> {
+    return this.rpcCall('loadwallet', name);
+  }
+
   public async getNewAddress(label = ''): Promise<string> {
     return this.rpcCall('getnewaddress', label);
   }

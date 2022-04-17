@@ -34,7 +34,12 @@ export class BitcoinModule implements OnModuleInit {
   ) {
     this.http.axiosRef.interceptors.response.use(null, (err) => {
       console.log('Bitcoin Rpc Error');
-      console.error(err.response?.data ?? err);
+      if (err.response?.data) {
+        console.error(err.response?.data);
+      } else {
+        console.log(err);
+        console.log(err.response);
+      }
       throw err;
     });
   }

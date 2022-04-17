@@ -8,9 +8,14 @@ import { BitcoinTemporaryWalletService } from './services/bitcoin-temporary-wall
 import { CreateTemporaryWalletService } from './services/create-temporary-wallet.service';
 import { TemporaryWalletPgRepository } from './repositories/temporary-wallet-pg.repository';
 import { WalletController } from './controller/wallet.controller';
+import { EthereumModule } from '../ethereum/ethereum.module';
 
 @Module({
-  imports: [BitcoinModule, TypeOrmModule.forFeature([TemporaryWallet])],
+  imports: [
+    BitcoinModule,
+    EthereumModule,
+    TypeOrmModule.forFeature([TemporaryWallet]),
+  ],
   controllers: [BridgeController, WalletController],
   providers: [
     TemporaryWalletServiceFactory,

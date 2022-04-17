@@ -20,7 +20,8 @@ export class TemporaryWalletServiceFactory {
     network: NetworkEnum,
     coin: CoinEnum = network as unknown as CoinEnum,
   ): TemporaryWalletService {
-    const temporaryWalletService = this.supportedMap[network]?.[coin];
+    const temporaryWalletService =
+      this.supportedMap[network.toUpperCase()]?.[coin.toUpperCase()];
 
     if (!temporaryWalletService) {
       throw new Error(`Unsupported ${network}:${coin}`);

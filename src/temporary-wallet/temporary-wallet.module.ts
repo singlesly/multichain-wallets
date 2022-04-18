@@ -10,12 +10,14 @@ import { TemporaryWalletPgRepository } from './repositories/temporary-wallet-pg.
 import { WalletController } from './controller/wallet.controller';
 import { EthereumModule } from '../ethereum/ethereum.module';
 import { EthereumTemporaryWalletService } from './services/ethereum-temporary-wallet.service';
+import { EncryptModule } from '../encrypt/encrypt.module';
 
 @Module({
   imports: [
     BitcoinModule,
     EthereumModule,
     TypeOrmModule.forFeature([TemporaryWallet]),
+    EncryptModule,
   ],
   controllers: [BridgeController, WalletController],
   providers: [

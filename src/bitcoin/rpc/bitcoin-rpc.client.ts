@@ -27,6 +27,10 @@ export class BitcoinRpcClient {
     return this.rpcCall('dumpprivkey', `wallet/${MAIN_WALLET}`, address);
   }
 
+  public async uptime(): Promise<number> {
+    return this.rpcCall('uptime', '');
+  }
+
   public async getReceivedByAddress(
     address: string,
     minconf = 3,

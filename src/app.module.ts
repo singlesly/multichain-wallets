@@ -6,6 +6,7 @@ import { TemporaryWalletModule } from './temporary-wallet/temporary-wallet.modul
 import { RouterModule } from '@nestjs/core';
 import { RequestContextModule } from '@ledius/request-context';
 import { LoggerModule } from '@ledius/logger';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -13,14 +14,19 @@ import { LoggerModule } from '@ledius/logger';
     DatabaseModule,
     EncryptModule,
     TemporaryWalletModule,
+    RequestContextModule,
+    LoggerModule,
+    HealthModule,
     RouterModule.register([
       {
         path: '/api/bridge',
         module: TemporaryWalletModule,
       },
+      {
+        path: '/api/bridge/health',
+        module: HealthModule,
+      },
     ]),
-    RequestContextModule,
-    LoggerModule,
   ],
   controllers: [],
   providers: [],

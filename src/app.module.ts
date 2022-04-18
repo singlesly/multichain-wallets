@@ -4,6 +4,8 @@ import { DatabaseModule } from './database/database.module';
 import { EncryptModule } from './encrypt/encrypt.module';
 import { TemporaryWalletModule } from './temporary-wallet/temporary-wallet.module';
 import { RouterModule } from '@nestjs/core';
+import { RequestContextModule } from '@ledius/request-context';
+import { LoggerModule } from '@ledius/logger';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { RouterModule } from '@nestjs/core';
         module: TemporaryWalletModule,
       },
     ]),
+    RequestContextModule,
+    LoggerModule,
   ],
   controllers: [],
   providers: [],

@@ -4,6 +4,10 @@ import { BitcoinRpcClient } from './rpc/bitcoin-rpc.client';
 import { EnvModule } from '../env/env.module';
 import { LocalEnvService } from '../env/services/local-env.service';
 import { LocalEnvPathEnum } from '../env/contants/local-env-path.enum';
+import { LoggerModule, LoggerService } from '@ledius/logger';
+import { BitcoinWalletWarmupService } from './services/bitcoin-wallet-warmup.service';
+import { ErrorLoggingInterceptor } from './interceptors/error-logging.interceptor';
+import { RequestContextModule } from '@ledius/request-context';
 
 @Module({
   imports: [
@@ -23,36 +27,22 @@ import { LocalEnvPathEnum } from '../env/contants/local-env-path.enum';
       },
       inject: [LocalEnvService],
     }),
+    LoggerModule,
+    RequestContextModule,
   ],
-  providers: [BitcoinRpcClient],
+  providers: [
+    BitcoinRpcClient,
+    BitcoinWalletWarmupService,
+    ErrorLoggingInterceptor,
+  ],
   exports: [BitcoinRpcClient],
 })
 export class BitcoinModule implements OnModuleInit {
   constructor(
-    private readonly http: HttpService,
-    private readonly bitcoinRpcClient: BitcoinRpcClient,
-  ) {
-    this.http.axiosRef.interceptors.response.use(null, (err) => {
-      console.log('Bitcoin Rpc Error');
-      if (err.response?.data) {
-        console.error(err.response?.data);
-      } else {
-        console.log(err);
-        console.log(err.response);
-      }
-      throw err;
-    });
-  }
+    private readonly bitcoinWalletWarmupService: BitcoinWalletWarmupService,
+  ) {}
 
   public async onModuleInit(): Promise<void> {
-    try {
-      await this.bitcoinRpcClient.createWallet('main');
-    } catch (e) {
-      try {
-        await this.bitcoinRpcClient.loadWallet('main');
-      } catch (e) {}
-    } finally {
-      console.log('Loaded main wallet');
-    }
+    await this.bitcoinWalletWarmupService.warmup();
   }
 }

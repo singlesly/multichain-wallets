@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
+import { MAIN_WALLET } from '../constants';
 
 @Injectable()
 export class BitcoinRpcClient {
@@ -19,11 +20,11 @@ export class BitcoinRpcClient {
   }
 
   public async getNewAddress(label = ''): Promise<string> {
-    return this.rpcCall('getnewaddress', 'wallet/main', label);
+    return this.rpcCall('getnewaddress', `wallet/${MAIN_WALLET}`, label);
   }
 
   public async dumpPrivateKey(address: string): Promise<string> {
-    return this.rpcCall('dumpprivkey', 'wallet/main', address);
+    return this.rpcCall('dumpprivkey', `wallet/${MAIN_WALLET}`, address);
   }
 
   public async getReceivedByAddress(

@@ -8,12 +8,16 @@ import {
 import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
+import { GetTemporaryWalletService } from './get-temporary-wallet.service';
+import { EncryptService } from '../../encrypt/services/encrypt.service';
 
 @Injectable()
 export class BitcoinTemporaryWalletService implements TemporaryWalletService {
   constructor(
     private readonly bitcoinRpcClient: BitcoinRpcClient,
     private readonly createTemporaryWalletService: CreateTemporaryWalletService,
+    private readonly getTemporaryWalletService: GetTemporaryWalletService,
+    private readonly encryptService: EncryptService,
   ) {}
 
   public async createWallet(): Promise<Wallet> {
@@ -42,16 +46,30 @@ export class BitcoinTemporaryWalletService implements TemporaryWalletService {
     };
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public transfer(from: string, to: string, amount: bigint): Promise<void> {
-    throw new NotImplementedException();
-  }
-
-  public async estimateFee(
+  public async transfer(
     from: string,
     to: string,
     amount: bigint,
-  ): Promise<Balance> {
+  ): Promise<void> {
+    const wallet = await this.getTemporaryWalletService.getByAddress(from);
+    const transactionHex = await this.bitcoinRpcClient.createRawTransaction(
+      to,
+      amount,
+    );
+    const signedTransactionHex = await this.bitcoinRpcClient.signRawTransaction(
+      transactionHex,
+      await this.encryptService.decrypt(wallet.privateKey),
+    );
+    const tx = await this.bitcoinRpcClient.sendRawTransaction(
+      signedTransactionHex,
+    );
+
+    console.log(transactionHex);
+    console.log(signedTransactionHex);
+    console.log(tx);
+  }
+
+  public async estimateFee(): Promise<Balance> {
     return {
       amount: await this.bitcoinRpcClient.estimateSmartFee(),
       decimals: 8,

@@ -12,12 +12,30 @@ export class ErrorLoggingInterceptor {
     @Inject(ASYNC_STORAGE)
     private readonly asyncStorage: AsyncLocalStorage<RequestContext>,
   ) {
-    this.http.axiosRef.interceptors.response.use(null, (err) => {
-      this.logger.log({
-        label: 'Bitcoin Rpc Error',
-        err: err,
-      });
-      throw err;
-    });
+    this.http.axiosRef.interceptors.response.use(
+      (response) => {
+        this.logger.log({
+          label: 'Bitcoin Rpc Response',
+          response: {
+            status: response.status,
+            statusText: response.statusText,
+            headers: response.headers,
+            data: response.data,
+          },
+        });
+
+        return response;
+      },
+      (err) => {
+        this.logger.log({
+          label: 'Bitcoin Rpc Error',
+          err: err,
+          extra: {
+            data: err.response?.data,
+          },
+        });
+        throw err;
+      },
+    );
   }
 }

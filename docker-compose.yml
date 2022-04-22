@@ -12,6 +12,7 @@ services:
       - .env
     volumes:
       - ./src:/app/src
+      - ./assets:/app/assets
     environment:
       - MODE=dev
     ports:

@@ -8,6 +8,8 @@ import { RequestContextModule } from '@ledius/request-context';
 import { LoggerModule } from '@ledius/logger';
 import { HealthModule } from './health/health.module';
 import { routes } from './routes';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import path from 'path';
 
 @Module({
   imports: [
@@ -19,6 +21,10 @@ import { routes } from './routes';
     LoggerModule,
     HealthModule,
     RouterModule.register(routes),
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, '..', 'assets'),
+      serveRoot: '/assets',
+    }),
   ],
   controllers: [],
   providers: [],

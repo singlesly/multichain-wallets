@@ -79,17 +79,16 @@ export class BitcoinRpcClient {
   public async createRawTransaction(
     recipientAddress: string,
     amount: bigint,
+    txid: string,
+    vout: string,
   ): Promise<string> {
     return this.rpcCall<string>(
       'createrawtransaction',
       `wallet/${MAIN_WALLET}`,
       [
         {
-          txid: crypto
-            .createHash('sha256')
-            .update(Date.now().toString())
-            .digest('hex'),
-          vout: 0,
+          txid,
+          vout,
         },
       ],
       [
@@ -97,8 +96,6 @@ export class BitcoinRpcClient {
           [recipientAddress]: Number(amount) * 10 ** -8,
         },
       ],
-      0,
-      true,
     );
   }
 

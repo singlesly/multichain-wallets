@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
 import { MAIN_WALLET } from '../constants';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class BitcoinRpcClient {
@@ -53,6 +54,56 @@ export class BitcoinRpcClient {
     }>('estimatesmartfee', `wallet/${MAIN_WALLET}`, minconf);
 
     return BigInt((result.feerate * 10 ** 8).toFixed(0));
+  }
+
+  public async createRawTransaction(
+    recipientAddress: string,
+    amount: bigint,
+  ): Promise<string> {
+    return this.rpcCall<string>(
+      'createrawtransaction',
+      `wallet/${MAIN_WALLET}`,
+      [
+        {
+          txid: crypto
+            .createHash('sha256')
+            .update(Date.now().toString())
+            .digest('hex'),
+          vout: 0,
+        },
+      ],
+      [
+        {
+          [recipientAddress]: Number(amount) * 10 ** -8,
+        },
+      ],
+      0,
+      true,
+    );
+  }
+
+  public async signRawTransaction(
+    transactionHex: string,
+    privateKey: string,
+  ): Promise<string> {
+    const response = await this.rpcCall<{ hex: string; complete: boolean }>(
+      'signrawtransactionwithkey',
+      `wallet/${MAIN_WALLET}`,
+      transactionHex,
+      [privateKey],
+    );
+
+    return response.hex;
+  }
+
+  public async sendRawTransaction(
+    signedTransactionHex: string,
+  ): Promise<string> {
+    return this.rpcCall<string>(
+      'sendrawtransaction',
+      `wallet/${MAIN_WALLET}`,
+      signedTransactionHex,
+    );
   }
 
   private async rpcCall<R>(

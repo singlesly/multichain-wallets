@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotImplementedException } from '@nestjs/common';
 import {
   Balance,
   TemporaryWalletService,
@@ -15,6 +15,14 @@ export class EthereumTemporaryWalletService implements TemporaryWalletService {
     private readonly ethereumWeb3Service: EthereumWeb3Service,
     private readonly createTemporaryWalletService: CreateTemporaryWalletService,
   ) {}
+
+  public async transfer(
+    from: string,
+    to: string,
+    amount: bigint,
+  ): Promise<void> {
+    throw new NotImplementedException();
+  }
 
   public async createWallet(): Promise<Wallet> {
     const account = await this.ethereumWeb3Service.eth.accounts.create();

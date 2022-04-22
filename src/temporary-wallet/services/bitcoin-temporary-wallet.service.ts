@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotImplementedException } from '@nestjs/common';
 import { BitcoinRpcClient } from '../../bitcoin/rpc/bitcoin-rpc.client';
 import {
   Balance,
@@ -40,5 +40,10 @@ export class BitcoinTemporaryWalletService implements TemporaryWalletService {
       amount,
       decimals: 8,
     };
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public transfer(from: string, to: string, amount: bigint): Promise<void> {
+    throw new NotImplementedException();
   }
 }

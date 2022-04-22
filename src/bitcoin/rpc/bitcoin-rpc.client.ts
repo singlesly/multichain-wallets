@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
 import { MAIN_WALLET } from '../constants';
 import * as crypto from 'crypto';
+import { ListUnspentResult } from '../interfaces/list-unspent-result';
 
 @Injectable()
 export class BitcoinRpcClient {
@@ -54,6 +55,25 @@ export class BitcoinRpcClient {
     }>('estimatesmartfee', `wallet/${MAIN_WALLET}`, minconf);
 
     return BigInt((result.feerate * 10 ** 8).toFixed(0));
+  }
+
+  public async listUnspent(
+    address: string,
+    minconf = 6,
+    maxconf = 9999999,
+  ): Promise<ListUnspentResult<bigint>> {
+    const list = await this.rpcCall<ListUnspentResult<number>>(
+      'listunspent',
+      `wallet/${MAIN_WALLET}`,
+      minconf,
+      maxconf,
+      [address],
+    );
+
+    return list.map((item) => ({
+      ...item,
+      amount: BigInt(Number(item.amount * 10 ** 8).toFixed(0)),
+    }));
   }
 
   public async createRawTransaction(

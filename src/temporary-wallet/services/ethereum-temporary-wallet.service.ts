@@ -89,6 +89,8 @@ export class EthereumTemporaryWalletService implements TemporaryWalletService {
     to: string,
     amount: bigint,
   ): Promise<Balance> {
+    const gasPrice = await this.ethereumWeb3Service.eth.getGasPrice();
+
     const transactionConfig: TransactionConfig = {
       value: String(amount),
       to,
@@ -99,8 +101,12 @@ export class EthereumTemporaryWalletService implements TemporaryWalletService {
       transactionConfig,
     );
 
+    const feeAmount = BigInt(
+      utils.toBN(gas).mul(utils.toBN(gasPrice)).toString(),
+    );
+
     return {
-      amount: BigInt(utils.toWei(String(gas), 'gwei')),
+      amount: feeAmount,
       decimals: 18,
     };
   }

@@ -52,6 +52,9 @@ export class BitcoinTemporaryWalletService implements TemporaryWalletService {
     to: string,
     amount: bigint,
   ): Promise<Balance> {
-    throw new NotImplementedException();
+    return {
+      amount: await this.bitcoinRpcClient.estimateSmartFee(),
+      decimals: 8,
+    };
   }
 }

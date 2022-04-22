@@ -45,6 +45,16 @@ export class BitcoinRpcClient {
     return BigInt((balance * 10 ** 8).toFixed(0));
   }
 
+  public async estimateSmartFee(minconf = 6): Promise<bigint> {
+    const result = await this.rpcCall<{
+      feerate: number;
+      blocks: number;
+      errors: string[];
+    }>('estimatesmartfee', `wallet/${MAIN_WALLET}`, minconf);
+
+    return BigInt((result.feerate * 10 ** 8).toFixed(0));
+  }
+
   private async rpcCall<R>(
     method: string,
     url = '',

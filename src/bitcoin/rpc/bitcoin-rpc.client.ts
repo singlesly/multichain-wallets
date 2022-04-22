@@ -2,7 +2,6 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
 import { MAIN_WALLET } from '../constants';
-import * as crypto from 'crypto';
 import { ListUnspentResult } from '../interfaces/list-unspent-result';
 
 @Injectable()
@@ -74,6 +73,16 @@ export class BitcoinRpcClient {
       ...item,
       amount: BigInt(Number(item.amount * 10 ** 8).toFixed(0)),
     }));
+  }
+
+  public async fundRawTransaction(transactionHash: string): Promise<string> {
+    const response = await this.rpcCall<{
+      hex: string;
+      fee: number;
+      changepos: number;
+    }>('fundrawtransaction', `wallet/${MAIN_WALLET}`, transactionHash);
+
+    return response.hex;
   }
 
   public async createRawTransaction(

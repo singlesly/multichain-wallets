@@ -93,9 +93,11 @@ export class EthereumTemporaryWalletService implements TemporaryWalletService {
       from,
     };
 
-    const gas = await this.ethereumWeb3Service.eth.estimateGas(
-      transactionConfig,
-    );
+    const gas = await this.ethereumWeb3Service.eth
+      .estimateGas(transactionConfig)
+      .catch(() => {
+        return 0;
+      });
 
     const feeAmount = BigInt(
       utils.toBN(gas).mul(utils.toBN(gasPrice)).toString(),

@@ -53,7 +53,7 @@ export class BitcoinRpcClient {
       errors: string[];
     }>('estimatesmartfee', `wallet/${MAIN_WALLET}`, minconf);
 
-    return BigInt((result.feerate * 10 ** 8).toFixed(0));
+    return BigInt(((result.feerate * 10 ** 8) / 1000).toFixed(0));
   }
 
   public async listUnspent(

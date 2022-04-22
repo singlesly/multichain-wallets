@@ -1,8 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotImplementedException,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import {
   Balance,
   TemporaryWalletService,
@@ -15,6 +11,7 @@ import { CreateTemporaryWalletService } from './create-temporary-wallet.service'
 import { TransactionConfig } from 'web3-core';
 import { GetTemporaryWalletService } from './get-temporary-wallet.service';
 import { EncryptService } from '../../encrypt/services/encrypt.service';
+import utils from 'web3-utils';
 
 @Injectable()
 export class EthereumTemporaryWalletService implements TemporaryWalletService {
@@ -92,6 +89,19 @@ export class EthereumTemporaryWalletService implements TemporaryWalletService {
     to: string,
     amount: bigint,
   ): Promise<Balance> {
-    throw new NotImplementedException();
+    const transactionConfig: TransactionConfig = {
+      value: String(amount),
+      to,
+      from,
+    };
+
+    const gas = await this.ethereumWeb3Service.eth.estimateGas(
+      transactionConfig,
+    );
+
+    return {
+      amount: BigInt(utils.toWei(String(gas), 'gwei')),
+      decimals: 18,
+    };
   }
 }

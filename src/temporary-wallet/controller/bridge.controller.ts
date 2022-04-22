@@ -67,6 +67,25 @@ export class BridgeController {
       .transfer(from, to, amount);
   }
 
+  @Post(':network/:coin/estimate-fee')
+  @ApiParam({
+    name: 'network',
+    enum: NetworkEnum,
+  })
+  @ApiParam({
+    name: 'coin',
+    enum: CoinEnum,
+  })
+  public async estimateFee(
+    @Param('network') network: NetworkEnum,
+    @Param('coin') coin: CoinEnum,
+    @Body() { from, to, amount }: TransferWalletDto,
+  ): Promise<Balance> {
+    return this.temporaryWalletServiceFactory
+      .for(network, coin)
+      .estimateFee(from, to, amount);
+  }
+
   @Get('supported-coins')
   @ApiOkResponse({
     description: 'Key of object is network, value is symbol supported coins',

@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotImplementedException,
+} from '@nestjs/common';
 import {
   Balance,
   TemporaryWalletService,
@@ -81,5 +85,13 @@ export class EthereumTemporaryWalletService implements TemporaryWalletService {
       amount: BigInt(amount),
       decimals: 18,
     };
+  }
+
+  public async estimateFee(
+    from: string,
+    to: string,
+    amount: bigint,
+  ): Promise<Balance> {
+    throw new NotImplementedException();
   }
 }

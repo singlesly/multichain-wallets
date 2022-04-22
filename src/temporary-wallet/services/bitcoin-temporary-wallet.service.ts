@@ -46,4 +46,12 @@ export class BitcoinTemporaryWalletService implements TemporaryWalletService {
   public transfer(from: string, to: string, amount: bigint): Promise<void> {
     throw new NotImplementedException();
   }
+
+  public async estimateFee(
+    from: string,
+    to: string,
+    amount: bigint,
+  ): Promise<Balance> {
+    throw new NotImplementedException();
+  }
 }

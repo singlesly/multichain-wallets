@@ -11,6 +11,7 @@ import { WalletController } from './controller/wallet.controller';
 import { EthereumModule } from '../ethereum/ethereum.module';
 import { EthereumTemporaryWalletService } from './services/ethereum-temporary-wallet.service';
 import { EncryptModule } from '../encrypt/encrypt.module';
+import { GetTemporaryWalletService } from './services/get-temporary-wallet.service';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { EncryptModule } from '../encrypt/encrypt.module';
     EthereumTemporaryWalletService,
     CreateTemporaryWalletService,
     TemporaryWalletPgRepository,
+    GetTemporaryWalletService,
   ],
 })
 export class TemporaryWalletModule {}

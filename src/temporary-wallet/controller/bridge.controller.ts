@@ -1,9 +1,10 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { TemporaryWalletServiceFactory } from '../factories/temporary-wallet-service.factory';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Balance } from '../temporary-wallet.service';
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
+import { TransferWalletDto } from '../dto/transfer-wallet.dto';
 
 @Controller()
 @ApiTags('Bridge')
@@ -45,6 +46,25 @@ export class BridgeController {
     return this.temporaryWalletServiceFactory
       .for(network, coin)
       .getBalance(address);
+  }
+
+  @Post(':network/:coin/transfer')
+  @ApiParam({
+    name: 'network',
+    enum: NetworkEnum,
+  })
+  @ApiParam({
+    name: 'coin',
+    enum: CoinEnum,
+  })
+  public async transfer(
+    @Param('network') network: NetworkEnum,
+    @Param('coin') coin: CoinEnum,
+    @Body() { from, to, amount }: TransferWalletDto,
+  ): Promise<void> {
+    return this.temporaryWalletServiceFactory
+      .for(network, coin)
+      .transfer(from, to, amount);
   }
 
   @Get('supported-coins')

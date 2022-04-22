@@ -10,6 +10,7 @@ import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
 import { GetTemporaryWalletService } from './get-temporary-wallet.service';
 import { EncryptService } from '../../encrypt/services/encrypt.service';
+import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 
 @Injectable()
 export class BitcoinTemporaryWalletService implements TemporaryWalletService {
@@ -20,21 +21,16 @@ export class BitcoinTemporaryWalletService implements TemporaryWalletService {
     private readonly encryptService: EncryptService,
   ) {}
 
-  public async createWallet(): Promise<Wallet> {
+  public async createWallet(): Promise<TemporaryWallet> {
     const address = await this.bitcoinRpcClient.getNewAddress();
     const privateKey = await this.bitcoinRpcClient.dumpPrivateKey(address);
 
-    await this.createTemporaryWalletService.create({
+    return await this.createTemporaryWalletService.create({
       pubKey: address,
       privateKey: privateKey,
       network: NetworkEnum.BTC,
       coin: CoinEnum.BTC,
     });
-
-    return {
-      address,
-      privateKey,
-    };
   }
 
   public async getBalance(address: string): Promise<Balance> {

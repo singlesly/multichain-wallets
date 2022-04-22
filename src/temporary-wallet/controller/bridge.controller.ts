@@ -5,6 +5,7 @@ import { Balance } from '../temporary-wallet.service';
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
 import { TransferWalletDto } from '../dto/transfer-wallet.dto';
+import { WalletResponse } from './wallet.response';
 
 @Controller()
 @ApiTags('Bridge')
@@ -26,7 +27,11 @@ export class BridgeController {
     @Param('network') network: NetworkEnum,
     @Param('coin') coin: CoinEnum,
   ) {
-    return this.temporaryWalletServiceFactory.for(network, coin).createWallet();
+    return new WalletResponse(
+      await this.temporaryWalletServiceFactory
+        .for(network, coin)
+        .createWallet(),
+    );
   }
 
   @Get(':network/:coin/wallet/:address/balance')

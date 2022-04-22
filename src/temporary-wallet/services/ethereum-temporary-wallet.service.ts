@@ -12,6 +12,7 @@ import { TransactionConfig } from 'web3-core';
 import { GetTemporaryWalletService } from './get-temporary-wallet.service';
 import { EncryptService } from '../../encrypt/services/encrypt.service';
 import utils from 'web3-utils';
+import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 
 @Injectable()
 export class EthereumTemporaryWalletService implements TemporaryWalletService {
@@ -59,20 +60,15 @@ export class EthereumTemporaryWalletService implements TemporaryWalletService {
     console.log(receipt);
   }
 
-  public async createWallet(): Promise<Wallet> {
+  public async createWallet(): Promise<TemporaryWallet> {
     const account = await this.ethereumWeb3Service.eth.accounts.create();
 
-    const wallet = await this.createTemporaryWalletService.create({
+    return await this.createTemporaryWalletService.create({
       pubKey: account.address,
       privateKey: account.privateKey,
       network: NetworkEnum.ETH,
       coin: CoinEnum.ETH,
     });
-
-    return {
-      address: wallet.pubKey,
-      privateKey: wallet.privateKey,
-    };
   }
 
   public async getBalance(address: string): Promise<Balance> {

@@ -75,28 +75,41 @@ export class BitcoinRpcClient {
     }));
   }
 
-  public async fundRawTransaction(transactionHash: string): Promise<string> {
+  public async fundRawTransaction(
+    transactionHash: string,
+    options: {
+      changeAddress: string;
+      changePosition: number;
+      includeWatching: boolean;
+    },
+  ): Promise<string> {
     const response = await this.rpcCall<{
       hex: string;
       fee: number;
       changepos: number;
-    }>('fundrawtransaction', `wallet/${MAIN_WALLET}`, transactionHash);
+    }>('fundrawtransaction', `wallet/${MAIN_WALLET}`, transactionHash, options);
 
     return response.hex;
+  }
+
+  public async decodeRawTransaction(
+    transactionHash: string,
+  ): Promise<Record<string, any>> {
+    return this.rpcCall(
+      'decoderawtransaction',
+      `wallet/${MAIN_WALLET}`,
+      transactionHash,
+    );
   }
 
   public async createRawTransaction(
     recipientAddress: string,
     amount: bigint,
-    unspents: ListUnspentResult,
   ): Promise<string> {
     return this.rpcCall<string>(
       'createrawtransaction',
       `wallet/${MAIN_WALLET}`,
-      unspents.map((unspent) => ({
-        txid: unspent.txid,
-        vout: unspent.vout,
-      })),
+      [],
       [
         {
           [recipientAddress]: Number(amount) * 10 ** -8,
@@ -105,7 +118,7 @@ export class BitcoinRpcClient {
     );
   }
 
-  public async signRawTransaction(
+  public async signRawTransactionWithKey(
     transactionHex: string,
     privateKey: string,
   ): Promise<string> {
@@ -114,6 +127,18 @@ export class BitcoinRpcClient {
       `wallet/${MAIN_WALLET}`,
       transactionHex,
       [privateKey],
+    );
+
+    return response.hex;
+  }
+
+  public async signRawTransactionWithWallet(
+    transactionHash: string,
+  ): Promise<string> {
+    const response = await this.rpcCall<{ hex: string }>(
+      'signrawtransactionwithwallet',
+      `wallet/${MAIN_WALLET}`,
+      transactionHash,
     );
 
     return response.hex;

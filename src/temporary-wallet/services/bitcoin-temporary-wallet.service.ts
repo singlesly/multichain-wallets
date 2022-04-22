@@ -48,19 +48,24 @@ export class BitcoinTemporaryWalletService implements TemporaryWalletService {
     amount: bigint,
   ): Promise<void> {
     const wallet = await this.getTemporaryWalletService.getByAddress(from);
-    const unspentList = await this.bitcoinRpcClient.listUnspent(from, 3);
-    console.log(unspentList);
+
     const transactionHash = await this.bitcoinRpcClient.createRawTransaction(
       to,
       amount,
-      unspentList,
     );
+
     const fundedTransactionHash =
-      await this.bitcoinRpcClient.fundRawTransaction(transactionHash);
-    const signedTransactionHex = await this.bitcoinRpcClient.signRawTransaction(
-      fundedTransactionHash,
-      await this.encryptService.decrypt(wallet.privateKey),
-    );
+      await this.bitcoinRpcClient.fundRawTransaction(transactionHash, {
+        changeAddress: wallet.pubKey,
+        changePosition: 0,
+        includeWatching: true,
+      });
+
+    const signedTransactionHex =
+      await this.bitcoinRpcClient.signRawTransactionWithWallet(
+        fundedTransactionHash,
+      );
+
     const tx = await this.bitcoinRpcClient.sendRawTransaction(
       signedTransactionHex,
     );

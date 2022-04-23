@@ -32,7 +32,7 @@ slt dev deploy:
     - export KUBECONFIG=$SLT_KUBE_CONFIG
     - echo $KUBECONFIG
     - (./kubectl delete --namespace cex-develop jobs.batch crypto-bridge-migrations || true)
-    - ./kubectl apply --namespace cex-develop -f .kube/develop/cex-migration.job.yaml
+    - ./kubectl apply --namespace cex-develop -f .kube/develop/crypto-bridge-migration.job.yaml
     - ./kubectl apply --namespace cex-develop -f .kube/develop
     - ./kubectl rollout --namespace cex-develop restart deployment cex
   only:
@@ -50,7 +50,7 @@ slt prod deploy:
     - export KUBECONFIG=$SLT_KUBE_CONFIG
     - echo $KUBECONFIG
     - (./kubectl delete --namespace cex-production jobs.batch crypto-bridge-migrations || true)
-    - ./kubectl apply --namespace cex-production -f .kube/production/cex-migration.job.yaml
+    - ./kubectl apply --namespace cex-production -f .kube/production/crypto-bridge-migration.job.yaml
     - ./kubectl apply --namespace cex-production -f .kube/production
     - ./kubectl rollout --namespace cex-production restart deployment cex
   only:

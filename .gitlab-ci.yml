@@ -38,6 +38,7 @@ slt dev deploy:
     - ./kubectl rollout --namespace cex-develop restart deployment cex
   only:
     - develop
+  when: manual
 
 slt prod deploy:
   stage: deploy
@@ -56,3 +57,5 @@ slt prod deploy:
     - ./kubectl rollout --namespace cex-production restart deployment cex
   only:
     - main
+  when: manual
+

@@ -18,6 +18,7 @@ Build:
   only:
     - develop
     - main
+  when: manual
 
 
 slt dev deploy:

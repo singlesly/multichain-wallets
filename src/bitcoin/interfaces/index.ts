@@ -6,3 +6,10 @@ export type ListUnspentResult<A = bigint> = {
   spendable: boolean;
   amount: A;
 }[];
+
+export type DecodeRawTransactionResult = {
+  txid: string;
+  hash: string;
+  size: number;
+  vsize: number;
+};

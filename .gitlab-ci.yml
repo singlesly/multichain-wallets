@@ -1,0 +1,57 @@
+stages:
+  - build
+  - deploy
+
+Build:
+  stage: build
+  image: docker
+  services:
+    - name: docker:dind
+      alias: docker
+      command: [ "--tls=false" ]
+  script:
+    - apk add --no-cache docker-compose make
+    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+    - docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME} || true
+    - docker build --cache-from ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME} -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME} -f docker/app/Dockerfile .
+    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
+  only:
+    - develop
+    - main
+
+
+slt dev deploy:
+  stage: deploy
+  image: alpine:3.7
+  before_script:
+    - apk add --no-cache curl
+    - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+    - chmod +x ./kubectl
+  script:
+    - cat $SLT_KUBE_CONFIG
+    - export KUBECONFIG=$SLT_KUBE_CONFIG
+    - echo $KUBECONFIG
+    - (./kubectl delete --namespace cex-develop jobs.batch ledius-token-migrations || true)
+    - ./kubectl apply --namespace cex-develop -f .kube/develop/ledius-token-migration.job.yaml
+    - ./kubectl apply --namespace cex-develop -f .kube/develop
+    - ./kubectl rollout --namespace cex-develop restart deployment ledius-token-deployment
+  only:
+    - develop
+
+slt prod deploy:
+  stage: deploy
+  image: alpine:3.7
+  before_script:
+    - apk add --no-cache curl
+    - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+    - chmod +x ./kubectl
+  script:
+    - cat $SLT_KUBE_CONFIG
+    - export KUBECONFIG=$SLT_KUBE_CONFIG
+    - echo $KUBECONFIG
+    - (./kubectl delete --namespace cex-production jobs.batch ledius-token-migrations || true)
+    - ./kubectl apply --namespace cex-production -f .kube/production/ledius-token-migration.job.yaml
+    - ./kubectl apply --namespace cex-production -f .kube/production
+    - ./kubectl rollout --namespace cex-production restart deployment ledius-token-deployment
+  only:
+    - main

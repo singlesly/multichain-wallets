@@ -8,6 +8,8 @@ import { LoggerModule, LoggerService } from '@ledius/logger';
 import { BitcoinWalletWarmupService } from './services/bitcoin-wallet-warmup.service';
 import { ErrorLoggingInterceptor } from './interceptors/error-logging.interceptor';
 import { RequestContextModule } from '@ledius/request-context';
+import { BtcCommand } from './cli/btc.command';
+import { UptimeCommand } from './cli/uptime.command';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { RequestContextModule } from '@ledius/request-context';
     BitcoinRpcClient,
     BitcoinWalletWarmupService,
     ErrorLoggingInterceptor,
+    BtcCommand,
+    UptimeCommand,
   ],
   exports: [BitcoinRpcClient],
 })

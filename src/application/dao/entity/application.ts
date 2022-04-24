@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -8,7 +9,7 @@ import {
 const TABLE_NAME = 'applications';
 
 @Entity(TABLE_NAME)
-export class Application {
+export class Application extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   public readonly id: string;
 

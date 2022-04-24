@@ -10,9 +10,11 @@ import { HealthModule } from './health/health.module';
 import { routes } from './routes';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import path from 'path';
+import { ApplicationModule } from './application/application.module';
 
 @Module({
   imports: [
+    ApplicationModule,
     BitcoinModule,
     DatabaseModule,
     EncryptModule,

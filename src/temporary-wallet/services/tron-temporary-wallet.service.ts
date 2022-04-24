@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotImplementedException,
+} from '@nestjs/common';
 import { Balance, TemporaryWalletService } from '../temporary-wallet.service';
 import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 import { TronWeb3Service } from '../../tron/services/tron-web3.service';
@@ -20,8 +24,6 @@ export class TronTemporaryWalletService implements TemporaryWalletService {
     private readonly tronWeb3Service: TronWeb3Service,
     private readonly tronClientService: TronClientService,
     private readonly createTemporaryWalletService: CreateTemporaryWalletService,
-    private readonly getTemporaryWalletService: GetTemporaryWalletService,
-    private readonly encryptService: EncryptService,
   ) {}
 
   public async createWallet(): Promise<TemporaryWallet> {
@@ -40,28 +42,7 @@ export class TronTemporaryWalletService implements TemporaryWalletService {
     to: string,
     amount: bigint,
   ): Promise<Balance> {
-    const gasPrice = await this.tronWeb3Service.eth.getGasPrice();
-
-    const transactionConfig: TransactionConfig = {
-      value: String(amount),
-      to,
-      from,
-    };
-
-    const gas = await this.tronWeb3Service.eth
-      .estimateGas(transactionConfig)
-      .catch(() => {
-        return 0;
-      });
-
-    const feeAmount = BigInt(
-      utils.toBN(gas).mul(utils.toBN(gasPrice)).toString(),
-    );
-
-    return {
-      amount: feeAmount,
-      decimals: this.decimals,
-    };
+    throw new NotImplementedException();
   }
 
   public async getBalance(address: string): Promise<Balance> {
@@ -80,35 +61,6 @@ export class TronTemporaryWalletService implements TemporaryWalletService {
     to: string,
     amount: bigint,
   ): Promise<void> {
-    const wallet = await this.getTemporaryWalletService.getByAddress(from);
-
-    if (wallet.network !== NetworkEnum.TRON) {
-      throw new ForbiddenException(
-        `Wallet network is ${wallet.network} but not ${NetworkEnum.ETH}`,
-      );
-    }
-    if (wallet.coin !== CoinEnum.TRON) {
-      throw new ForbiddenException(
-        `Wallet coin is ${wallet.coin} but not ${CoinEnum.ETH}`,
-      );
-    }
-    await this.tronWeb3Service.eth.accounts.wallet.add({
-      address: wallet.pubKey,
-      privateKey: await this.encryptService.decrypt(wallet.privateKey),
-    });
-
-    const transactionConfig: TransactionConfig = {
-      value: String(amount),
-      to,
-      from,
-    };
-
-    const receipt = await this.tronWeb3Service.eth.sendTransaction({
-      ...transactionConfig,
-      gasPrice: await this.tronWeb3Service.eth.getGasPrice(),
-      gas: await this.tronWeb3Service.eth.estimateGas(transactionConfig),
-    });
-
-    console.log(receipt);
+    throw new NotImplementedException();
   }
 }

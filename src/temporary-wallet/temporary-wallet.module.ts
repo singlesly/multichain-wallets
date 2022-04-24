@@ -13,6 +13,7 @@ import { EthereumTemporaryWalletService } from './services/ethereum-temporary-wa
 import { EncryptModule } from '../encrypt/encrypt.module';
 import { GetTemporaryWalletService } from './services/get-temporary-wallet.service';
 import { TronModule } from '../tron/tron.module';
+import { TronTemporaryWalletService } from './services/tron-temporary-wallet.service';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { TronModule } from '../tron/tron.module';
     CreateTemporaryWalletService,
     TemporaryWalletPgRepository,
     GetTemporaryWalletService,
+    TronTemporaryWalletService,
   ],
 })
 export class TemporaryWalletModule {}

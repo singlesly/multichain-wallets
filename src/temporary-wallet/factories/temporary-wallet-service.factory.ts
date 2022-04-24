@@ -4,6 +4,7 @@ import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
 import { BitcoinTemporaryWalletService } from '../services/bitcoin-temporary-wallet.service';
 import { EthereumTemporaryWalletService } from '../services/ethereum-temporary-wallet.service';
+import { TronTemporaryWalletService } from '../services/tron-temporary-wallet.service';
 
 @Injectable()
 export class TemporaryWalletServiceFactory {
@@ -14,11 +15,15 @@ export class TemporaryWalletServiceFactory {
     [NetworkEnum.ETH]: {
       [CoinEnum.ETH]: this.ethereumTemporaryWalletService,
     },
+    [NetworkEnum.TRON]: {
+      [CoinEnum.TRON]: this.tronTemporaryWalletService,
+    },
   };
 
   constructor(
     private readonly bitcoinTemporaryWalletService: BitcoinTemporaryWalletService,
     private readonly ethereumTemporaryWalletService: EthereumTemporaryWalletService,
+    private readonly tronTemporaryWalletService: TronTemporaryWalletService,
   ) {}
 
   public for(

@@ -6,7 +6,7 @@ import { Application } from '../dao/entity/application';
 export class AppGuard implements CanActivate {
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
-    const encodedAuth = request.headers.authorization.split(' ')[1];
+    const encodedAuth = request.headers.authorization?.split(' ')[1];
     if (!encodedAuth) {
       return false;
     }

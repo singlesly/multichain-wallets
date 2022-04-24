@@ -1,7 +1,8 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Header, Param, UseGuards } from '@nestjs/common';
 import { TemporaryWalletPgRepository } from '../repositories/temporary-wallet-pg.repository';
 import { WalletResponse } from './wallet.response';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { AppGuard } from '../../application/guard/app.guard';
 
 @Controller()
 @ApiTags('Wallets')
@@ -15,6 +16,9 @@ export class WalletController {
     type: WalletResponse,
     isArray: true,
   })
+  @UseGuards(AppGuard)
+  @ApiBasicAuth()
+  @Header('WWW-Authenticate', 'basic')
   public async list(): Promise<WalletResponse[]> {
     const wallets = await this.temporaryWalletPgRepository.findAll();
 

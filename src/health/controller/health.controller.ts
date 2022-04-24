@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Header, UseGuards } from '@nestjs/common';
 import { HealthServiceResponse } from './health-service.response';
 import { ApiBasicAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { BitcoinRpcClient } from '../../bitcoin/rpc/bitcoin-rpc.client';
@@ -24,6 +24,7 @@ export class HealthController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @Header('WWW-Authenticate', 'basic')
   public async getServices(): Promise<HealthServiceResponse[]> {
     return [
       {

@@ -12,6 +12,18 @@ export class ErrorLoggingInterceptor {
     @Inject(ASYNC_STORAGE)
     private readonly asyncStorage: AsyncLocalStorage<RequestContext>,
   ) {
+    this.http.axiosRef.interceptors.request.use((config) => {
+      this.logger.log({
+        label: 'Tron Request',
+        request: {
+          data: config.data,
+          headers: config.headers,
+          baseURL: config.baseURL,
+          url: config.url,
+        },
+      });
+      return config;
+    });
     this.http.axiosRef.interceptors.response.use(
       (response) => {
         this.logger.log({

@@ -10,10 +10,11 @@ import utils from 'web3-utils';
 import { GetTemporaryWalletService } from './get-temporary-wallet.service';
 import { EncryptService } from '../../encrypt/services/encrypt.service';
 import { TronClientService } from '../../tron/services/tron-client.service';
+import { base58CheckToHex } from '../../utils';
 
 @Injectable()
 export class TronTemporaryWalletService implements TemporaryWalletService {
-  private readonly decimals: number = 18;
+  private readonly decimals: number = 6;
 
   constructor(
     private readonly tronWeb3Service: TronWeb3Service,
@@ -64,8 +65,12 @@ export class TronTemporaryWalletService implements TemporaryWalletService {
   }
 
   public async getBalance(address: string): Promise<Balance> {
+    const account = await this.tronClientService.getAccount(
+      base58CheckToHex(address),
+    );
+
     return {
-      amount: BigInt(await this.tronWeb3Service.eth.getBalance(address)),
+      amount: account.balance,
       decimals: this.decimals,
     };
   }

@@ -30,6 +30,19 @@ export class TronClientService {
       balance: data.balance,
     };
   }
+
+  public async getAccount(hexAddress: string): Promise<GetAccountResult> {
+    const { data } = await lastValueFrom(
+      this.http.post('/wallet/getaccount', {
+        address: hexAddress,
+      }),
+    );
+
+    return {
+      address: data.address ?? hexAddress,
+      balance: data.balance ? BigInt(data.balance) : BigInt(0),
+    };
+  }
 }
 
 export interface GenerateAddressResult {
@@ -55,4 +68,9 @@ export interface GetAccountBalanceResult {
     hash: string;
     number: number;
   };
+}
+
+export interface GetAccountResult {
+  address: string;
+  balance: bigint;
 }

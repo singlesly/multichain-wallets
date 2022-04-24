@@ -1,6 +1,5 @@
 import { CommandRunner, SubCommand } from 'nest-commander';
 import { BitcoinRpcClient } from '../rpc/bitcoin-rpc.client';
-import { LoggerService } from '@ledius/logger';
 import { ConsoleLogger } from '@nestjs/common';
 
 @SubCommand({
@@ -14,6 +13,6 @@ export class UptimeCommand implements CommandRunner {
 
   public async run(): Promise<void> {
     const uptime = await this.bitcoinRpcClient.uptime();
-    this.logger.log(`Bitcoin uptime is ${uptime}`);
+    this.logger.log(`Bitcoin uptime is ${uptime} seconds`);
   }
 }

@@ -43,6 +43,14 @@ export class TronClientService {
       balance: data.balance ? BigInt(data.balance) : BigInt(0),
     };
   }
+
+  public async getNowBlock(): Promise<GetNowBlockResult> {
+    const { data } = await lastValueFrom(
+      this.http.get<GetNowBlockResult>('/wallet/getnowblock'),
+    );
+
+    return data;
+  }
 }
 
 export interface GenerateAddressResult {
@@ -73,4 +81,8 @@ export interface GetAccountBalanceResult {
 export interface GetAccountResult {
   address: string;
   balance: bigint;
+}
+
+export interface GetNowBlockResult {
+  blockID: string;
 }

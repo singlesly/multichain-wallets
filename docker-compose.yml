@@ -27,3 +27,13 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
+
+  bitcom-crypto-bridge-bitcoin:
+    container_name: bitcom-crypto-bridge-bitcoin
+    build:
+      context: ./bitcoin
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./bitcoin/var/testnet3:/root/.bitcoin/testnet3
+    ports:
+      - "18332:18332"

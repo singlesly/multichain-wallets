@@ -12,6 +12,8 @@ import { EthereumModule } from '../ethereum/ethereum.module';
 import { EthereumTemporaryWalletService } from './services/ethereum-temporary-wallet.service';
 import { EncryptModule } from '../encrypt/encrypt.module';
 import { GetTemporaryWalletService } from './services/get-temporary-wallet.service';
+import { TronModule } from '../tron/tron.module';
+import { TronTemporaryWalletService } from './services/tron-temporary-wallet.service';
 
 @Module({
   imports: [
@@ -19,6 +21,7 @@ import { GetTemporaryWalletService } from './services/get-temporary-wallet.servi
     EthereumModule,
     TypeOrmModule.forFeature([TemporaryWallet]),
     EncryptModule,
+    TronModule,
   ],
   controllers: [BridgeController, WalletController],
   providers: [
@@ -28,6 +31,7 @@ import { GetTemporaryWalletService } from './services/get-temporary-wallet.servi
     CreateTemporaryWalletService,
     TemporaryWalletPgRepository,
     GetTemporaryWalletService,
+    TronTemporaryWalletService,
   ],
 })
 export class TemporaryWalletModule {}

@@ -73,9 +73,30 @@ export class BitcoinTemporaryWalletService implements TemporaryWalletService {
     return tx as never;
   }
 
-  public async estimateFee(): Promise<Balance> {
+  public async estimateFee(
+    from: string,
+    to: string,
+    amount: bigint,
+  ): Promise<Balance> {
+    const transactionHash = await this.bitcoinRpcClient.createRawTransaction(
+      to,
+      amount,
+    );
+
+    const fundedTransactionHash =
+      await this.bitcoinRpcClient.fundRawTransaction(transactionHash, {
+        changeAddress: from,
+        changePosition: 0,
+        includeWatching: true,
+      });
+
+    const decodedFundedTransaction =
+      await this.bitcoinRpcClient.decodeRawTransaction(fundedTransactionHash);
+
+    const fee = await this.bitcoinRpcClient.estimateSmartFee();
+
     return {
-      amount: await this.bitcoinRpcClient.estimateSmartFee(),
+      amount: BigInt(decodedFundedTransaction.vsize.toFixed(0)) * fee,
       decimals: 8,
     };
   }

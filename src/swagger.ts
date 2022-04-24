@@ -6,6 +6,7 @@ import path from 'path';
 export async function useSwagger(app: INestApplication): Promise<void> {
   const config = new DocumentBuilder()
     .setTitle('Crypto Bridge')
+    .addBasicAuth()
     .setDescription('The cryptocurrency bridge API description')
     .setVersion('1.0')
     .build();

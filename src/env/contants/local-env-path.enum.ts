@@ -19,4 +19,7 @@ export enum LocalEnvPathEnum {
 
   // ETHEREUM NETWORK
   ETH_RPC_BASE_URL = 'ETH_RPC_BASE_URL',
+
+  // TRON NETWORK
+  TRON_RPC_BASE_URL = 'TRON_RPC_BASE_URL',
 }

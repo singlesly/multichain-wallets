@@ -7,4 +7,6 @@ RUN npm install
 COPY . .
 RUN npm run build
 ENV MODE prod
+RUN chmod a+x ./dist/cli.js && npm link
+
 CMD npm run start:${MODE}

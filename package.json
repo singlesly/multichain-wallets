@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "bin": {
-    "crypto-bridge": "dist/cli"
+    "crypto-bridge": "./dist/cli.js"
   },
   "scripts": {
     "prebuild": "rimraf dist",

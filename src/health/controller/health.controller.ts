@@ -1,11 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { HealthServiceResponse } from './health-service.response';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { BitcoinRpcClient } from '../../bitcoin/rpc/bitcoin-rpc.client';
 import { EthereumWeb3Service } from '../../ethereum/services/ethereum-web3.service';
 import { LoggerService } from '@ledius/logger';
-import { TronWeb3Service } from '../../tron/services/tron-web3.service';
 import { TronClientService } from '../../tron/services/tron-client.service';
+import { AppGuard } from '../../application/guard/app.guard';
 
 @Controller()
 @ApiTags('Health')
@@ -22,6 +22,8 @@ export class HealthController {
     isArray: true,
     type: HealthServiceResponse,
   })
+  @UseGuards(AppGuard)
+  @ApiBasicAuth()
   public async getServices(): Promise<HealthServiceResponse[]> {
     return [
       {

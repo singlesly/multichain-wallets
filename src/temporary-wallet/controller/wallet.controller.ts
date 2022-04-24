@@ -18,7 +18,6 @@ export class WalletController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
-  @Header('WWW-Authenticate', 'basic')
   public async list(): Promise<WalletResponse[]> {
     const wallets = await this.temporaryWalletPgRepository.findAll();
 
@@ -29,6 +28,8 @@ export class WalletController {
   @ApiOkResponse({
     type: WalletResponse,
   })
+  @UseGuards(AppGuard)
+  @ApiBasicAuth()
   public async get(@Param('address') address: string): Promise<WalletResponse> {
     return new WalletResponse(
       await this.temporaryWalletPgRepository.getByAddress(address),

@@ -54,3 +54,19 @@ When bridge need sign transaction in blockchain then application decrypt private
 
 **Please do not modify encryption algorithm and do not change password (env var is CIPHER_PASSWORD) used
 to encrypt without complex refactoring and migration otherwise you lost private keys forever**
+
+
+### Environment variables
+
+`APP_NAME` - is just application name not used. Defined for future in MS arch.  
+`CIPHER_PASSWORD` - secret password used for encyption please read - *Wallet encryption* topic for explain details  
+`DB_HOST` - database host   
+`DB_PORT` - database port  
+`DB_USER` - db user  
+`DB_PASS` - db pass  
+`DB_NAME` - db name  
+`BTC_RPC_BASE_URL` - bitcoin daemon rpc url like http://youhost.com:8332  
+`BTC_RPC_AUTH_USERNAME` - rpc bitcoin user  
+`BTC_RPC_AUTH_PASSWORD` - rpc bitcoin password  
+`ETH_RPC_BASE_URL` - Ethereum network rpc url
+`TRON_RPC_BASE_URL` - Tron network RPC url

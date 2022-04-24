@@ -28,4 +28,18 @@ export class Application extends BaseEntity {
 
   @CreateDateColumn()
   public readonly createdAt: string;
+
+  constructor(name: string, secret: string) {
+    super();
+    this.name = name;
+    this.secret = secret;
+  }
+
+  public authId(): string {
+    if (!this.id) {
+      return '';
+    }
+
+    return this.id.replace(/-/g, '');
+  }
 }

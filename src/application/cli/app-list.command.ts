@@ -17,10 +17,10 @@ export class AppListCommand implements CommandRunner {
     });
 
     this.logger.log(`Count application: ${apps.length}`);
+    this.logger.log(`[Name] | id | secret`);
 
     for (const app of apps) {
-      this.logger.log(`[Name] | id | secret`);
-      this.logger.log(`[${app.name}] | ${app.id} | ${app.secret}`);
+      this.logger.log(`[${app.name}] | ${app.authId()} | ${app.secret}`);
     }
   }
 }

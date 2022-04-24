@@ -9,6 +9,7 @@ import { TransactionConfig } from 'web3-core';
 import utils from 'web3-utils';
 import { GetTemporaryWalletService } from './get-temporary-wallet.service';
 import { EncryptService } from '../../encrypt/services/encrypt.service';
+import { TronClientService } from '../../tron/services/tron-client.service';
 
 @Injectable()
 export class TronTemporaryWalletService implements TemporaryWalletService {
@@ -16,13 +17,14 @@ export class TronTemporaryWalletService implements TemporaryWalletService {
 
   constructor(
     private readonly tronWeb3Service: TronWeb3Service,
+    private readonly tronClientService: TronClientService,
     private readonly createTemporaryWalletService: CreateTemporaryWalletService,
     private readonly getTemporaryWalletService: GetTemporaryWalletService,
     private readonly encryptService: EncryptService,
   ) {}
 
   public async createWallet(): Promise<TemporaryWallet> {
-    const account = await this.tronWeb3Service.eth.accounts.create();
+    const account = await this.tronClientService.generateAddress();
 
     return this.createTemporaryWalletService.create({
       privateKey: account.privateKey,

@@ -1,9 +1,13 @@
-import { Module } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Module,
+  ValidationPipe,
+} from '@nestjs/common';
 import { BitcoinModule } from './bitcoin/bitcoin.module';
 import { DatabaseModule } from './database/database.module';
 import { EncryptModule } from './encrypt/encrypt.module';
 import { TemporaryWalletModule } from './temporary-wallet/temporary-wallet.module';
-import { RouterModule } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_PIPE, RouterModule } from '@nestjs/core';
 import { RequestContextModule } from '@ledius/request-context';
 import { LoggerModule } from '@ledius/logger';
 import { HealthModule } from './health/health.module';
@@ -29,6 +33,11 @@ import { ApplicationModule } from './application/application.module';
     }),
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
+  ],
 })
 export class AppModule {}

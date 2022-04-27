@@ -77,8 +77,10 @@ export class BridgeController {
   public async transfer(
     @Param('network') network: NetworkEnum,
     @Param('coin') coin: CoinEnum,
-    @Body() { from, to, amount }: TransferWalletDto,
+    @Body() dto: TransferWalletDto,
   ): Promise<void> {
+    const { from, to, amount } = dto;
+
     return this.temporaryWalletServiceFactory
       .for(network, coin)
       .transfer(from, to, amount);

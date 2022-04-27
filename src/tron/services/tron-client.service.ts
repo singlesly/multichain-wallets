@@ -58,7 +58,10 @@ export class TronClientService {
     const { data } = await lastValueFrom(
       this.http.post<EasyTransferByPrivateResult>(
         '/wallet/easytransferbyprivate',
-        params,
+        {
+          ...params,
+          amount: Number(params.amount),
+        },
       ),
     );
 
@@ -106,4 +109,8 @@ export interface EasyTransferByPrivateParams {
   readonly amount: bigint;
 }
 
-export interface EasyTransferByPrivateResult {}
+export interface EasyTransferByPrivateResult {
+  transaction: {
+    txID: string;
+  };
+}

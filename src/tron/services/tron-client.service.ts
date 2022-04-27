@@ -51,6 +51,19 @@ export class TronClientService {
 
     return data;
   }
+
+  public async easyTransferByPrivate(
+    params: EasyTransferByPrivateParams,
+  ): Promise<EasyTransferByPrivateResult> {
+    const { data } = await lastValueFrom(
+      this.http.post<EasyTransferByPrivateResult>(
+        '/wallet/easytransferbyprivate',
+        params,
+      ),
+    );
+
+    return data;
+  }
 }
 
 export interface GenerateAddressResult {
@@ -86,3 +99,11 @@ export interface GetAccountResult {
 export interface GetNowBlockResult {
   blockID: string;
 }
+
+export interface EasyTransferByPrivateParams {
+  readonly privateKey: string;
+  readonly toAddress: string;
+  readonly amount: bigint;
+}
+
+export interface EasyTransferByPrivateResult {}

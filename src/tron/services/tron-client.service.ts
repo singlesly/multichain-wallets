@@ -67,6 +67,14 @@ export class TronClientService {
 
     return data;
   }
+
+  public async getAccountNet(hexAddress: string): Promise<GetAccountNetResult> {
+    const { data } = await lastValueFrom(
+      this.http.post('/wallet/getaccountnet', { address: hexAddress }),
+    );
+
+    return data;
+  }
 }
 
 export interface GenerateAddressResult {
@@ -114,3 +122,5 @@ export interface EasyTransferByPrivateResult {
     txID: string;
   };
 }
+
+export interface GetAccountNetResult {}

@@ -13,3 +13,9 @@ export type DecodeRawTransactionResult = {
   size: number;
   vsize: number;
 };
+
+export type RawTransactionResult = {
+  confirmations: number;
+  vin: { vout: number }[];
+  vout: { value: number; n: number }[];
+};

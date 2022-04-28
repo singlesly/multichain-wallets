@@ -5,9 +5,9 @@ import { LocalEnvPathEnum } from '../env/contants/local-env-path.enum';
 import { TronWeb3Service } from './services/tron-web3.service';
 import { TronClientService } from './services/tron-client.service';
 import { HttpModule } from '@nestjs/axios';
-import { ErrorLoggingInterceptor } from './interceptors/error-logging.interceptor';
 import { LoggerModule } from '@ledius/logger';
 import { RequestContextModule } from '@ledius/request-context';
+import { HttpClientLoggingInterceptor } from '../common/interceptors/http-client-logging.interceptor';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import { RequestContextModule } from '@ledius/request-context';
     RequestContextModule,
   ],
   providers: [
-    ErrorLoggingInterceptor,
+    HttpClientLoggingInterceptor,
     {
       provide: TronWeb3Service,
       useFactory: (env: LocalEnvService): TronWeb3Service =>

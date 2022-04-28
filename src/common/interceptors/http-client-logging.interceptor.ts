@@ -10,7 +10,7 @@ export class HttpClientLoggingInterceptor {
   ) {
     this.http.axiosRef.interceptors.request.use((config) => {
       this.logger.log({
-        label: 'Tron Request',
+        label: 'Http Request',
         request: {
           data: config.data,
           headers: config.headers,
@@ -25,7 +25,7 @@ export class HttpClientLoggingInterceptor {
     this.http.axiosRef.interceptors.response.use(
       (response) => {
         this.logger.log({
-          label: 'Tron Response',
+          label: 'Http Response',
           response: {
             status: response.status,
             statusText: response.statusText,
@@ -38,7 +38,7 @@ export class HttpClientLoggingInterceptor {
       },
       (err) => {
         this.logger.log({
-          label: 'Tron Response Error',
+          label: 'Http Response Error',
           response: {
             status: err.response?.status,
             statusText: err.response?.statusText,

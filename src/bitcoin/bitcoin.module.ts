@@ -10,6 +10,7 @@ import { ErrorLoggingInterceptor } from './interceptors/error-logging.intercepto
 import { RequestContextModule } from '@ledius/request-context';
 import { BtcCommand } from './cli/btc.command';
 import { UptimeCommand } from './cli/uptime.command';
+import { HttpClientLoggingInterceptor } from '../common/interceptors/http-client-logging.interceptor';
 
 @Module({
   imports: [
@@ -35,7 +36,7 @@ import { UptimeCommand } from './cli/uptime.command';
   providers: [
     BitcoinRpcClient,
     BitcoinWalletWarmupService,
-    ErrorLoggingInterceptor,
+    HttpClientLoggingInterceptor,
     BtcCommand,
     UptimeCommand,
   ],

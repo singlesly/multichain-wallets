@@ -1,5 +1,9 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { Balance, AgentService } from '../agent.service';
+import {
+  ForbiddenException,
+  Injectable,
+  NotImplementedException,
+} from '@nestjs/common';
+import { Balance, AgentService, TransactionInfo } from '../agent.service';
 import { EthereumWeb3Service } from '../../ethereum/services/ethereum-web3.service';
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
@@ -18,6 +22,10 @@ export class EthereumAgentService implements AgentService {
     private readonly getTemporaryWalletService: GetTemporaryWalletService,
     private readonly encryptorService: EncryptService,
   ) {}
+
+  public async getTransaction(id: string): Promise<TransactionInfo> {
+    throw new NotImplementedException();
+  }
 
   public async transfer(
     from: string,

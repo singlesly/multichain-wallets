@@ -1,6 +1,6 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
 import { BitcoinRpcClient } from '../../bitcoin/rpc/bitcoin-rpc.client';
-import { Balance, AgentService, Wallet } from '../agent.service';
+import { Balance, AgentService, TransactionInfo } from '../agent.service';
 import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
@@ -95,5 +95,9 @@ export class BitcoinAgentService implements AgentService {
       amount: BigInt(decodedFundedTransaction.vsize.toFixed(0)) * fee,
       decimals: 8,
     };
+  }
+
+  public async getTransaction(id: string): Promise<TransactionInfo> {
+    throw new NotImplementedException();
   }
 }

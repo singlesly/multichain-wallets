@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { Balance, AgentService } from '../agent.service';
+import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Balance, AgentService, TransactionInfo } from '../agent.service';
 import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
 import { NetworkEnum } from '../../common/network.enum';
@@ -19,6 +19,10 @@ export class TronAgentService implements AgentService {
     private readonly getTemporaryWalletService: GetTemporaryWalletService,
     private readonly encryptService: EncryptService,
   ) {}
+
+  public getTransaction(id: string): Promise<TransactionInfo> {
+    throw new NotImplementedException();
+  }
 
   public async createWallet(): Promise<TemporaryWallet> {
     const account = await this.tronClientService.generateAddress();

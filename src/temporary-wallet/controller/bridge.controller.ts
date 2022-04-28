@@ -6,7 +6,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { Balance } from '../agent.service';
+import { Balance, TransactionInfo } from '../agent.service';
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
 import { TransferWalletDto } from '../dto/transfer-wallet.dto';
@@ -99,6 +99,27 @@ export class BridgeController {
     return this.agentServiceFactory
       .for(network, coin)
       .estimateFee(from, to, amount);
+  }
+
+  @Get(':network/:coin/transaction/:transactionId')
+  @ApiParam({
+    name: 'network',
+    enum: NetworkEnum,
+  })
+  @ApiParam({
+    name: 'coin',
+    enum: CoinEnum,
+  })
+  @UseGuards(AppGuard)
+  @ApiBasicAuth()
+  public async getTransaction(
+    @Param('network') network: NetworkEnum,
+    @Param('coin') coin: CoinEnum,
+    @Param('transactionId') transactionId: string,
+  ): Promise<TransactionInfo> {
+    return this.agentServiceFactory
+      .for(network, coin)
+      .getTransaction(transactionId);
   }
 
   @Get('supported-coins')

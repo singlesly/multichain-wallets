@@ -6,7 +6,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { Balance } from '../temporary-wallet.service';
+import { Balance } from '../agent.service';
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
 import { TransferWalletDto } from '../dto/transfer-wallet.dto';

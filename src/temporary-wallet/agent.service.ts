@@ -1,6 +1,6 @@
 import { TemporaryWallet } from './dao/entity/temporary-wallet';
 
-export interface TemporaryWalletService {
+export interface AgentService {
   createWallet(): Promise<TemporaryWallet>;
   getBalance(address: string): Promise<Balance>;
   transfer(from: string, to: string, amount: bigint): Promise<void>;

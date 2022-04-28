@@ -1,10 +1,6 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
 import { BitcoinRpcClient } from '../../bitcoin/rpc/bitcoin-rpc.client';
-import {
-  Balance,
-  TemporaryWalletService,
-  Wallet,
-} from '../temporary-wallet.service';
+import { Balance, AgentService, Wallet } from '../agent.service';
 import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
@@ -13,7 +9,7 @@ import { EncryptService } from '../../encrypt/services/encrypt.service';
 import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 
 @Injectable()
-export class BitcoinTemporaryWalletService implements TemporaryWalletService {
+export class BitcoinTemporaryWalletService implements AgentService {
   constructor(
     private readonly bitcoinRpcClient: BitcoinRpcClient,
     private readonly createTemporaryWalletService: CreateTemporaryWalletService,

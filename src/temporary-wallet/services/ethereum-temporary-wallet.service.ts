@@ -1,9 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import {
-  Balance,
-  TemporaryWalletService,
-  Wallet,
-} from '../temporary-wallet.service';
+import { Balance, AgentService } from '../agent.service';
 import { EthereumWeb3Service } from '../../ethereum/services/ethereum-web3.service';
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
@@ -15,7 +11,7 @@ import utils from 'web3-utils';
 import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 
 @Injectable()
-export class EthereumTemporaryWalletService implements TemporaryWalletService {
+export class EthereumTemporaryWalletService implements AgentService {
   constructor(
     private readonly ethereumWeb3Service: EthereumWeb3Service,
     private readonly createTemporaryWalletService: CreateTemporaryWalletService,

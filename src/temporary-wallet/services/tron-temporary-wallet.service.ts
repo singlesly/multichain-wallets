@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Balance, TemporaryWalletService } from '../temporary-wallet.service';
+import { Balance, AgentService } from '../agent.service';
 import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
 import { NetworkEnum } from '../../common/network.enum';
@@ -10,7 +10,7 @@ import { GetTemporaryWalletService } from './get-temporary-wallet.service';
 import { EncryptService } from '../../encrypt/services/encrypt.service';
 
 @Injectable()
-export class TronTemporaryWalletService implements TemporaryWalletService {
+export class TronTemporaryWalletService implements AgentService {
   private readonly decimals: number = 6;
 
   constructor(

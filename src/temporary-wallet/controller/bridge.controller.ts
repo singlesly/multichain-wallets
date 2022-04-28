@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { TemporaryWalletServiceFactory } from '../factories/temporary-wallet-service.factory';
+import { AgentServiceFactory } from '../factories/agent-service.factory';
 import {
   ApiBasicAuth,
   ApiOkResponse,
@@ -16,9 +16,7 @@ import { AppGuard } from '../../application/guard/app.guard';
 @Controller()
 @ApiTags('Bridge')
 export class BridgeController {
-  constructor(
-    private readonly temporaryWalletServiceFactory: TemporaryWalletServiceFactory,
-  ) {}
+  constructor(private readonly agentServiceFactory: AgentServiceFactory) {}
 
   @Post(':network/:coin/wallet')
   @ApiParam({
@@ -36,9 +34,7 @@ export class BridgeController {
     @Param('coin') coin: CoinEnum,
   ) {
     return new WalletResponse(
-      await this.temporaryWalletServiceFactory
-        .for(network, coin)
-        .createWallet(),
+      await this.agentServiceFactory.for(network, coin).createWallet(),
     );
   }
 
@@ -58,9 +54,7 @@ export class BridgeController {
     @Param('coin') coin: CoinEnum,
     @Param('address') address: string,
   ): Promise<Balance> {
-    return this.temporaryWalletServiceFactory
-      .for(network, coin)
-      .getBalance(address);
+    return this.agentServiceFactory.for(network, coin).getBalance(address);
   }
 
   @Post(':network/:coin/transfer')
@@ -81,7 +75,7 @@ export class BridgeController {
   ): Promise<void> {
     const { from, to, amount } = dto;
 
-    return this.temporaryWalletServiceFactory
+    return this.agentServiceFactory
       .for(network, coin)
       .transfer(from, to, amount);
   }
@@ -102,7 +96,7 @@ export class BridgeController {
     @Param('coin') coin: CoinEnum,
     @Body() { from, to, amount }: TransferWalletDto,
   ): Promise<Balance> {
-    return this.temporaryWalletServiceFactory
+    return this.agentServiceFactory
       .for(network, coin)
       .estimateFee(from, to, amount);
   }
@@ -114,7 +108,7 @@ export class BridgeController {
   @UseGuards(AppGuard)
   @ApiBasicAuth()
   public async supportedCoins(): Promise<Record<string, string[]>> {
-    const map = this.temporaryWalletServiceFactory.supportedMap;
+    const map = this.agentServiceFactory.supportedMap;
 
     return Object.entries(map).reduce((accum, [net, coin]) => {
       accum[net] = Object.keys(coin);

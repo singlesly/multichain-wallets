@@ -11,7 +11,7 @@ import utils from 'web3-utils';
 import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 
 @Injectable()
-export class EthereumTemporaryWalletService implements AgentService {
+export class EthereumAgentService implements AgentService {
   constructor(
     private readonly ethereumWeb3Service: EthereumWeb3Service,
     private readonly createTemporaryWalletService: CreateTemporaryWalletService,

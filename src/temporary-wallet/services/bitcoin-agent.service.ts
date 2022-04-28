@@ -9,7 +9,7 @@ import { EncryptService } from '../../encrypt/services/encrypt.service';
 import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 
 @Injectable()
-export class BitcoinTemporaryWalletService implements AgentService {
+export class BitcoinAgentService implements AgentService {
   constructor(
     private readonly bitcoinRpcClient: BitcoinRpcClient,
     private readonly createTemporaryWalletService: CreateTemporaryWalletService,

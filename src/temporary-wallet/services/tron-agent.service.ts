@@ -10,7 +10,7 @@ import { GetTemporaryWalletService } from './get-temporary-wallet.service';
 import { EncryptService } from '../../encrypt/services/encrypt.service';
 
 @Injectable()
-export class TronTemporaryWalletService implements AgentService {
+export class TronAgentService implements AgentService {
   private readonly decimals: number = 6;
 
   constructor(

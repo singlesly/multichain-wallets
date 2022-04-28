@@ -1,4 +1,4 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Balance, TemporaryWalletService } from '../temporary-wallet.service';
 import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 import { CreateTemporaryWalletService } from './create-temporary-wallet.service';

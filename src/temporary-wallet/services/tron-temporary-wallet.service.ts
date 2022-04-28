@@ -5,7 +5,7 @@ import { CreateTemporaryWalletService } from './create-temporary-wallet.service'
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
 import { TronClientService } from '../../tron/services/tron-client.service';
-import { base58CheckToHex } from '../../utils';
+import { base58CheckToHex, hexAddress } from '../../utils';
 import { GetTemporaryWalletService } from './get-temporary-wallet.service';
 import { EncryptService } from '../../encrypt/services/encrypt.service';
 
@@ -36,7 +36,17 @@ export class TronTemporaryWalletService implements TemporaryWalletService {
     to: string,
     amount: bigint,
   ): Promise<Balance> {
-    throw new NotImplementedException();
+    const wallet = await this.getTemporaryWalletService.getByAddress(from);
+    const transaction = await this.tronClientService.createTransaction({
+      amount,
+      toAddress: hexAddress(to),
+      ownerAddress: hexAddress(wallet.pubKey),
+    });
+
+    return {
+      decimals: this.decimals,
+      amount: BigInt(transaction.raw_data_hex.length * 1_000),
+    };
   }
 
   public async getBalance(address: string): Promise<Balance> {

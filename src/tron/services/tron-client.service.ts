@@ -75,6 +75,32 @@ export class TronClientService {
 
     return data;
   }
+
+  public async createTransaction(
+    params: CreateTransactionParams,
+  ): Promise<CreateTransactionResult> {
+    const { data } = await lastValueFrom(
+      this.http.post('/wallet/createtransaction', {
+        to_address: params.toAddress,
+        owner_address: params.ownerAddress,
+        amount: Number(params.amount),
+      }),
+    );
+
+    return data;
+  }
+
+  public async getTransactionInfoById(
+    id: string,
+  ): Promise<GetTransactionInfoResult> {
+    const { data } = await lastValueFrom(
+      this.http.post('/wallet/gettransactioninfobyid', {
+        value: id,
+      }),
+    );
+
+    return data;
+  }
 }
 
 export interface GenerateAddressResult {
@@ -124,3 +150,19 @@ export interface EasyTransferByPrivateResult {
 }
 
 export interface GetAccountNetResult {}
+
+export interface CreateTransactionParams {
+  readonly toAddress: string;
+  readonly ownerAddress: string;
+  readonly amount: bigint;
+}
+
+export interface CreateTransactionResult {
+  readonly txID: string;
+  readonly raw_data: {
+    ref_block_bytes: string;
+  };
+  readonly raw_data_hex: string;
+}
+
+export interface GetTransactionInfoResult {}

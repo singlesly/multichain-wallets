@@ -1,7 +1,6 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
 import { Balance, TemporaryWalletService } from '../temporary-wallet.service';
 import { TemporaryWallet } from '../dao/entity/temporary-wallet';
-import { TronWeb3Service } from '../../tron/services/tron-web3.service';
 import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
@@ -15,7 +14,6 @@ export class TronTemporaryWalletService implements TemporaryWalletService {
   private readonly decimals: number = 6;
 
   constructor(
-    private readonly tronWeb3Service: TronWeb3Service,
     private readonly tronClientService: TronClientService,
     private readonly createTemporaryWalletService: CreateTemporaryWalletService,
     private readonly getTemporaryWalletService: GetTemporaryWalletService,

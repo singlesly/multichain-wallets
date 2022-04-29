@@ -100,11 +100,20 @@ export class BitcoinAgentService implements AgentService {
   public async getTransaction(id: string): Promise<TransactionInfo> {
     const transaction = await this.bitcoinRpcClient.getRawTransaction(id);
 
+    const firstAddress = transaction.vout[0]?.scriptPubKey.address || '';
+    const lastAddress =
+      transaction.vout[transaction.vout.length - 1]?.scriptPubKey.address ?? '';
+
+    const amount = Number(
+      transaction.vout[transaction.vout.length - 1].value * 10 ** 8,
+    ).toFixed(0);
+
     return {
+      transactionId: transaction.txid,
       confirmations: transaction.confirmations,
-      amount: BigInt(0),
-      to: '',
-      from: '',
+      amount: BigInt(amount),
+      to: firstAddress,
+      from: lastAddress,
     };
   }
 }

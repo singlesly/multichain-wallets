@@ -15,7 +15,14 @@ export type DecodeRawTransactionResult = {
 };
 
 export type RawTransactionResult = {
+  txid: string;
   confirmations: number;
   vin: { vout: number }[];
-  vout: { value: number; n: number }[];
+  vout: {
+    value: number;
+    n: number;
+    scriptPubKey: {
+      address: string;
+    };
+  }[];
 };

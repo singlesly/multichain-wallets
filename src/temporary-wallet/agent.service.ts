@@ -19,6 +19,7 @@ export interface Balance {
 }
 
 export interface TransactionInfo {
+  readonly transactionId: string;
   readonly from: string;
   readonly to: string;
   readonly amount: bigint;

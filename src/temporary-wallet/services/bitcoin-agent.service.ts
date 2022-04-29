@@ -98,6 +98,13 @@ export class BitcoinAgentService implements AgentService {
   }
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
-    throw new NotImplementedException();
+    const transaction = await this.bitcoinRpcClient.getRawTransaction(id);
+
+    return {
+      confirmations: transaction.confirmations,
+      amount: BigInt(0),
+      to: '',
+      from: '',
+    };
   }
 }

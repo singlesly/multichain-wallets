@@ -15,4 +15,4 @@ COPY ./bitcoin.conf /root/.bitcoin/
 
 EXPOSE 18332
 
-CMD /root/bitcoin-22.0/bin/bitcoind
+CMD /root/bitcoin-22.0/bin/bitcoind -txindex

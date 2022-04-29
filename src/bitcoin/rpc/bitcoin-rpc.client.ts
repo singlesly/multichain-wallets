@@ -163,6 +163,7 @@ export class BitcoinRpcClient {
   ): Promise<RawTransactionResult> {
     return this.rpcCall<RawTransactionResult>(
       'getrawtransaction',
+      `wallet/${MAIN_WALLET}`,
       transactionId,
       true,
     );

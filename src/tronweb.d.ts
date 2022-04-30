@@ -10,10 +10,23 @@ declare module 'tronweb' {
 
   declare class Trx {
     public async getBalance(address: string): Promise<number>;
+    public async sign(
+      transaction: TransactionData | string,
+      privateKey: string,
+    ): Promise<>;
   }
 
   declare class Contact {
     at(address: string): Promise<TRC20Contract>;
+  }
+
+  declare class TransactionBuilder {
+    public async sendTrx(
+      to: string,
+      amount: number,
+      from?: string,
+      options?: never,
+    ): Promise<SignedTransaction>;
   }
 
   interface InitOptions {
@@ -44,6 +57,19 @@ declare module 'tronweb' {
 
   interface SendMethod<T> {
     send(): Promise<T>;
+  }
+
+  interface TransactionData {
+    readonly visible: boolean;
+    readonly txID: string;
+    readonly raw_data: {
+      readonly contract: Record<string, never>[];
+    };
+    readonly raw_data_hex: string;
+  }
+
+  interface SignedTransaction extends TransactionData {
+    readonly signature: string[];
   }
 
   export default TronWeb;

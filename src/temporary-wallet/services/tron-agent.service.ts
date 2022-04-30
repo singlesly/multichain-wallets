@@ -1,5 +1,5 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
-import { Balance, AgentService, TransactionInfo } from '../agent.service';
+import { Balance, AgentService, TransactionInfo, TxID } from '../agent.service';
 import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
 import { NetworkEnum } from '@app/common/network.enum';
@@ -8,6 +8,7 @@ import { TronClientService } from '@app/tron/services/tron-client.service';
 import { base58CheckToHex, hexAddress } from '@app/utils';
 import { GetTemporaryWalletService } from './get-temporary-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
+import TronWeb from 'tronweb';
 
 @Injectable()
 export class TronAgentService implements AgentService {
@@ -15,6 +16,7 @@ export class TronAgentService implements AgentService {
 
   constructor(
     private readonly tronClientService: TronClientService,
+    private readonly tronWeb: TronWeb,
     private readonly createTemporaryWalletService: CreateTemporaryWalletService,
     private readonly getTemporaryWalletService: GetTemporaryWalletService,
     private readonly encryptService: EncryptService,
@@ -66,13 +68,15 @@ export class TronAgentService implements AgentService {
     from: string,
     to: string,
     amount: bigint,
-  ): Promise<void> {
+  ): Promise<TxID> {
     const wallet = await this.getTemporaryWalletService.getByAddress(from);
 
-    await this.tronClientService.easyTransferByPrivate({
-      privateKey: await this.encryptService.decrypt(wallet.privateKey),
-      toAddress: base58CheckToHex(to),
-      amount: amount,
-    });
+    const transaction = await this.tronWeb.trx.sendTransaction(
+      to,
+      Number(amount),
+      await this.encryptService.decrypt(wallet.privateKey),
+    );
+
+    return transaction.transaction.txID;
   }
 }

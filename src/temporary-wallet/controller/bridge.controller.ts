@@ -12,6 +12,7 @@ import { CoinEnum } from '../../common/coin.enum';
 import { TransferWalletDto } from '../dto/transfer-wallet.dto';
 import { WalletResponse } from './wallet.response';
 import { AppGuard } from '../../application/guard/app.guard';
+import { TransactionResponse } from '@app/temporary-wallet/controller/transaction.response';
 
 @Controller()
 @ApiTags('Bridge')
@@ -68,16 +69,21 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiOkResponse({
+    type: TransactionResponse,
+  })
   public async transfer(
     @Param('network') network: NetworkEnum,
     @Param('coin') coin: CoinEnum,
     @Body() dto: TransferWalletDto,
-  ): Promise<void> {
+  ): Promise<TransactionResponse> {
     const { from, to, amount } = dto;
 
-    return this.agentServiceFactory
-      .for(network, coin)
-      .transfer(from, to, amount);
+    return new TransactionResponse(
+      await this.agentServiceFactory
+        .for(network, coin)
+        .transfer(from, to, amount),
+    );
   }
 
   @Post(':network/:coin/estimate-fee')

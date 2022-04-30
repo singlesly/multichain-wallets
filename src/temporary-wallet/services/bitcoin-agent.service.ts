@@ -1,6 +1,6 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BitcoinRpcClient } from '../../bitcoin/rpc/bitcoin-rpc.client';
-import { Balance, AgentService, TransactionInfo } from '../agent.service';
+import { AgentService, Balance, TransactionInfo, TxID } from '../agent.service';
 import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
@@ -42,7 +42,7 @@ export class BitcoinAgentService implements AgentService {
     from: string,
     to: string,
     amount: bigint,
-  ): Promise<void> {
+  ): Promise<TxID> {
     const wallet = await this.getTemporaryWalletService.getByAddress(from);
 
     const transactionHash = await this.bitcoinRpcClient.createRawTransaction(
@@ -62,11 +62,7 @@ export class BitcoinAgentService implements AgentService {
         fundedTransactionHash,
       );
 
-    const tx = await this.bitcoinRpcClient.sendRawTransaction(
-      signedTransactionHex,
-    );
-
-    return tx as never;
+    return await this.bitcoinRpcClient.sendRawTransaction(signedTransactionHex);
   }
 
   public async estimateFee(

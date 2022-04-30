@@ -18,7 +18,9 @@ declare module 'tronweb' {
       to: string,
       amount: number,
       privateKey?: P,
-    ): Promise<P extends string ? SignedTransaction : TransactionData>;
+    ): Promise<
+      TransactionResult<P extends string ? SignedTransaction : TransactionData>
+    >;
   }
 
   declare class Contact {
@@ -62,6 +64,12 @@ declare module 'tronweb' {
 
   interface SendMethod<T> {
     send(): Promise<T>;
+  }
+
+  interface TransactionResult<T> {
+    readonly result: boolean;
+    readonly txid: string;
+    readonly transaction: T;
   }
 
   interface TransactionData {

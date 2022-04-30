@@ -3,7 +3,7 @@ import {
   Injectable,
   NotImplementedException,
 } from '@nestjs/common';
-import { Balance, AgentService, TransactionInfo } from '../agent.service';
+import { Balance, AgentService, TransactionInfo, TxID } from '../agent.service';
 import { EthereumWeb3Service } from '../../ethereum/services/ethereum-web3.service';
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
@@ -45,7 +45,7 @@ export class EthereumAgentService implements AgentService {
     from: string,
     to: string,
     amount: bigint,
-  ): Promise<void> {
+  ): Promise<TxID> {
     const wallet = await this.getTemporaryWalletService.getByAddress(from);
 
     if (wallet.network !== NetworkEnum.ETH) {
@@ -75,7 +75,7 @@ export class EthereumAgentService implements AgentService {
       gas: await this.ethereumWeb3Service.eth.estimateGas(transactionConfig),
     });
 
-    console.log(receipt);
+    return receipt.transactionHash;
   }
 
   public async createWallet(): Promise<TemporaryWallet> {

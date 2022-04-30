@@ -2,12 +2,12 @@ import { Injectable, NotImplementedException } from '@nestjs/common';
 import { Balance, AgentService, TransactionInfo } from '../agent.service';
 import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
-import { NetworkEnum } from '../../common/network.enum';
-import { CoinEnum } from '../../common/coin.enum';
-import { TronClientService } from '../../tron/services/tron-client.service';
-import { base58CheckToHex, hexAddress } from '../../utils';
+import { NetworkEnum } from '@app/common/network.enum';
+import { CoinEnum } from '@app/common/coin.enum';
+import { TronClientService } from '@app/tron/services/tron-client.service';
+import { base58CheckToHex, hexAddress } from '@app/utils';
 import { GetTemporaryWalletService } from './get-temporary-wallet.service';
-import { EncryptService } from '../../encrypt/services/encrypt.service';
+import { EncryptService } from '@app/encrypt/services/encrypt.service';
 
 @Injectable()
 export class TronAgentService implements AgentService {
@@ -54,12 +54,10 @@ export class TronAgentService implements AgentService {
   }
 
   public async getBalance(address: string): Promise<Balance> {
-    const account = await this.tronClientService.getAccount(
-      base58CheckToHex(address),
-    );
+    const { balance } = await this.tronClientService.getAccountBalance(address);
 
     return {
-      amount: account.balance,
+      amount: BigInt(balance),
       decimals: this.decimals,
     };
   }

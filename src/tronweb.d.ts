@@ -1,8 +1,14 @@
 declare module 'tronweb' {
   declare class TronWeb {
+    public readonly trx: Trx;
+
     constructor(options: InitOptions);
 
     public async createAccount(): Promise<TronAccount>;
+  }
+
+  declare class Trx {
+    public async getBalance(address: string): Promise<number>;
   }
 
   interface InitOptions {

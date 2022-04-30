@@ -21,6 +21,10 @@ declare module 'tronweb' {
     ): Promise<
       TransactionResult<P extends string ? SignedTransaction : TransactionData>
     >;
+
+    public async getTransaction(
+      transactionId: string,
+    ): Promise<SignedTransaction>;
   }
 
   declare class Contact {

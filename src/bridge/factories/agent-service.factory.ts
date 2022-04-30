@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AgentService } from '../agent.service';
+import { AgentService } from '../../wallet/agent.service';
 import { NetworkEnum } from '../../common/network.enum';
 import { CoinEnum } from '../../common/coin.enum';
 import { BitcoinAgentService } from '../services/bitcoin-agent.service';

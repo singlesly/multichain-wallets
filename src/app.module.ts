@@ -2,7 +2,7 @@ import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { BitcoinModule } from '@app/bitcoin/bitcoin.module';
 import { DatabaseModule } from '@app/database/database.module';
 import { EncryptModule } from '@app/encrypt/encrypt.module';
-import { TemporaryWalletModule } from '@app/temporary-wallet/temporary-wallet.module';
+import { WalletModule } from '@app/wallet/wallet.module';
 import { APP_INTERCEPTOR, RouterModule } from '@nestjs/core';
 import { RequestContextModule } from '@ledius/request-context';
 import { LoggerModule } from '@ledius/logger';
@@ -11,14 +11,16 @@ import { routes } from '@app/routes';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import path from 'path';
 import { ApplicationModule } from '@app/application/application.module';
+import { BridgeModule } from '@app/bridge/bridge.module';
 
 @Module({
   imports: [
     ApplicationModule,
     BitcoinModule,
+    BridgeModule,
     DatabaseModule,
     EncryptModule,
-    TemporaryWalletModule,
+    WalletModule,
     RequestContextModule,
     LoggerModule,
     HealthModule,

@@ -3,7 +3,7 @@ import { TemporaryWalletPgRepository } from '../repositories/temporary-wallet-pg
 import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 
 @Injectable()
-export class GetTemporaryWalletService {
+export class GetWalletService {
   constructor(
     private readonly temporaryWalletPgRepository: TemporaryWalletPgRepository,
   ) {}

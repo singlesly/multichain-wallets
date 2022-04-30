@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { Balance, AgentService, TransactionInfo, TxID } from '../agent.service';
-import { TemporaryWallet } from '../dao/entity/temporary-wallet';
-import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
+import {
+  Balance,
+  AgentService,
+  TransactionInfo,
+  TxID,
+} from '@app/wallet/agent.service';
+import { TemporaryWallet } from '@app/wallet/dao/entity/temporary-wallet';
+import { CreateWalletService } from '@app/wallet/services/create-wallet.service';
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
 import { TronClientService } from '@app/tron/services/tron-client.service';
-import { base58Address, hexAddress } from '@app/utils';
-import { GetTemporaryWalletService } from './get-temporary-wallet.service';
+import { base58Address } from '@app/utils';
+import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import TronWeb from 'tronweb';
 
@@ -17,8 +22,8 @@ export class TronAgentService implements AgentService {
   constructor(
     private readonly tronClientService: TronClientService,
     private readonly tronWeb: TronWeb,
-    private readonly createTemporaryWalletService: CreateTemporaryWalletService,
-    private readonly getTemporaryWalletService: GetTemporaryWalletService,
+    private readonly createTemporaryWalletService: CreateWalletService,
+    private readonly getTemporaryWalletService: GetWalletService,
     private readonly encryptService: EncryptService,
   ) {}
 

@@ -1,8 +1,8 @@
-import { Controller, Get, Header, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { TemporaryWalletPgRepository } from '../repositories/temporary-wallet-pg.repository';
 import { WalletResponse } from './wallet.response';
 import { ApiBasicAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { AppGuard } from '../../application/guard/app.guard';
+import { AppGuard } from '@app/application/guard/app.guard';
 
 @Controller()
 @ApiTags('Wallets')

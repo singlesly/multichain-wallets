@@ -1,19 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { BitcoinRpcClient } from '../../bitcoin/rpc/bitcoin-rpc.client';
-import { AgentService, Balance, TransactionInfo, TxID } from '../agent.service';
-import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
-import { NetworkEnum } from '../../common/network.enum';
-import { CoinEnum } from '../../common/coin.enum';
-import { GetTemporaryWalletService } from './get-temporary-wallet.service';
-import { EncryptService } from '../../encrypt/services/encrypt.service';
-import { TemporaryWallet } from '../dao/entity/temporary-wallet';
+import { BitcoinRpcClient } from '@app/bitcoin/rpc/bitcoin-rpc.client';
+import {
+  AgentService,
+  Balance,
+  TransactionInfo,
+  TxID,
+} from '../../wallet/agent.service';
+import { CreateWalletService } from '../../wallet/services/create-wallet.service';
+import { NetworkEnum } from '@app/common/network.enum';
+import { CoinEnum } from '@app/common/coin.enum';
+import { GetWalletService } from '../../wallet/services/get-wallet.service';
+import { EncryptService } from '@app/encrypt/services/encrypt.service';
+import { TemporaryWallet } from '../../wallet/dao/entity/temporary-wallet';
 
 @Injectable()
 export class BitcoinAgentService implements AgentService {
   constructor(
     private readonly bitcoinRpcClient: BitcoinRpcClient,
-    private readonly createTemporaryWalletService: CreateTemporaryWalletService,
-    private readonly getTemporaryWalletService: GetTemporaryWalletService,
+    private readonly createTemporaryWalletService: CreateWalletService,
+    private readonly getTemporaryWalletService: GetWalletService,
     private readonly encryptService: EncryptService,
   ) {}
 

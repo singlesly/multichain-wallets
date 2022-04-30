@@ -1,25 +1,26 @@
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import {
-  ForbiddenException,
-  Injectable,
-  NotImplementedException,
-} from '@nestjs/common';
-import { Balance, AgentService, TransactionInfo, TxID } from '../agent.service';
-import { EthereumWeb3Service } from '../../ethereum/services/ethereum-web3.service';
-import { NetworkEnum } from '../../common/network.enum';
-import { CoinEnum } from '../../common/coin.enum';
-import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
+  Balance,
+  AgentService,
+  TransactionInfo,
+  TxID,
+} from '../../wallet/agent.service';
+import { EthereumWeb3Service } from '@app/ethereum/services/ethereum-web3.service';
+import { NetworkEnum } from '@app/common/network.enum';
+import { CoinEnum } from '@app/common/coin.enum';
+import { CreateWalletService } from '../../wallet/services/create-wallet.service';
 import { TransactionConfig } from 'web3-core';
-import { GetTemporaryWalletService } from './get-temporary-wallet.service';
-import { EncryptService } from '../../encrypt/services/encrypt.service';
+import { GetWalletService } from '../../wallet/services/get-wallet.service';
+import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import utils from 'web3-utils';
-import { TemporaryWallet } from '../dao/entity/temporary-wallet';
+import { TemporaryWallet } from '../../wallet/dao/entity/temporary-wallet';
 
 @Injectable()
 export class EthereumAgentService implements AgentService {
   constructor(
     private readonly ethereumWeb3Service: EthereumWeb3Service,
-    private readonly createTemporaryWalletService: CreateTemporaryWalletService,
-    private readonly getTemporaryWalletService: GetTemporaryWalletService,
+    private readonly createTemporaryWalletService: CreateWalletService,
+    private readonly getTemporaryWalletService: GetWalletService,
     private readonly encryptorService: EncryptService,
   ) {}
 

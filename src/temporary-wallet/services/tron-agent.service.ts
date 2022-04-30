@@ -66,7 +66,7 @@ export class TronAgentService implements AgentService {
   }
 
   public async getBalance(address: string): Promise<Balance> {
-    const { balance } = await this.tronClientService.getAccountBalance(address);
+    const balance = await this.tronWeb.trx.getBalance(address);
 
     return {
       amount: BigInt(balance),

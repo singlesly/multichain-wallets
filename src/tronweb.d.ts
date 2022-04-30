@@ -5,10 +5,15 @@ declare module 'tronweb' {
     constructor(options: InitOptions);
 
     public async createAccount(): Promise<TronAccount>;
+    public contract(): Contact;
   }
 
   declare class Trx {
     public async getBalance(address: string): Promise<number>;
+  }
+
+  declare class Contact {
+    at(address: string): Promise<TRC20Contract>;
   }
 
   interface InitOptions {
@@ -25,6 +30,20 @@ declare module 'tronweb' {
     };
     publicKey: string;
     privateKey: string;
+  }
+
+  interface TRC20Contract {
+    totalSupply(): CallMethod<number>;
+    balanceOf(address: string): CallMethod<number>;
+    transfer(to: string, amount: number): SendMethod<boolean>;
+  }
+
+  interface CallMethod<T> {
+    call(): Promise<T>;
+  }
+
+  interface SendMethod<T> {
+    send(): Promise<T>;
   }
 
   export default TronWeb;

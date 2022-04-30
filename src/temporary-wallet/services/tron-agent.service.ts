@@ -5,7 +5,7 @@ import { CreateTemporaryWalletService } from './create-temporary-wallet.service'
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
 import { TronClientService } from '@app/tron/services/tron-client.service';
-import { base58Address, hexAddress, hexToBase58Check } from '@app/utils';
+import { base58Address, hexAddress } from '@app/utils';
 import { GetTemporaryWalletService } from './get-temporary-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import TronWeb from 'tronweb';
@@ -37,11 +37,11 @@ export class TronAgentService implements AgentService {
   }
 
   public async createWallet(): Promise<TemporaryWallet> {
-    const account = await this.tronClientService.generateAddress();
+    const account = await this.tronWeb.createAccount();
 
     return this.createTemporaryWalletService.create({
       privateKey: account.privateKey,
-      pubKey: account.address,
+      pubKey: account.address.base58,
       network: NetworkEnum.TRON,
       coin: CoinEnum.TRON,
     });

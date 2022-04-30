@@ -17,7 +17,7 @@ declare module 'tronweb' {
     public async sendTransaction<P>(
       to: string,
       amount: number,
-      privateKey?: string,
+      privateKey?: P,
     ): Promise<P extends string ? SignedTransaction : TransactionData>;
   }
 

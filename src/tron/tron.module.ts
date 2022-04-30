@@ -7,6 +7,7 @@ import { HttpModule } from '@nestjs/axios';
 import { LoggerModule } from '@ledius/logger';
 import { RequestContextModule } from '@ledius/request-context';
 import { HttpClientLoggingInterceptor } from '../common/interceptors/http-client-logging.interceptor';
+import { ParameterService } from '@app/tron/services/parameter.service';
 
 @Module({
   imports: [
@@ -21,7 +22,11 @@ import { HttpClientLoggingInterceptor } from '../common/interceptors/http-client
     LoggerModule,
     RequestContextModule,
   ],
-  providers: [HttpClientLoggingInterceptor, TronClientService],
-  exports: [TronClientService],
+  providers: [
+    HttpClientLoggingInterceptor,
+    TronClientService,
+    ParameterService,
+  ],
+  exports: [TronClientService, ParameterService],
 })
 export class TronModule {}

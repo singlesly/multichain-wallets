@@ -101,6 +101,21 @@ export class TronClientService {
 
     return data;
   }
+
+  public async triggerSmartContract(
+    params: TriggerSmartContractParams,
+  ): Promise<TriggerSmartContractResult> {
+    const { data } = await lastValueFrom(
+      this.http.post('/wallet/triggersmartcontract', {
+        owner_address: params.ownerAddress,
+        contract_address: params.contractAddress,
+        function_selector: params.functionSelector,
+        parameter: params.parameter,
+      }),
+    );
+
+    return data;
+  }
 }
 
 export interface GenerateAddressResult {
@@ -166,3 +181,12 @@ export interface CreateTransactionResult {
 }
 
 export interface GetTransactionInfoResult {}
+
+export interface TriggerSmartContractParams {
+  readonly ownerAddress: string;
+  readonly contractAddress: string;
+  readonly functionSelector: string;
+  readonly parameter: string;
+}
+
+export interface TriggerSmartContractResult {}

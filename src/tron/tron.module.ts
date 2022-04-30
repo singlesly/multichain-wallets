@@ -38,6 +38,6 @@ import TronWeb from 'tronweb';
       inject: [LocalEnvService],
     },
   ],
-  exports: [TronClientService, ParameterService],
+  exports: [TronClientService, ParameterService, TronWeb],
 })
 export class TronModule {}

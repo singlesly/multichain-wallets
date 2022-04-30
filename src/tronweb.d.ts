@@ -1,6 +1,7 @@
 declare module 'tronweb' {
   declare class TronWeb {
     public readonly trx: Trx;
+    public readonly transactionBuilder: TransactionBuilder;
 
     constructor(options: InitOptions);
 
@@ -25,6 +26,14 @@ declare module 'tronweb' {
     public async getTransaction(
       transactionId: string,
     ): Promise<SignedTransaction<TransferContract>>;
+
+    public async getUnconfirmedTransactionInfo(
+      transactionId: string,
+    ): Promise<UnconfirmedTransactionInfo>;
+
+    public async getSignWeight(
+      transaction: TransactionData | SignedTransaction,
+    ): Promise<SignWeight>;
   }
 
   declare class Contact {
@@ -88,6 +97,22 @@ declare module 'tronweb' {
   interface SignedTransaction<T = Record<string, never>[]>
     extends TransactionData<T> {
     readonly signature: string[];
+  }
+
+  interface SignWeight {
+    current_weight: number;
+  }
+
+  interface UnconfirmedTransactionInfo {
+    readonly id: string;
+    readonly fee: number;
+    readonly receipt: {
+      energy_fee: number;
+      origin_energy_usage: number;
+      energy_usage_total: number;
+      net_fee: number;
+      result: 'SUCCESS';
+    };
   }
 
   export type ContractType = 'TransferContract';

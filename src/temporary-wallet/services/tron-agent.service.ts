@@ -53,11 +53,11 @@ export class TronAgentService implements AgentService {
     amount: bigint,
   ): Promise<Balance> {
     const wallet = await this.getTemporaryWalletService.getByAddress(from);
-    const transaction = await this.tronClientService.createTransaction({
-      amount,
-      toAddress: hexAddress(to),
-      ownerAddress: hexAddress(wallet.pubKey),
-    });
+    const transaction = await this.tronWeb.transactionBuilder.sendTrx(
+      to,
+      Number(amount),
+      wallet.pubKey,
+    );
 
     return {
       decimals: this.decimals,

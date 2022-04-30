@@ -24,7 +24,7 @@ declare module 'tronweb' {
 
     public async getTransaction(
       transactionId: string,
-    ): Promise<SignedTransaction>;
+    ): Promise<SignedTransaction<TransferContract>>;
   }
 
   declare class Contact {
@@ -76,18 +76,34 @@ declare module 'tronweb' {
     readonly transaction: T;
   }
 
-  interface TransactionData {
+  interface TransactionData<T = Record<string, never>[]> {
     readonly visible: boolean;
     readonly txID: string;
     readonly raw_data: {
-      readonly contract: Record<string, never>[];
+      readonly contract: T;
     };
     readonly raw_data_hex: string;
   }
 
-  interface SignedTransaction extends TransactionData {
+  interface SignedTransaction<T = Record<string, never>[]>
+    extends TransactionData<T> {
     readonly signature: string[];
   }
+
+  export type ContractType = 'TransferContract';
+
+  export type TransferContract = [
+    {
+      parameter: {
+        value: {
+          amount: number;
+          owner_address: string;
+          to_address: string;
+        };
+      };
+      type: 'TransferContract';
+    },
+  ];
 
   export default TronWeb;
 }

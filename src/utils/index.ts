@@ -17,6 +17,14 @@ export function hexAddress(base58check: string): string {
   }
 }
 
+export function base58Address(hexAddress: string): string {
+  try {
+    return hexToBase58Check(hexAddress);
+  } catch (e) {
+    return hexAddress;
+  }
+}
+
 export function toHex(value: string | number) {
   return web3.utils.toHex(value);
 }

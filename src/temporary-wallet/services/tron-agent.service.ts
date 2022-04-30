@@ -1,11 +1,11 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Balance, AgentService, TransactionInfo, TxID } from '../agent.service';
 import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 import { CreateTemporaryWalletService } from './create-temporary-wallet.service';
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
 import { TronClientService } from '@app/tron/services/tron-client.service';
-import { base58CheckToHex, hexAddress } from '@app/utils';
+import { base58Address, hexAddress, hexToBase58Check } from '@app/utils';
 import { GetTemporaryWalletService } from './get-temporary-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import TronWeb from 'tronweb';
@@ -22,8 +22,18 @@ export class TronAgentService implements AgentService {
     private readonly encryptService: EncryptService,
   ) {}
 
-  public getTransaction(id: string): Promise<TransactionInfo> {
-    throw new NotImplementedException();
+  public async getTransaction(id: string): Promise<TransactionInfo> {
+    const transaction = await this.tronWeb.trx.getTransaction(id);
+
+    const [{ parameter }] = transaction.raw_data.contract;
+
+    return {
+      transactionId: transaction.txID,
+      to: base58Address(parameter.value.to_address),
+      amount: BigInt(parameter.value.amount),
+      from: base58Address(parameter.value.owner_address),
+      confirmations: 0,
+    };
   }
 
   public async createWallet(): Promise<TemporaryWallet> {

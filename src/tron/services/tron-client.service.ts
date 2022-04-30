@@ -1,17 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
+import TronWeb from 'tronweb';
 
 @Injectable()
 export class TronClientService {
-  constructor(private readonly http: HttpService) {}
+  constructor(
+    private readonly http: HttpService,
+    private readonly tronWeb: TronWeb,
+  ) {}
 
   public async generateAddress(): Promise<GenerateAddressResult> {
-    const { data } = await lastValueFrom(
-      this.http.get<GenerateAddressResult>('/wallet/generateaddress'),
-    );
+    const account = await this.tronWeb.createAccount();
 
-    return data;
+    return {
+      address: account.address.base58,
+      hexAddress: account.address.hex,
+      privateKey: account.privateKey,
+    };
   }
 
   public async getAccountBalance(

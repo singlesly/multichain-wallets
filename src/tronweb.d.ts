@@ -13,7 +13,7 @@ declare module 'tronweb' {
     public async sign(
       transaction: TransactionData | string,
       privateKey: string,
-    ): Promise<>;
+    ): Promise<SignedTransaction>;
   }
 
   declare class Contact {

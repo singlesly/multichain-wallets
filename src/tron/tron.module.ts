@@ -8,6 +8,7 @@ import { LoggerModule } from '@ledius/logger';
 import { RequestContextModule } from '@ledius/request-context';
 import { HttpClientLoggingInterceptor } from '../common/interceptors/http-client-logging.interceptor';
 import { ParameterService } from '@app/tron/services/parameter.service';
+import TronWeb from 'tronweb';
 
 @Module({
   imports: [
@@ -26,6 +27,16 @@ import { ParameterService } from '@app/tron/services/parameter.service';
     HttpClientLoggingInterceptor,
     TronClientService,
     ParameterService,
+    {
+      provide: TronWeb,
+      useFactory: (env: LocalEnvService) => {
+        return new TronWeb({
+          fullNode: env.getSafety(LocalEnvPathEnum.TRON_RPC_BASE_URL),
+          solidityNode: env.getSafety(LocalEnvPathEnum.TRON_RPC_BASE_URL),
+        });
+      },
+      inject: [LocalEnvService],
+    },
   ],
   exports: [TronClientService, ParameterService],
 })

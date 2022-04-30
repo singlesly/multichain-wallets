@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import ethers from 'ethers';
+import { ethers } from 'ethers';
 import { toHex } from '../../utils';
 
 const AbiCoder = ethers.utils.AbiCoder;

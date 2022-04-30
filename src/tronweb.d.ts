@@ -14,6 +14,11 @@ declare module 'tronweb' {
       transaction: TransactionData | string,
       privateKey: string,
     ): Promise<SignedTransaction>;
+    public async sendTransaction<P>(
+      to: string,
+      amount: number,
+      privateKey?: string,
+    ): Promise<P extends string ? SignedTransaction : TransactionData>;
   }
 
   declare class Contact {

@@ -23,6 +23,10 @@ declare module 'tronweb' {
       TransactionResult<P extends string ? SignedTransaction : TransactionData>
     >;
 
+    public async sendRawTransaction(
+      transaction: string | SignedTransaction,
+    ): Promise<TransactionResult<SignedTransaction>>;
+
     public async getTransaction(
       transactionId: string,
     ): Promise<SignedTransaction<TransferContract>>;
@@ -47,6 +51,21 @@ declare module 'tronweb' {
       from?: string,
       options?: never,
     ): Promise<SignedTransaction>;
+
+    public async triggerSmartContract<F extends TransferFunctionSelector>(
+      contractAddress: string,
+      functionSelector: F,
+      options: {
+        feeLimit?: number;
+        callValue?: number;
+        tokenValue?: number;
+        tokenId?: number;
+      },
+      parameter: F extends TransferFunctionSelector
+        ? [{ type: Address; value: string }, { type: Uint256; value: number }]
+        : Record<string, any>[],
+      issuerAddress?: string,
+    ): Promise<TransactionResult<TransactionData>>;
   }
 
   interface InitOptions {
@@ -65,7 +84,7 @@ declare module 'tronweb' {
     privateKey: string;
   }
 
-  interface TRC20Contract {
+  export interface TRC20Contract {
     totalSupply(): CallMethod<number>;
     balanceOf(address: string): CallMethod<number>;
     transfer(to: string, amount: number): SendMethod<boolean>;
@@ -114,6 +133,13 @@ declare module 'tronweb' {
       result: 'SUCCESS';
     };
   }
+
+  export type FunctionArgumentTypes = Uint256 | Address;
+  export type Uint256 = 'uint256';
+  export type Address = 'address';
+
+  export type FunctionSelector = TransferFunctionSelector;
+  export type TransferFunctionSelector = 'transfer(address, uint256)';
 
   export type ContractType = 'TransferContract';
 

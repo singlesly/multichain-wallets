@@ -13,6 +13,10 @@ export class USDTClientService implements TRC20 {
     @Inject(USDT_CONTRACT) private readonly usdtContract: TRC20Contract,
   ) {}
 
+  public async getDecimals(): Promise<number> {
+    return 6;
+  }
+
   public async balanceOf(address: string): Promise<bigint> {
     return BigInt(await this.usdtContract.balanceOf(address).call());
   }
@@ -25,7 +29,7 @@ export class USDTClientService implements TRC20 {
     to: string,
     amount: bigint,
     privateKey: string,
-  ): Promise<boolean> {
+  ): Promise<string> {
     const { transaction } =
       await this.tronWeb.transactionBuilder.triggerSmartContract(
         USDT_CONTRACT_ADDRESS,
@@ -44,6 +48,6 @@ export class USDTClientService implements TRC20 {
 
     await this.tronWeb.trx.sendRawTransaction(signedTransaction);
 
-    return true;
+    return signedTransaction.txID;
   }
 }

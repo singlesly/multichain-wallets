@@ -5,10 +5,12 @@ import {
   USDT_CONTRACT,
 } from '@app/usdt-trc20/constants';
 import TronWeb, { TRC20Contract } from 'tronweb';
+import { USDTClientService } from '@app/usdt-trc20/services/usdt-client.service';
 
 @Module({
   imports: [TronModule],
   providers: [
+    USDTClientService,
     {
       provide: USDT_CONTRACT,
       useFactory: async (tronWeb: TronWeb): Promise<TRC20Contract> => {
@@ -17,5 +19,6 @@ import TronWeb, { TRC20Contract } from 'tronweb';
       inject: [TronWeb],
     },
   ],
+  exports: [USDTClientService],
 })
 export class UsdtTrc20Module {}

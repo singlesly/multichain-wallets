@@ -4,7 +4,7 @@ import {
   AgentService,
   TransactionInfo,
   TxID,
-} from '@app/wallet/agent.service';
+} from '@app/bridge/services/agent.service';
 import { TemporaryWallet } from '@app/wallet/dao/entity/temporary-wallet';
 import { CreateWalletService } from '@app/wallet/services/create-wallet.service';
 import { NetworkEnum } from '@app/common/network.enum';

@@ -6,12 +6,12 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { Balance, TransactionInfo } from '../../wallet/agent.service';
-import { NetworkEnum } from '../../common/network.enum';
-import { CoinEnum } from '../../common/coin.enum';
-import { TransferWalletDto } from '../../wallet/dto/transfer-wallet.dto';
-import { WalletResponse } from '../../wallet/controller/wallet.response';
-import { AppGuard } from '../../application/guard/app.guard';
+import { Balance, TransactionInfo } from '@app/bridge/services/agent.service';
+import { NetworkEnum } from '@app/common/network.enum';
+import { CoinEnum } from '@app/common/coin.enum';
+import { TransferWalletDto } from '@app/wallet/dto/transfer-wallet.dto';
+import { WalletResponse } from '@app/wallet/controller/wallet.response';
+import { AppGuard } from '@app/application/guard/app.guard';
 import { TransactionResponse } from '@app/bridge/controller/transaction.response';
 
 @Controller()

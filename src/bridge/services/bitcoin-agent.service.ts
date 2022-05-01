@@ -5,13 +5,13 @@ import {
   Balance,
   TransactionInfo,
   TxID,
-} from '../../wallet/agent.service';
-import { CreateWalletService } from '../../wallet/services/create-wallet.service';
+} from '@app/bridge/services/agent.service';
+import { CreateWalletService } from '@app/wallet/services/create-wallet.service';
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
-import { GetWalletService } from '../../wallet/services/get-wallet.service';
+import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
-import { TemporaryWallet } from '../../wallet/dao/entity/temporary-wallet';
+import { TemporaryWallet } from '@app/wallet/dao/entity/temporary-wallet';
 
 @Injectable()
 export class BitcoinAgentService implements AgentService {

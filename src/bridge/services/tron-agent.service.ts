@@ -13,7 +13,7 @@ import { TronClientService } from '@app/tron/services/tron-client.service';
 import { base58Address } from '@app/utils';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
-import TronWeb from 'tronweb';
+import TronWeb, { TransferContractType } from 'tronweb';
 
 @Injectable()
 export class TronAgentService implements AgentService {
@@ -28,7 +28,8 @@ export class TronAgentService implements AgentService {
   ) {}
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
-    const transaction = await this.tronWeb.trx.getTransaction(id);
+    const transaction =
+      await this.tronWeb.trx.getTransaction<TransferContractType>(id);
 
     const [{ parameter }] = transaction.raw_data.contract;
 

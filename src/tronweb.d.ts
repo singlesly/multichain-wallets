@@ -11,6 +11,7 @@ declare module 'tronweb' {
     public async createAccount(): Promise<TronAccount>;
     public contract(): Contact;
     public setAddress(privateKey: string): void;
+    public toAscii(str: string): string;
   }
 
   declare class Trx {
@@ -31,9 +32,9 @@ declare module 'tronweb' {
       transaction: string | SignedTransaction,
     ): Promise<TransactionResult<SignedTransaction>>;
 
-    public async getTransaction(
+    public async getTransaction<T extends TransactionType>(
       transactionId: string,
-    ): Promise<SignedTransaction<TransferContract>>;
+    ): Promise<SignedTransaction<T>>;
 
     public async getUnconfirmedTransactionInfo(
       transactionId: string,
@@ -108,16 +109,16 @@ declare module 'tronweb' {
     readonly transaction: T;
   }
 
-  interface TransactionData<T = Record<string, never>[]> {
+  interface TransactionData<T extends TransactionType> {
     readonly visible: boolean;
     readonly txID: string;
     readonly raw_data: {
-      readonly contract: T;
+      readonly contract: [Contract<T>];
     };
     readonly raw_data_hex: string;
   }
 
-  interface SignedTransaction<T = Record<string, never>[]>
+  interface SignedTransaction<T extends TransactionType = TransferContractType>
     extends TransactionData<T> {
     readonly signature: string[];
   }
@@ -145,7 +146,34 @@ declare module 'tronweb' {
   export type FunctionSelector = TransferFunctionSelector;
   export type TransferFunctionSelector = 'transfer(address,uint256)';
 
-  export type ContractType = 'TransferContract';
+  export type TransactionType = TransferContractType | TriggerSmartContractType;
+  export type TransferContractType = 'TransferContract';
+  export type TriggerSmartContractType = 'TriggerSmartContract';
+
+  export type TransferContractParameter = {
+    value: {
+      amount: number;
+      owner_address: string;
+      to_address: string;
+    };
+  };
+
+  export type TriggerSmartContractParameter = {
+    value: {
+      data: string;
+      owner_address: string;
+      contract_address: string;
+    };
+  };
+
+  export type Contract<T = TransferContract> = {
+    parameter: T extends TransferContractType
+      ? TransferContractParameter
+      : T extends TriggerSmartContractType
+      ? TriggerSmartContractParameter
+      : unknown;
+    type: T;
+  };
 
   export type TransferContract = [
     {
@@ -156,7 +184,7 @@ declare module 'tronweb' {
           to_address: string;
         };
       };
-      type: 'TransferContract';
+      type: TransferContractType;
     },
   ];
 

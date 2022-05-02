@@ -1,2 +1,2 @@
 export const USDT_CONTRACT = 'USDT_CONTRACT';
-export const USDT_CONTRACT_ADDRESS = 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t';
+export const USDT_CONTRACT_ADDRESS = 'TDSapWWEAxsjZMyoBSeFMheyQ1pnk3YLa2';

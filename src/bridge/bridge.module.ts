@@ -10,6 +10,7 @@ import { EthereumAgentService } from '@app/bridge/services/ethereum-agent.servic
 import { TronAgentService } from '@app/bridge/services/tron-agent.service';
 import { EncryptModule } from '@app/encrypt/encrypt.module';
 import { UsdtTrc20Module } from '@app/usdt-trc20/usdt-trc20.module';
+import { UsdtTrc20AgentService } from '@app/bridge/services/usdt-trc20-agent.service';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UsdtTrc20Module } from '@app/usdt-trc20/usdt-trc20.module';
     EthereumModule,
     BitcoinModule,
     EncryptModule,
+    UsdtTrc20Module,
   ],
   controllers: [BridgeController],
   providers: [
@@ -25,7 +27,7 @@ import { UsdtTrc20Module } from '@app/usdt-trc20/usdt-trc20.module';
     BitcoinAgentService,
     EthereumAgentService,
     TronAgentService,
-    UsdtTrc20Module,
+    UsdtTrc20AgentService,
   ],
 })
 export class BridgeModule {}

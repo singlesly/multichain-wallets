@@ -5,6 +5,7 @@ import { CoinEnum } from '@app/common/coin.enum';
 import { BitcoinAgentService } from '../services/bitcoin-agent.service';
 import { EthereumAgentService } from '../services/ethereum-agent.service';
 import { TronAgentService } from '../services/tron-agent.service';
+import { UsdtTrc20AgentService } from '@app/bridge/services/usdt-trc20-agent.service';
 
 @Injectable()
 export class AgentServiceFactory {
@@ -17,6 +18,7 @@ export class AgentServiceFactory {
     },
     [NetworkEnum.TRON]: {
       [CoinEnum.TRON]: this.tronAgentService,
+      [CoinEnum.USDT]: this.usdtTrc20AgentService,
     },
   };
 
@@ -24,6 +26,7 @@ export class AgentServiceFactory {
     private readonly bitcoinAgentService: BitcoinAgentService,
     private readonly ethereumAgentService: EthereumAgentService,
     private readonly tronAgentService: TronAgentService,
+    private readonly usdtTrc20AgentService: UsdtTrc20AgentService,
   ) {}
 
   public for(

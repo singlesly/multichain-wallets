@@ -14,7 +14,7 @@ import { USDTClientService } from '@app/usdt-trc20/services/usdt-client.service'
     {
       provide: USDT_CONTRACT,
       useFactory: async (tronWeb: TronWeb): Promise<TRC20Contract> => {
-        return await tronWeb.contract().at(USDT_CONTRACT_ADDRESS);
+        return tronWeb.contract().at(USDT_CONTRACT_ADDRESS);
       },
       inject: [TronWeb],
     },

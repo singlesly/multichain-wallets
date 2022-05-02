@@ -9,10 +9,13 @@ import { TemporaryWallet } from '@app/wallet/dao/entity/temporary-wallet';
 import { USDTClientService } from '@app/usdt-trc20/services/usdt-client.service';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
+import TronWeb from 'tronweb';
+import { base58Address } from '@app/utils';
 
 @Injectable()
 export class UsdtTrc20AgentService implements AgentService {
   constructor(
+    private readonly tronWeb: TronWeb,
     private readonly usdtClientService: USDTClientService,
     private readonly getWalletService: GetWalletService,
     private readonly encryptService: EncryptService,
@@ -40,7 +43,17 @@ export class UsdtTrc20AgentService implements AgentService {
   }
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
-    return Promise.resolve(undefined);
+    const transaction = await this.tronWeb.trx.getTransaction(id);
+
+    const [{ parameter }] = transaction.raw_data.contract;
+
+    return {
+      transactionId: transaction.txID,
+      to: base58Address(parameter.value.to_address),
+      amount: BigInt(parameter.value.amount),
+      from: base58Address(parameter.value.owner_address),
+      confirmations: 0,
+    };
   }
 
   public async transfer(

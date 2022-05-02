@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ethers } from 'ethers';
-import { toHex } from '../../utils';
+import { toHex } from '@app/utils';
 
 const AbiCoder = ethers.utils.AbiCoder;
 const ADDRESS_PREFIX_REGEX = /^(41)/;

@@ -35,12 +35,13 @@ export class USDTClientService implements TRC20 {
     const { transaction } =
       await this.tronWeb.transactionBuilder.triggerSmartContract(
         USDT_CONTRACT_ADDRESS,
-        'transfer(address, uint256)',
+        'transfer(address,uint256)',
         {},
         [
           { type: 'address', value: to },
           { type: 'uint256', value: Number(amount) },
         ],
+        this.tronWeb.address.fromPrivateKey(privateKey),
       );
 
     const signedTransaction = await this.tronWeb.trx.sign(

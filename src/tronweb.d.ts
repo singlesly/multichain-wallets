@@ -2,6 +2,9 @@ declare module 'tronweb' {
   declare class TronWeb {
     public readonly trx: Trx;
     public readonly transactionBuilder: TransactionBuilder;
+    public readonly address: {
+      fromPrivateKey(privateKey: string): string;
+    };
 
     constructor(options: InitOptions);
 
@@ -140,7 +143,7 @@ declare module 'tronweb' {
   export type Address = 'address';
 
   export type FunctionSelector = TransferFunctionSelector;
-  export type TransferFunctionSelector = 'transfer(address, uint256)';
+  export type TransferFunctionSelector = 'transfer(address,uint256)';
 
   export type ContractType = 'TransferContract';
 

@@ -9,7 +9,7 @@ import {
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
 
-@Entity('temporary_wallets')
+@Entity('wallets')
 export class TemporaryWallet {
   @PrimaryColumn({
     type: 'uuid',

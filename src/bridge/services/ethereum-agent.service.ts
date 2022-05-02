@@ -14,6 +14,8 @@ import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import utils from 'web3-utils';
 import { TemporaryWallet } from '@app/wallet/dao/entity/temporary-wallet';
+import { BaseException } from '@app/common/base-exception';
+import { WebErrorsEnum } from '@app/common/web-errors.enum';
 
 @Injectable()
 export class EthereumAgentService implements AgentService {
@@ -50,14 +52,16 @@ export class EthereumAgentService implements AgentService {
     const wallet = await this.getTemporaryWalletService.getByAddress(from);
 
     if (wallet.network !== NetworkEnum.ETH) {
-      throw new ForbiddenException(
-        `Wallet network is ${wallet.network} but not ${NetworkEnum.ETH}`,
-      );
+      throw new BaseException({
+        message: `Wallet network is ${wallet.network} but not ${NetworkEnum.ETH}`,
+        statusCode: WebErrorsEnum.INVALID_ARGUMENT,
+      });
     }
     if (wallet.coin !== CoinEnum.ETH) {
-      throw new ForbiddenException(
-        `Wallet coin is ${wallet.coin} but not ${CoinEnum.ETH}`,
-      );
+      throw new BaseException({
+        message: `Wallet coin is ${wallet.coin} but not ${CoinEnum.ETH}`,
+        statusCode: WebErrorsEnum.INVALID_ARGUMENT,
+      });
     }
     await this.ethereumWeb3Service.eth.accounts.wallet.add({
       address: wallet.pubKey,

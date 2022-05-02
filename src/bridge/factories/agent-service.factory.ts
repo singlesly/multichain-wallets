@@ -6,6 +6,8 @@ import { BitcoinAgentService } from '../services/bitcoin-agent.service';
 import { EthereumAgentService } from '../services/ethereum-agent.service';
 import { TronAgentService } from '../services/tron-agent.service';
 import { UsdtTrc20AgentService } from '@app/bridge/services/usdt-trc20-agent.service';
+import { BaseException } from '@app/common/base-exception';
+import { WebErrorsEnum } from '@app/common/web-errors.enum';
 
 @Injectable()
 export class AgentServiceFactory {
@@ -37,7 +39,10 @@ export class AgentServiceFactory {
       this.supportedMap[network.toUpperCase()]?.[coin.toUpperCase()];
 
     if (!temporaryWalletService) {
-      throw new Error(`Unsupported ${network}:${coin}`);
+      throw new BaseException({
+        message: `Unsupported ${network}:${coin}`,
+        statusCode: WebErrorsEnum.INVALID_ARGUMENT,
+      });
     }
 
     return temporaryWalletService;

@@ -7,6 +7,7 @@ declare module 'tronweb' {
 
     public async createAccount(): Promise<TronAccount>;
     public contract(): Contact;
+    public setAddress(privateKey: string): void;
   }
 
   declare class Trx {

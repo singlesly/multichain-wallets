@@ -18,10 +18,12 @@ export class USDTClientService implements TRC20 {
   }
 
   public async balanceOf(address: string): Promise<bigint> {
+    this.tronWeb.setAddress(address);
     return BigInt(await this.usdtContract.balanceOf(address).call());
   }
 
   public async totalSupply(): Promise<bigint> {
+    this.tronWeb.setAddress(USDT_CONTRACT_ADDRESS);
     return BigInt(await this.usdtContract.totalSupply().call());
   }
 

@@ -11,7 +11,7 @@ import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
-import { TemporaryWallet } from '@app/wallet/dao/entity/temporary-wallet';
+import { Wallet } from '@app/wallet/dao/entity/wallet';
 
 @Injectable()
 export class BitcoinAgentService implements AgentService {
@@ -22,7 +22,7 @@ export class BitcoinAgentService implements AgentService {
     private readonly encryptService: EncryptService,
   ) {}
 
-  public async createWallet(): Promise<TemporaryWallet> {
+  public async createWallet(): Promise<Wallet> {
     const address = await this.bitcoinRpcClient.getNewAddress();
     const privateKey = await this.bitcoinRpcClient.dumpPrivateKey(address);
 

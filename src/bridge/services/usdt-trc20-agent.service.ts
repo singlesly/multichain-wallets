@@ -1,18 +1,15 @@
-import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   AgentService,
   Balance,
   TransactionInfo,
   TxID,
 } from '@app/bridge/services/agent.service';
-import { TemporaryWallet } from '@app/wallet/dao/entity/temporary-wallet';
+import { Wallet } from '@app/wallet/dao/entity/wallet';
 import { USDTClientService } from '@app/usdt-trc20/services/usdt-client.service';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
-import TronWeb, {
-  TriggerSmartContractParameter,
-  TriggerSmartContractType,
-} from 'tronweb';
+import TronWeb, { TriggerSmartContractType } from 'tronweb';
 import { base58Address } from '@app/utils';
 import { ParameterService } from '@app/tron/services/parameter.service';
 import { BigNumber } from 'ethers';
@@ -29,7 +26,7 @@ export class UsdtTrc20AgentService implements AgentService {
     private readonly parameterService: ParameterService,
   ) {}
 
-  public async createWallet(): Promise<TemporaryWallet> {
+  public async createWallet(): Promise<Wallet> {
     throw new BaseException({
       statusCode: WebErrorsEnum.PERMISSION_DENIED,
       message:

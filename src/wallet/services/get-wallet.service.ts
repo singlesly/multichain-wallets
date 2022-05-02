@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TemporaryWalletPgRepository } from '../repositories/temporary-wallet-pg.repository';
-import { TemporaryWallet } from '../dao/entity/temporary-wallet';
+import { Wallet } from '../dao/entity/wallet';
 
 @Injectable()
 export class GetWalletService {
@@ -8,7 +8,7 @@ export class GetWalletService {
     private readonly temporaryWalletPgRepository: TemporaryWalletPgRepository,
   ) {}
 
-  public async getByAddress(pubKey: string): Promise<TemporaryWallet> {
+  public async getByAddress(pubKey: string): Promise<Wallet> {
     return this.temporaryWalletPgRepository.getByAddress(pubKey);
   }
 }

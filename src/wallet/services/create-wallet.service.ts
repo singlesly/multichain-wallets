@@ -1,6 +1,6 @@
 import { TemporaryWalletPgRepository } from '../repositories/temporary-wallet-pg.repository';
 import { Injectable } from '@nestjs/common';
-import { TemporaryWallet } from '../dao/entity/temporary-wallet';
+import { Wallet } from '../dao/entity/wallet';
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
@@ -24,8 +24,8 @@ export class CreateWalletService {
     privateKey,
     network,
     coin,
-  }: CreateTemporaryWalletOptions): Promise<TemporaryWallet> {
-    const temporaryWallet = new TemporaryWallet(
+  }: CreateTemporaryWalletOptions): Promise<Wallet> {
+    const temporaryWallet = new Wallet(
       pubKey,
       await this.encryptService.encrypt(privateKey),
       network,

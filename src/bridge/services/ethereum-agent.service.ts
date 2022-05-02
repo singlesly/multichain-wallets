@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   Balance,
   AgentService,
@@ -13,7 +13,7 @@ import { TransactionConfig } from 'web3-core';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import utils from 'web3-utils';
-import { TemporaryWallet } from '@app/wallet/dao/entity/temporary-wallet';
+import { Wallet } from '@app/wallet/dao/entity/wallet';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
 
@@ -83,7 +83,7 @@ export class EthereumAgentService implements AgentService {
     return receipt.transactionHash;
   }
 
-  public async createWallet(): Promise<TemporaryWallet> {
+  public async createWallet(): Promise<Wallet> {
     const account = await this.ethereumWeb3Service.eth.accounts.create();
 
     return await this.createTemporaryWalletService.create({

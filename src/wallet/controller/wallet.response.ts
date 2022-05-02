@@ -1,6 +1,6 @@
-import { TemporaryWallet } from '../dao/entity/temporary-wallet';
-import { NetworkEnum } from '../../common/network.enum';
-import { CoinEnum } from '../../common/coin.enum';
+import { Wallet } from '../dao/entity/wallet';
+import { NetworkEnum } from '@app/common/network.enum';
+import { CoinEnum } from '@app/common/coin.enum';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class WalletResponse {
@@ -20,7 +20,7 @@ export class WalletResponse {
   @ApiProperty()
   public readonly createdAt: Date;
 
-  constructor(wallet: TemporaryWallet) {
+  constructor(wallet: Wallet) {
     this.address = wallet.pubKey;
     this.coin = wallet.coin;
     this.network = wallet.network;

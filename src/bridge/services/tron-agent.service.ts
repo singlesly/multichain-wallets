@@ -5,7 +5,7 @@ import {
   TransactionInfo,
   TxID,
 } from '@app/bridge/services/agent.service';
-import { TemporaryWallet } from '@app/wallet/dao/entity/temporary-wallet';
+import { Wallet } from '@app/wallet/dao/entity/wallet';
 import { CreateWalletService } from '@app/wallet/services/create-wallet.service';
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
@@ -42,7 +42,7 @@ export class TronAgentService implements AgentService {
     };
   }
 
-  public async createWallet(): Promise<TemporaryWallet> {
+  public async createWallet(): Promise<Wallet> {
     const account = await this.tronWeb.createAccount();
 
     return this.createTemporaryWalletService.create({

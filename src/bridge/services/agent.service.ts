@@ -1,7 +1,7 @@
-import { TemporaryWallet } from '@app/wallet/dao/entity/temporary-wallet';
+import { Wallet } from '@app/wallet/dao/entity/wallet';
 
 export interface AgentService {
-  createWallet(): Promise<TemporaryWallet>;
+  createWallet(): Promise<Wallet>;
   getBalance(address: string): Promise<Balance>;
   transfer(from: string, to: string, amount: bigint): Promise<TxID>;
   estimateFee(from: string, to: string, amount: bigint): Promise<Balance>;
@@ -9,11 +9,6 @@ export interface AgentService {
 }
 
 export type TxID = string;
-
-export interface Wallet {
-  readonly address: string;
-  readonly privateKey: string;
-}
 
 export interface Balance {
   readonly amount: bigint;

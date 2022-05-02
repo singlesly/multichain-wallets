@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { TemporaryWallet } from '../dao/entity/temporary-wallet';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BaseException } from '@app/common/base-exception';
+import { WebErrorsEnum } from '@app/common/web-errors.enum';
 
 @Injectable()
 export class TemporaryWalletPgRepository {
@@ -26,7 +28,10 @@ export class TemporaryWalletPgRepository {
     });
 
     if (!wallet) {
-      throw new NotFoundException();
+      throw new BaseException({
+        statusCode: WebErrorsEnum.NOT_FOUND,
+        message: 'Wallet not found',
+      });
     }
 
     return wallet;

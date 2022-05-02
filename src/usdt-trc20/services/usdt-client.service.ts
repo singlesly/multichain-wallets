@@ -18,13 +18,19 @@ export class USDTClientService implements TRC20 {
   }
 
   public async balanceOf(address: string): Promise<bigint> {
-    this.tronWeb.setAddress(address);
-    return BigInt(await this.usdtContract.balanceOf(address).call());
+    return BigInt(
+      await this.usdtContract.balanceOf(address).call({
+        from: address,
+      }),
+    );
   }
 
   public async totalSupply(): Promise<bigint> {
-    this.tronWeb.setAddress(USDT_CONTRACT_ADDRESS);
-    return BigInt(await this.usdtContract.totalSupply().call());
+    return BigInt(
+      await this.usdtContract.totalSupply().call({
+        from: USDT_CONTRACT_ADDRESS,
+      }),
+    );
   }
 
   public async transfer(
@@ -32,25 +38,13 @@ export class USDTClientService implements TRC20 {
     amount: bigint,
     privateKey: string,
   ): Promise<string> {
-    const { transaction } =
-      await this.tronWeb.transactionBuilder.triggerSmartContract(
-        USDT_CONTRACT_ADDRESS,
-        'transfer(address,uint256)',
-        {},
-        [
-          { type: 'address', value: to },
-          { type: 'uint256', value: Number(amount) },
-        ],
-        this.tronWeb.address.fromPrivateKey(privateKey),
-      );
+    const transferMethod = this.usdtContract.transfer(to, Number(amount));
 
-    const signedTransaction = await this.tronWeb.trx.sign(
-      transaction,
+    return transferMethod.send(
+      {
+        keepTxID: true,
+      },
       privateKey,
     );
-
-    await this.tronWeb.trx.sendRawTransaction(signedTransaction);
-
-    return signedTransaction.txID;
   }
 }

@@ -92,15 +92,26 @@ declare module 'tronweb' {
   export interface TRC20Contract {
     totalSupply(): CallMethod<number>;
     balanceOf(address: string): CallMethod<number>;
-    transfer(to: string, amount: number): SendMethod<boolean>;
+    transfer(to: string, amount: number): SendMethod;
+  }
+
+  interface CallOptions {
+    from?: string;
+  }
+
+  interface SendOptions<K> {
+    keepTxID: K;
   }
 
   interface CallMethod<T> {
-    call(): Promise<T>;
+    call(options?: CallOptions): Promise<T>;
   }
 
-  interface SendMethod<T> {
-    send(): Promise<T>;
+  interface SendMethod {
+    send<K extends boolean>(
+      options?: SendOptions<K>,
+      privateKey: string,
+    ): Promise<K extends true ? string : boolean>;
   }
 
   interface TransactionResult<T> {

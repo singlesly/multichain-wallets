@@ -16,6 +16,8 @@ import TronWeb, {
 import { base58Address } from '@app/utils';
 import { ParameterService } from '@app/tron/services/parameter.service';
 import { BigNumber } from 'ethers';
+import { BaseException } from '@app/common/base-exception';
+import { WebErrorsEnum } from '@app/common/web-errors.enum';
 
 @Injectable()
 export class UsdtTrc20AgentService implements AgentService {
@@ -28,7 +30,11 @@ export class UsdtTrc20AgentService implements AgentService {
   ) {}
 
   public async createWallet(): Promise<TemporaryWallet> {
-    throw new ForbiddenException();
+    throw new BaseException({
+      statusCode: WebErrorsEnum.PERMISSION_DENIED,
+      message:
+        'USDT is a TRC20 token you should use network TRON and coin TRON for create USDT Wallet',
+    });
   }
 
   public async estimateFee(

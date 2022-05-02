@@ -42,10 +42,6 @@ import { UnhandledExceptionFilter } from '@app/common/filters/unhandled-exceptio
       provide: APP_FILTER,
       useClass: BaseExceptionFilter,
     },
-    {
-      provide: APP_FILTER,
-      useClass: UnhandledExceptionFilter,
-    },
   ],
 })
 export class AppModule {}

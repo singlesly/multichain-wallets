@@ -6,8 +6,8 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { NetworkEnum } from '../../../common/network.enum';
-import { CoinEnum } from '../../../common/coin.enum';
+import { NetworkEnum } from '@app/common/network.enum';
+import { CoinEnum } from '@app/common/coin.enum';
 
 @Entity('temporary_wallets')
 export class TemporaryWallet {

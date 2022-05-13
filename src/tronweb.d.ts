@@ -15,6 +15,7 @@ declare module 'tronweb' {
   }
 
   declare class Trx {
+    public async getCurrentBlock(): Promise<Block>;
     public async getBalance(address: string): Promise<number>;
     public async sign(
       transaction: TransactionData | string,
@@ -147,6 +148,15 @@ declare module 'tronweb' {
       energy_usage_total: number;
       net_fee: number;
       result: 'SUCCESS';
+    };
+  }
+
+  interface Block {
+    readonly blockID: string;
+    readonly block_header: {
+      raw_data: {
+        number: number;
+      };
     };
   }
 

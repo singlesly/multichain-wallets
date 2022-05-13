@@ -160,6 +160,9 @@ declare module 'tronweb' {
 
   interface TransactionInfo {
     readonly blockNumber: number;
+    readonly receipt: {
+      result: 'SUCCESS' | string;
+    };
   }
 
   interface Block {

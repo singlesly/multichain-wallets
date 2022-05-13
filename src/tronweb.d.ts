@@ -158,14 +158,14 @@ declare module 'tronweb' {
     };
   }
 
-  interface TransactionInfo {
+  export interface TransactionInfo {
     readonly blockNumber: number;
     readonly receipt: {
       result: 'SUCCESS' | string;
     };
   }
 
-  interface Block {
+  export interface Block {
     readonly blockID: string;
     readonly block_header: {
       raw_data: {

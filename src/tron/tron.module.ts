@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { EnvModule } from '../env/env.module';
 import { LocalEnvService } from '../env/services/local-env.service';
 import { LocalEnvPathEnum } from '../env/contants/local-env-path.enum';
-import { TronWeb3Service } from './services/tron-web3.service';
 import { TronClientService } from './services/tron-client.service';
 import { HttpModule } from '@nestjs/axios';
-import { ErrorLoggingInterceptor } from './interceptors/error-logging.interceptor';
 import { LoggerModule } from '@ledius/logger';
 import { RequestContextModule } from '@ledius/request-context';
+import { HttpClientLoggingInterceptor } from '../common/interceptors/http-client-logging.interceptor';
+import { ParameterService } from '@app/tron/services/parameter.service';
+import TronWeb from 'tronweb';
 
 @Module({
   imports: [
@@ -23,15 +24,20 @@ import { RequestContextModule } from '@ledius/request-context';
     RequestContextModule,
   ],
   providers: [
-    ErrorLoggingInterceptor,
+    HttpClientLoggingInterceptor,
+    TronClientService,
+    ParameterService,
     {
-      provide: TronWeb3Service,
-      useFactory: (env: LocalEnvService): TronWeb3Service =>
-        new TronWeb3Service(env.getSafety(LocalEnvPathEnum.TRON_RPC_BASE_URL)),
+      provide: TronWeb,
+      useFactory: (env: LocalEnvService) => {
+        return new TronWeb({
+          fullNode: env.getSafety(LocalEnvPathEnum.TRON_RPC_BASE_URL),
+          solidityNode: env.getSafety(LocalEnvPathEnum.TRON_RPC_BASE_URL),
+        });
+      },
       inject: [LocalEnvService],
     },
-    TronClientService,
   ],
-  exports: [TronWeb3Service, TronClientService],
+  exports: [TronClientService, ParameterService, TronWeb],
 })
 export class TronModule {}

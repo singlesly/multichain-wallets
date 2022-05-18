@@ -1,15 +1,15 @@
 import { Module, OnModuleInit } from '@nestjs/common';
-import { HttpModule, HttpService } from '@nestjs/axios';
+import { HttpModule } from '@nestjs/axios';
 import { BitcoinRpcClient } from './rpc/bitcoin-rpc.client';
 import { EnvModule } from '../env/env.module';
 import { LocalEnvService } from '../env/services/local-env.service';
 import { LocalEnvPathEnum } from '../env/contants/local-env-path.enum';
-import { LoggerModule, LoggerService } from '@ledius/logger';
+import { LoggerModule } from '@ledius/logger';
 import { BitcoinWalletWarmupService } from './services/bitcoin-wallet-warmup.service';
-import { ErrorLoggingInterceptor } from './interceptors/error-logging.interceptor';
 import { RequestContextModule } from '@ledius/request-context';
 import { BtcCommand } from './cli/btc.command';
 import { UptimeCommand } from './cli/uptime.command';
+import { HttpClientLoggingInterceptor } from '../common/interceptors/http-client-logging.interceptor';
 
 @Module({
   imports: [
@@ -35,7 +35,7 @@ import { UptimeCommand } from './cli/uptime.command';
   providers: [
     BitcoinRpcClient,
     BitcoinWalletWarmupService,
-    ErrorLoggingInterceptor,
+    HttpClientLoggingInterceptor,
     BtcCommand,
     UptimeCommand,
   ],

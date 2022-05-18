@@ -2,7 +2,11 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
 import { MAIN_WALLET } from '../constants';
-import { DecodeRawTransactionResult, ListUnspentResult } from '../interfaces';
+import {
+  DecodeRawTransactionResult,
+  ListUnspentResult,
+  RawTransactionResult,
+} from '../interfaces';
 
 @Injectable()
 export class BitcoinRpcClient {
@@ -151,6 +155,17 @@ export class BitcoinRpcClient {
       'sendrawtransaction',
       `wallet/${MAIN_WALLET}`,
       signedTransactionHex,
+    );
+  }
+
+  public async getRawTransaction(
+    transactionId: string,
+  ): Promise<RawTransactionResult> {
+    return this.rpcCall<RawTransactionResult>(
+      'getrawtransaction',
+      `wallet/${MAIN_WALLET}`,
+      transactionId,
+      true,
     );
   }
 

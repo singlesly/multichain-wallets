@@ -49,3 +49,6 @@ migration-run:
 
 migration-revert:
 	docker-compose run --rm $(appContainer) npx typeorm migration:revert
+
+cli:
+	docker-compose exec $(appContainer) crypto-bridge $(c)

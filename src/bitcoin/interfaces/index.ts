@@ -13,3 +13,16 @@ export type DecodeRawTransactionResult = {
   size: number;
   vsize: number;
 };
+
+export type RawTransactionResult = {
+  txid: string;
+  confirmations: number;
+  vin: { vout: number }[];
+  vout: {
+    value: number;
+    n: number;
+    scriptPubKey: {
+      address: string;
+    };
+  }[];
+};

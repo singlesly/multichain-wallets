@@ -6,4 +6,6 @@ export const WebErrorsEnum = {
   INVALID_ARGUMENT: 3,
 
   NOT_FOUND: 4,
+
+  INSUFFICIENT_BALANCE: 5,
 };

@@ -37,12 +37,11 @@ export class UsdtTrc20AgentService implements AgentService {
     });
   }
 
-  public async estimateFee(
-    from: string,
-    to: string,
-    amount: bigint,
-  ): Promise<Balance> {
-    return Promise.resolve(undefined);
+  public async estimateFee(): Promise<Balance> {
+    return {
+      decimals: await this.usdtClientService.getDecimals(),
+      amount: BigInt(250000),
+    };
   }
 
   public async getBalance(address: string): Promise<Balance> {

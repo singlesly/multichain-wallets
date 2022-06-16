@@ -53,7 +53,7 @@ export class TronAgentService implements AgentService {
       privateKey: account.privateKey,
       pubKey: account.address.base58,
       network: NetworkEnum.TRON,
-      coin: CoinEnum.TRON,
+      coin: CoinEnum.TRX,
     });
   }
 

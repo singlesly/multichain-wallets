@@ -14,8 +14,8 @@ import { base58Address } from '@app/utils';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import TronWeb, { TransferContractType } from 'tronweb';
-import {BaseException} from "@app/common/base-exception";
-import {WebErrorsEnum} from "@app/common/web-errors.enum";
+import { BaseException } from '@app/common/base-exception';
+import { WebErrorsEnum } from '@app/common/web-errors.enum';
 
 @Injectable()
 export class TronAgentService implements AgentService {
@@ -104,15 +104,18 @@ export class TronAgentService implements AgentService {
       const wallet = await this.getTemporaryWalletService.getByAddress(from);
 
       const transaction = await this.tronWeb.trx.sendTransaction(
-          to,
-          Number(amount),
-          await this.encryptService.decrypt(wallet.privateKey),
+        to,
+        Number(amount),
+        await this.encryptService.decrypt(wallet.privateKey),
       );
 
       return transaction.transaction.txID;
     } catch (e) {
       const error = e as unknown | string;
-      if(typeof error === 'string' && error.search('balance is not sufficient')) {
+      if (
+        typeof error === 'string' &&
+        error.search('balance is not sufficient')
+      ) {
         throw new BaseException({
           statusCode: WebErrorsEnum.INSUFFICIENT_FUNDS,
           message: 'Insufficient funds',
@@ -120,7 +123,6 @@ export class TronAgentService implements AgentService {
       }
 
       throw e;
-
     }
   }
 }

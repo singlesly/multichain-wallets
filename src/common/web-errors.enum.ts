@@ -8,4 +8,8 @@ export const WebErrorsEnum = {
   NOT_FOUND: 4,
 
   REQUIRED_ACCOUNT_ACTIVATION_TRX: 5,
+
+  // Domain errors
+  DOMAIN_ERROR: 6,
+  INSUFFICIENT_FUNDS: 61,
 };

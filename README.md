@@ -24,13 +24,13 @@ Application architecture is flexible and can be scaled for another networks.
   - [X] [TRX](https://tron.network/trx?lng=en)
     - [X] Create Wallet (means Account)
     - [X] Get Balance
-    - [X] Transfer
-    - [X] Estimate Fee
-  - [X] [USDT](https://tron.network/usdt?lng=en)
-    - [X] Create Wallet (means Account)
-    - [X] Get Balance
-    - [X] Transfer
-    - [X] Estimate Fee
+    - [ ] Transfer
+    - [ ] Estimate Fee
+  - [ ] [USDT](https://tron.network/usdt?lng=en)
+    - [ ] Create Wallet (means Account)
+    - [ ] Get Balance
+    - [ ] Transfer
+    - [ ] Estimate Fee
 
 - [ ] [TON - The Open Network](https://ton.org/)
   - [ ] TON

@@ -19,7 +19,7 @@ export class AgentServiceFactory {
       [CoinEnum.ETH]: this.ethereumAgentService,
     },
     [NetworkEnum.TRON]: {
-      [CoinEnum.TRX]: this.tronAgentService,
+      [CoinEnum.TRON]: this.tronAgentService,
       [CoinEnum.USDT]: this.usdtTrc20AgentService,
     },
   };

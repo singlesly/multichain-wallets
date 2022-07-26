@@ -30,30 +30,17 @@ export class TronAgentService implements AgentService {
   ) {}
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
-    const [transaction, transactionInfo, currentBlock] = await Promise.all([
-      this.tronWeb.trx.getTransaction<TransferContractType>(id),
-      this.tronWeb.trx.getTransactionInfo(id),
-      this.tronWeb.trx.getCurrentBlock(),
-    ]);
+    const transaction =
+      await this.tronWeb.trx.getTransaction<TransferContractType>(id);
 
     const [{ parameter }] = transaction.raw_data.contract;
-
-    const confirmations = () => {
-      if (!transactionInfo.blockNumber) {
-        return 0;
-      }
-
-      return (
-        currentBlock.block_header.raw_data.number - transactionInfo.blockNumber
-      );
-    };
 
     return {
       transactionId: transaction.txID,
       to: base58Address(parameter.value.to_address),
       amount: BigInt(parameter.value.amount),
       from: base58Address(parameter.value.owner_address),
-      confirmations: confirmations(),
+      confirmations: 0,
     };
   }
 
@@ -64,7 +51,7 @@ export class TronAgentService implements AgentService {
       privateKey: account.privateKey,
       pubKey: account.address.base58,
       network: NetworkEnum.TRON,
-      coin: CoinEnum.TRX,
+      coin: CoinEnum.TRON,
     });
   }
 

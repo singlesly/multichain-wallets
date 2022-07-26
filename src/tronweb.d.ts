@@ -15,19 +15,11 @@ declare module 'tronweb' {
   }
 
   declare class Trx {
-    public async getCurrentBlock(): Promise<Block>;
-
-    public async getTransactionInfo(
-      transactionId: string,
-    ): Promise<TransactionInfo>;
-
     public async getBalance(address: string): Promise<number>;
-
     public async sign(
       transaction: TransactionData | string,
       privateKey: string,
     ): Promise<SignedTransaction>;
-
     public async sendTransaction<P>(
       to: string,
       amount: number,
@@ -155,22 +147,6 @@ declare module 'tronweb' {
       energy_usage_total: number;
       net_fee: number;
       result: 'SUCCESS';
-    };
-  }
-
-  export interface TransactionInfo {
-    readonly blockNumber: number;
-    readonly receipt: {
-      result: 'SUCCESS' | string;
-    };
-  }
-
-  export interface Block {
-    readonly blockID: string;
-    readonly block_header: {
-      raw_data: {
-        number: number;
-      };
     };
   }
 

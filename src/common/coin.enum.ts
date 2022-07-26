@@ -3,6 +3,6 @@ export enum CoinEnum {
   ETH = 'ETH',
 
   // TRON Network
-  TRX = 'TRX',
+  TRON = 'TRON',
   USDT = 'USDT',
 }

@@ -4,6 +4,7 @@ export const WebErrorsEnum = {
   PERMISSION_DENIED: 2,
 
   INVALID_ARGUMENT: 3,
+  INVALID_AMOUNT_PROVIDED: 31,
 
   NOT_FOUND: 4,
 

@@ -22,7 +22,7 @@ export class TronNetworkExceptionFactory {
 
     if (
       typeof error === 'string' &&
-      error.search('balance is not sufficient')
+      error.includes('balance is not sufficient')
     ) {
       throw new BaseException(
         {
@@ -34,8 +34,18 @@ export class TronNetworkExceptionFactory {
     }
 
     if (
+      typeof error === 'string' &&
+      error.includes('Invalid amount provided')
+    ) {
+      throw new BaseException({
+        statusCode: WebErrorsEnum.INVALID_AMOUNT_PROVIDED,
+        message: 'Invalid amount provided',
+      });
+    }
+
+    if (
       typeof error === 'object' &&
-      error?.message.search('account does not exist')
+      error?.message.includes('account does not exist')
     ) {
       throw new BaseException(
         {

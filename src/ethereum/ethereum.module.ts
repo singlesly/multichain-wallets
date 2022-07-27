@@ -12,6 +12,8 @@ import { EnvModule } from '../env/env.module';
       useFactory: (env: LocalEnvService): EthereumWeb3Service =>
         new EthereumWeb3Service(
           env.getSafety(LocalEnvPathEnum.ETH_RPC_BASE_URL),
+          env.getSafety(LocalEnvPathEnum.ETH_RPC_AUTH_USERNAME),
+          env.getSafety(LocalEnvPathEnum.ETH_RPC_AUTH_PASSWORD),
         ),
       inject: [LocalEnvService],
     },

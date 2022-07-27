@@ -16,6 +16,7 @@ import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import TronWeb, { TransferContractType } from 'tronweb';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
+import {TronNetworkExceptionFactory} from "@app/common/exceptions/tron-network-exception.factory";
 
 @Injectable()
 export class TronAgentService implements AgentService {
@@ -27,6 +28,7 @@ export class TronAgentService implements AgentService {
     private readonly createTemporaryWalletService: CreateWalletService,
     private readonly getTemporaryWalletService: GetWalletService,
     private readonly encryptService: EncryptService,
+    private readonly tronNetworkExceptionFactory: TronNetworkExceptionFactory,
   ) {}
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
@@ -98,18 +100,7 @@ export class TronAgentService implements AgentService {
 
       return transaction.transaction.txID;
     } catch (e) {
-      const error = e as unknown | string;
-      if (
-        typeof error === 'string' &&
-        error.search('balance is not sufficient')
-      ) {
-        throw new BaseException({
-          statusCode: WebErrorsEnum.INSUFFICIENT_FUNDS,
-          message: 'Insufficient funds',
-        });
-      }
-
-      throw e;
+      throw this.tronNetworkExceptionFactory.toThrow(e);
     }
   }
 }

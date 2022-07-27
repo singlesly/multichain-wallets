@@ -7,13 +7,18 @@ export interface ExceptionData {
   message?: string;
 }
 
+export type Cause = Error | BaseException | string | unknown;
+
 export class BaseException {
   private readonly data: ExceptionData;
+  private readonly cause?: Cause;
 
   constructor(
     data: ExceptionData = { statusCode: WebErrorsEnum.INTERNAL_ERROR },
+    cause?: Cause,
   ) {
     this.data = data;
+    this.cause = cause;
   }
 
   public get toHttp(): HttpException {

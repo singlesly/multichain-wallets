@@ -5,6 +5,7 @@ import { USDT_CONTRACT } from '@app/usdt-trc20/constants';
 import { LocalEnvService } from '@app/env/services/local-env.service';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
+import {TronNetworkExceptionFactory} from "@app/common/exceptions/tron-network-exception.factory";
 
 @Injectable()
 export class USDTClientService implements TRC20 {
@@ -12,6 +13,7 @@ export class USDTClientService implements TRC20 {
     private readonly tronWeb: TronWeb,
     @Inject(USDT_CONTRACT) private readonly usdtContract: TRC20Contract,
     private readonly localEnvService: LocalEnvService,
+    private readonly tronNetworkExceptionFactory: TronNetworkExceptionFactory
   ) {}
 
   public async getDecimals(): Promise<number> {
@@ -51,15 +53,7 @@ export class USDTClientService implements TRC20 {
 
       return txId;
     } catch (e) {
-      const error = e as undefined | { error?: string; message?: string };
-      if (error?.message.search('account does not exist')) {
-        throw new BaseException({
-          statusCode: WebErrorsEnum.REQUIRED_ACCOUNT_ACTIVATION_TRX,
-          message: 'Need activate tron wallet by deposit any amount to wallet',
-        });
-      }
-
-      throw e;
+      throw this.tronNetworkExceptionFactory.toThrow(e);
     }
   }
 }

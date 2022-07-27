@@ -11,6 +11,7 @@ import { TronAgentService } from '@app/bridge/services/tron-agent.service';
 import { EncryptModule } from '@app/encrypt/encrypt.module';
 import { UsdtTrc20Module } from '@app/usdt-trc20/usdt-trc20.module';
 import { UsdtTrc20AgentService } from '@app/bridge/services/usdt-trc20-agent.service';
+import {TronNetworkExceptionFactory} from "@app/common/exceptions/tron-network-exception.factory";
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UsdtTrc20AgentService } from '@app/bridge/services/usdt-trc20-agent.ser
     EthereumAgentService,
     TronAgentService,
     UsdtTrc20AgentService,
+      TronNetworkExceptionFactory,
   ],
 })
 export class BridgeModule {}

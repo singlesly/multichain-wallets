@@ -5,8 +5,14 @@ export class AuthUser {
   public readonly id: string;
   public readonly login?: string;
   public readonly password?: string;
-  public readonly address?: string;
+  public address?: string;
   public readonly createdAt: string;
+
+  public static createByAddress(address: string) {
+    const authUser = new AuthUser();
+    authUser.address = address;
+    return authUser;
+  }
 
   public verifyPassword(password: string): void {
     if (password !== this.password || !this.password) {

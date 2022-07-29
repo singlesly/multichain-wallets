@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BitcoinRpcClient } from '@app/bitcoin/rpc/bitcoin-rpc.client';
 import {
+  AgentCallOptions,
   AgentService,
   Balance,
   TransactionInfo,
@@ -12,6 +13,7 @@ import { CoinEnum } from '@app/common/coin.enum';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import { Wallet } from '@app/wallet/dao/entity/wallet';
+import { LocalEnvService } from '@app/env/services/local-env.service';
 
 @Injectable()
 export class BitcoinAgentService implements AgentService {
@@ -19,7 +21,7 @@ export class BitcoinAgentService implements AgentService {
     private readonly bitcoinRpcClient: BitcoinRpcClient,
     private readonly createTemporaryWalletService: CreateWalletService,
     private readonly getTemporaryWalletService: GetWalletService,
-    private readonly encryptService: EncryptService,
+    private readonly localEnvService: LocalEnvService,
   ) {}
 
   public async createWallet(owners: string[] = []): Promise<Wallet> {
@@ -48,8 +50,10 @@ export class BitcoinAgentService implements AgentService {
     from: string,
     to: string,
     amount: bigint,
+    options: AgentCallOptions,
   ): Promise<TxID> {
     const wallet = await this.getTemporaryWalletService.getByAddress(from);
+    wallet.checkOwnerOrFail(options.initiator);
 
     const transactionHash = await this.bitcoinRpcClient.createRawTransaction(
       to,

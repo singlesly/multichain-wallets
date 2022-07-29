@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import { Application } from '../dao/entity/application';
 import { TokenService } from '@app/token/token.service';
+import { REQUEST_META_KEY, RequestMeta } from '@app/auth/contants';
 
 type TokenType = 'bearer' | 'basic';
 
@@ -22,10 +23,10 @@ export class AppGuard implements CanActivate {
     const encodedAuth = authorization.split(' ')[1] as `${string}:${string}`;
 
     if (tokenType === 'basic') {
-      return await this.handleBasic(encodedAuth);
+      return await this.handleBasic(encodedAuth, context);
     }
     if (tokenType === 'bearer') {
-      return await this.handleBearer(encodedAuth);
+      return await this.handleBearer(encodedAuth, context);
     }
 
     return false;
@@ -33,6 +34,7 @@ export class AppGuard implements CanActivate {
 
   private async handleBasic(
     encodedAuth: `${string}:${string}`,
+    context: ExecutionContext,
   ): Promise<boolean> {
     if (!encodedAuth) {
       return false;
@@ -49,12 +51,32 @@ export class AppGuard implements CanActivate {
       return false;
     }
 
-    return app.authId() === appId;
+    if (app.authId() === appId) {
+      this.setAuthPayload(context, {
+        appId: app.id,
+      });
+      return true;
+    }
+
+    return false;
   }
 
-  private async handleBearer(token: string): Promise<boolean> {
-    await this.token.verify(token);
+  private async handleBearer(
+    token: string,
+    context: ExecutionContext,
+  ): Promise<boolean> {
+    const payload = await this.token.verify(token);
+    this.setAuthPayload(context, {
+      userId: payload.id,
+    });
 
     return true;
+  }
+
+  private setAuthPayload(context: ExecutionContext, meta: RequestMeta): void {
+    const request = context.switchToHttp().getRequest<Request>();
+    Reflect.defineProperty(request, REQUEST_META_KEY, {
+      value: meta,
+    });
   }
 }

@@ -47,6 +47,7 @@ export class Wallet {
 
   @Column('varchar', {
     array: true,
+    default: '{}',
   })
   public owners: string[];
 

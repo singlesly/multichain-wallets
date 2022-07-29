@@ -11,6 +11,11 @@ export class LocalEnvService {
     return this.envProvider.getSafety(key);
   }
 
+  public getBoolean(key: LocalEnvPathEnum): boolean {
+    const v = this.getSafety(key);
+    return v === '1' || v === 'true';
+  }
+
   public getJwtOptions(): JwtModuleOptions {
     return {
       secret: this.getSafety(LocalEnvPathEnum.JWT_SECRET),

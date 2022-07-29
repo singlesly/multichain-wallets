@@ -1,5 +1,5 @@
 import { AuthUserPgRepository } from '@app/auth/repositories/auth-user-pg.repository';
-import { JwtTokenService } from '@app/auth/services/jwt-token.service';
+import { TokenService } from '@app/auth/services/token.service';
 
 export interface AuthResult {
   readonly token: string;
@@ -8,7 +8,7 @@ export interface AuthResult {
 export class AuthService {
   constructor(
     private readonly authUserPgRepository: AuthUserPgRepository,
-    private readonly jwtTokenService: JwtTokenService,
+    private readonly jwtTokenService: TokenService,
   ) {}
 
   public async auth(login: string, password: string): Promise<AuthResult> {

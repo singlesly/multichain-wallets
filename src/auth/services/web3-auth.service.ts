@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { AuthResult } from '@app/auth/services/auth.service';
 import { EthereumWeb3Service } from '@app/ethereum/services/ethereum-web3.service';
 import { AuthUser } from '@app/auth/dao/entity/auth-user';
-import { JwtTokenService } from '@app/auth/services/jwt-token.service';
+import { TokenService } from '@app/auth/services/token.service';
 
 @Injectable()
 export class Web3AuthService {
@@ -13,7 +13,7 @@ export class Web3AuthService {
   constructor(
     private readonly authUserPgRepository: AuthUserPgRepository,
     private readonly web3: EthereumWeb3Service,
-    private readonly jwtTokenService: JwtTokenService,
+    private readonly tokenService: TokenService,
   ) {}
 
   public async web3Auth(signature: string): Promise<AuthResult> {
@@ -29,7 +29,7 @@ export class Web3AuthService {
       await this.authUserPgRepository.save(authUser);
     }
 
-    const token = await this.jwtTokenService.generate(authUser);
+    const token = await this.tokenService.generate(authUser);
 
     return { token };
   }

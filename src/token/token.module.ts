@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { EnvModule } from '@app/env/env.module';
 import { LocalEnvService } from '@app/env/services/local-env.service';
-import { TokenService } from '@app/auth/services/token.service';
+import { TokenService } from '@app/token/token.service';
 
 @Global()
 @Module({

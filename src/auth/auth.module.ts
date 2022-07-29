@@ -5,14 +5,12 @@ import { Web3AuthService } from '@app/auth/services/web3-auth.service';
 import { AuthUserPgRepository } from '@app/auth/repositories/auth-user-pg.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthUser } from '@app/auth/dao/entity/auth-user';
-import { JwtModule } from '@nestjs/jwt';
-import { TokenService } from '@app/auth/services/token.service';
 import { EthereumModule } from '@app/ethereum/ethereum.module';
+import { TokenModule } from '@app/token/token.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AuthUser]), EthereumModule, JwtModule],
+  imports: [TypeOrmModule.forFeature([AuthUser]), EthereumModule, TokenModule],
   controllers: [AuthController],
-  providers: [AuthService, Web3AuthService, AuthUserPgRepository, TokenService],
-  exports: [TokenService],
+  providers: [AuthService, Web3AuthService, AuthUserPgRepository],
 })
 export class AuthModule {}

@@ -1,5 +1,5 @@
 import { AuthUserPgRepository } from '@app/auth/repositories/auth-user-pg.repository';
-import { TokenService } from '@app/auth/services/token.service';
+import { TokenService } from '@app/token/token.service';
 
 export interface AuthResult {
   readonly token: string;

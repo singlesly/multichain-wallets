@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import { Application } from '../dao/entity/application';
-import { TokenService } from '@app/auth/services/token.service';
+import { TokenService } from '@app/token/token.service';
 
 type TokenType = 'bearer' | 'basic';
 

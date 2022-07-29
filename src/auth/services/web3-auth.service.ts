@@ -2,7 +2,7 @@ import { AuthUserPgRepository } from '@app/auth/repositories/auth-user-pg.reposi
 import { Injectable } from '@nestjs/common';
 import { AuthResult } from '@app/auth/services/auth.service';
 import { AuthUser } from '@app/auth/dao/entity/auth-user';
-import { TokenService } from '@app/auth/services/token.service';
+import { TokenService } from '@app/token/token.service';
 import { EthereumWeb3Service } from '@app/ethereum/services/ethereum-web3.service';
 import web3 from 'web3';
 

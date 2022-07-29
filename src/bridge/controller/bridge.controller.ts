@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AgentServiceFactory } from '../factories/agent-service.factory';
 import {
   ApiBasicAuth,
+  ApiBearerAuth,
   ApiOkResponse,
   ApiParam,
   ApiTags,
@@ -30,6 +31,7 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiBearerAuth()
   public async createWallet(
     @Param('network') network: NetworkEnum,
     @Param('coin') coin: CoinEnum,
@@ -50,6 +52,7 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiBearerAuth()
   public async getBalance(
     @Param('network') network: NetworkEnum,
     @Param('coin') coin: CoinEnum,
@@ -69,6 +72,7 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiBearerAuth()
   @ApiOkResponse({
     type: TransactionResponse,
   })
@@ -97,6 +101,7 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiBearerAuth()
   public async estimateFee(
     @Param('network') network: NetworkEnum,
     @Param('coin') coin: CoinEnum,
@@ -118,6 +123,7 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiBearerAuth()
   public async getTransaction(
     @Param('network') network: NetworkEnum,
     @Param('coin') coin: CoinEnum,
@@ -134,6 +140,7 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiBearerAuth()
   public async supportedCoins(): Promise<Record<string, string[]>> {
     const map = this.agentServiceFactory.supportedMap;
 

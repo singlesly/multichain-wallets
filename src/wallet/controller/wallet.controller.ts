@@ -1,7 +1,12 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { TemporaryWalletPgRepository } from '../repositories/temporary-wallet-pg.repository';
 import { WalletResponse } from './wallet.response';
-import { ApiBasicAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBasicAuth,
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AppGuard } from '@app/application/guard/app.guard';
 
 @Controller()
@@ -18,6 +23,7 @@ export class WalletController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiBearerAuth()
   public async list(): Promise<WalletResponse[]> {
     const wallets = await this.temporaryWalletPgRepository.findAll();
 
@@ -30,6 +36,7 @@ export class WalletController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiBearerAuth()
   public async get(@Param('address') address: string): Promise<WalletResponse> {
     return new WalletResponse(
       await this.temporaryWalletPgRepository.getByAddress(address),

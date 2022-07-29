@@ -25,8 +25,7 @@ export class Web3AuthService {
     let authUser = await this.authUserPgRepository.findByAddress(address);
 
     if (!authUser) {
-      authUser = new AuthUser();
-      authUser.address = address;
+      authUser = AuthUser.createByAddress(address);
       await this.authUserPgRepository.save(authUser);
     }
 

@@ -1,6 +1,7 @@
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
+import { v4 } from 'uuid';
 
 const TABLE_NAME = 'auth_users';
 
@@ -31,6 +32,10 @@ export class AuthUser {
 
   @CreateDateColumn()
   public readonly createdAt: string;
+
+  constructor() {
+    this.id = v4();
+  }
 
   public static createByAddress(address: string) {
     const authUser = new AuthUser();

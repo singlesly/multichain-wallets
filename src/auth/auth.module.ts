@@ -10,6 +10,7 @@ import { EnvModule } from '@app/env/env.module';
 import { LocalEnvService } from '@app/env/services/local-env.service';
 import Web3 from 'web3';
 import { TokenService } from '@app/auth/services/token.service';
+import { EthereumModule } from '@app/ethereum/ethereum.module';
 
 @Module({
   imports: [
@@ -19,17 +20,9 @@ import { TokenService } from '@app/auth/services/token.service';
       inject: [LocalEnvService],
       useFactory: (env: LocalEnvService) => env.getJwtOptions(),
     }),
+    EthereumModule,
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    Web3AuthService,
-    AuthUserPgRepository,
-    TokenService,
-    {
-      provide: Web3,
-      useValue: new Web3().eth.personal,
-    },
-  ],
+  providers: [AuthService, Web3AuthService, AuthUserPgRepository, TokenService],
 })
 export class AuthModule {}

@@ -12,7 +12,11 @@ export class TokenService {
   constructor(private readonly jwt: JwtService) {}
 
   public async generate(payload: Payload): Promise<string> {
-    return this.jwt.sign(payload);
+    return this.jwt.sign({
+      id: payload.id,
+      login: payload.login,
+      address: payload.address,
+    });
   }
 
   public async verify(token: string): Promise<Payload> {

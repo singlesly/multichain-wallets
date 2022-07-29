@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { AuthResult } from '@app/auth/services/auth.service';
 import { AuthUser } from '@app/auth/dao/entity/auth-user';
 import { TokenService } from '@app/auth/services/token.service';
-import Web3 from 'web3';
+import { EthereumWeb3Service } from '@app/ethereum/services/ethereum-web3.service';
 
 @Injectable()
 export class Web3AuthService {
@@ -12,15 +12,14 @@ export class Web3AuthService {
 
   constructor(
     private readonly authUserPgRepository: AuthUserPgRepository,
-    private readonly web3: Web3,
+    private readonly web3: EthereumWeb3Service,
     private readonly tokenService: TokenService,
   ) {}
 
   public async web3Auth(signature: string): Promise<AuthResult> {
-    const address = await this.web3.eth.personal.ecRecover(
-      this.signMessage,
-      signature,
-    );
+    const address = this.web3.eth.accounts.recover(this.signMessage, signature);
+
+    console.log(address);
 
     let authUser = await this.authUserPgRepository.findByAddress(address);
 

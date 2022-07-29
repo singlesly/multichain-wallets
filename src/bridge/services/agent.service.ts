@@ -1,7 +1,7 @@
 import { Wallet } from '@app/wallet/dao/entity/wallet';
 
 export interface AgentService {
-  createWallet(): Promise<Wallet>;
+  createWallet(owners?: string[]): Promise<Wallet>;
   getBalance(address: string): Promise<Balance>;
   transfer(from: string, to: string, amount: bigint): Promise<TxID>;
   estimateFee(from: string, to: string, amount: bigint): Promise<Balance>;

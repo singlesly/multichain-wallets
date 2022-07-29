@@ -14,6 +14,8 @@ import { TransferWalletDto } from '@app/wallet/dto/transfer-wallet.dto';
 import { WalletResponse } from '@app/wallet/controller/wallet.response';
 import { AppGuard } from '@app/application/guard/app.guard';
 import { TransactionResponse } from '@app/bridge/controller/transaction.response';
+import { RequestPayload } from '@app/auth/decorators/request-payload';
+import { RequestMeta } from '@app/auth/contants';
 
 @Controller()
 @ApiTags('Bridge')
@@ -35,9 +37,12 @@ export class BridgeController {
   public async createWallet(
     @Param('network') network: NetworkEnum,
     @Param('coin') coin: CoinEnum,
+    @RequestPayload() meta: RequestMeta,
   ) {
     return new WalletResponse(
-      await this.agentServiceFactory.for(network, coin).createWallet(),
+      await this.agentServiceFactory
+        .for(network, coin)
+        .createWallet([meta.ownerId]),
     );
   }
 

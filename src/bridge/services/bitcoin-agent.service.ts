@@ -22,7 +22,7 @@ export class BitcoinAgentService implements AgentService {
     private readonly encryptService: EncryptService,
   ) {}
 
-  public async createWallet(): Promise<Wallet> {
+  public async createWallet(owners: string[] = []): Promise<Wallet> {
     const address = await this.bitcoinRpcClient.getNewAddress();
     const privateKey = await this.bitcoinRpcClient.dumpPrivateKey(address);
 
@@ -31,7 +31,7 @@ export class BitcoinAgentService implements AgentService {
       privateKey: privateKey,
       network: NetworkEnum.BTC,
       coin: CoinEnum.BTC,
-      owners: [],
+      owners,
     });
   }
 

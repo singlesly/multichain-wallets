@@ -54,6 +54,7 @@ export class AppGuard implements CanActivate {
     if (app.authId() === appId) {
       this.setAuthPayload(context, {
         appId: app.id,
+        ownerId: app.id,
       });
       return true;
     }
@@ -68,6 +69,7 @@ export class AppGuard implements CanActivate {
     const payload = await this.token.verify(token);
     this.setAuthPayload(context, {
       userId: payload.id,
+      ownerId: payload.id,
     });
 
     return true;

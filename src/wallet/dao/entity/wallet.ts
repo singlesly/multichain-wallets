@@ -45,6 +45,11 @@ export class Wallet {
   })
   public readonly coin: CoinEnum;
 
+  @Column('varchar', {
+    array: true,
+  })
+  public owners: string[];
+
   @CreateDateColumn()
   public readonly createdAt: Date;
 
@@ -59,10 +64,12 @@ export class Wallet {
     privateKey: string,
     network: NetworkEnum,
     coin: CoinEnum,
+    owners: string[] = [],
   ) {
     this.pubKey = pubKey;
     this.privateKey = privateKey;
     this.network = network;
     this.coin = coin;
+    this.owners = owners;
   }
 }

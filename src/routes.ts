@@ -1,6 +1,7 @@
 import { HealthModule } from './health/health.module';
 import { BridgeModule } from '@app/bridge/bridge.module';
 import { WalletModule } from '@app/wallet/wallet.module';
+import { AuthModule } from '@app/auth/auth.module';
 
 export const routes = [
   {
@@ -14,5 +15,9 @@ export const routes = [
   {
     path: '/api/bridge/health',
     module: HealthModule,
+  },
+  {
+    path: '/api/auth',
+    module: AuthModule,
   },
 ];

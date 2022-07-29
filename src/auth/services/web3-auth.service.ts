@@ -1,9 +1,9 @@
 import { AuthUserPgRepository } from '@app/auth/repositories/auth-user-pg.repository';
 import { Injectable } from '@nestjs/common';
 import { AuthResult } from '@app/auth/services/auth.service';
-import { EthereumWeb3Service } from '@app/ethereum/services/ethereum-web3.service';
 import { AuthUser } from '@app/auth/dao/entity/auth-user';
 import { TokenService } from '@app/auth/services/token.service';
+import Web3 from 'web3';
 
 @Injectable()
 export class Web3AuthService {
@@ -12,7 +12,7 @@ export class Web3AuthService {
 
   constructor(
     private readonly authUserPgRepository: AuthUserPgRepository,
-    private readonly web3: EthereumWeb3Service,
+    private readonly web3: Web3,
     private readonly tokenService: TokenService,
   ) {}
 

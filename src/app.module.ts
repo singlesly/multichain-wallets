@@ -13,11 +13,12 @@ import path from 'path';
 import { ApplicationModule } from '@app/application/application.module';
 import { BridgeModule } from '@app/bridge/bridge.module';
 import { BaseExceptionFilter } from '@app/common/filters/base-exception.filter';
-import { UnhandledExceptionFilter } from '@app/common/filters/unhandled-exception.filter';
+import { AuthModule } from '@app/auth/auth.module';
 
 @Module({
   imports: [
     ApplicationModule,
+    AuthModule,
     BitcoinModule,
     BridgeModule,
     DatabaseModule,

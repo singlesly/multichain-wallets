@@ -8,6 +8,8 @@ import { AuthUser } from '@app/auth/dao/entity/auth-user';
 import { JwtModule } from '@nestjs/jwt';
 import { EnvModule } from '@app/env/env.module';
 import { LocalEnvService } from '@app/env/services/local-env.service';
+import Web3 from 'web3';
+import { TokenService } from '@app/auth/services/token.service';
 
 @Module({
   imports: [
@@ -19,6 +21,15 @@ import { LocalEnvService } from '@app/env/services/local-env.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, Web3AuthService, AuthUserPgRepository],
+  providers: [
+    AuthService,
+    Web3AuthService,
+    AuthUserPgRepository,
+    TokenService,
+    {
+      provide: Web3,
+      useValue: new Web3().eth.personal,
+    },
+  ],
 })
 export class AuthModule {}

@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { LoggerService } from '@ledius/logger';
+import { BaseException } from '@app/common/base-exception';
+import { WebErrorsEnum } from '@app/common/web-errors.enum';
 
 @Injectable()
 export class HttpClientLoggingInterceptor {
@@ -46,7 +48,13 @@ export class HttpClientLoggingInterceptor {
             data: err.response?.data,
           },
         });
-        throw err;
+        throw new BaseException(
+          {
+            statusCode: WebErrorsEnum.INTERNAL_ERROR,
+            message: 'Internal error',
+          },
+          err,
+        );
       },
     );
   }

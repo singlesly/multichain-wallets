@@ -35,7 +35,7 @@ export class BitcoinAgentService implements AgentService {
   }
 
   public async getBalance(address: string): Promise<Balance> {
-    const amount = await this.bitcoinRpcClient.getReceivedByAddress(address, 3);
+    const amount = await this.bitcoinRpcClient.getReceivedByAddress(address, 0);
 
     return {
       amount,

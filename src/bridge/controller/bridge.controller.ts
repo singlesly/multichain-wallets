@@ -85,13 +85,16 @@ export class BridgeController {
     @Param('network') network: NetworkEnum,
     @Param('coin') coin: CoinEnum,
     @Body() dto: TransferWalletDto,
+    @RequestPayload() meta: RequestMeta,
   ): Promise<TransactionResponse> {
     const { from, to, amount } = dto;
 
     return new TransactionResponse(
       await this.agentServiceFactory
         .for(network, coin)
-        .transfer(from, to, amount),
+        .transfer(from, to, amount, {
+          initiator: meta.ownerId,
+        }),
     );
   }
 

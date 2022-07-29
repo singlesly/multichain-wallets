@@ -53,7 +53,7 @@ export class BitcoinAgentService implements AgentService {
     options: AgentCallOptions,
   ): Promise<TxID> {
     const wallet = await this.getTemporaryWalletService.getByAddress(from);
-    wallet.checkOwnerOrFail(options.initiator);
+    wallet.checkOwnerOrFail(options.initiator, this.localEnvService);
 
     const transactionHash = await this.bitcoinRpcClient.createRawTransaction(
       to,

@@ -31,6 +31,7 @@ export class BitcoinAgentService implements AgentService {
       privateKey: privateKey,
       network: NetworkEnum.BTC,
       coin: CoinEnum.BTC,
+      owners: [],
     });
   }
 

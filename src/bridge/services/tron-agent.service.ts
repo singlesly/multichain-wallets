@@ -16,7 +16,7 @@ import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import TronWeb, { TransferContractType } from 'tronweb';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
-import {TronNetworkExceptionFactory} from "@app/common/exceptions/tron-network-exception.factory";
+import { TronNetworkExceptionFactory } from '@app/common/exceptions/tron-network-exception.factory';
 
 @Injectable()
 export class TronAgentService implements AgentService {
@@ -54,6 +54,7 @@ export class TronAgentService implements AgentService {
       pubKey: account.address.base58,
       network: NetworkEnum.TRON,
       coin: CoinEnum.TRX,
+      owners: [],
     });
   }
 

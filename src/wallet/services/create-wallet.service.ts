@@ -10,6 +10,7 @@ export interface CreateTemporaryWalletOptions {
   readonly privateKey: string;
   readonly network: NetworkEnum;
   readonly coin: CoinEnum;
+  readonly owners: string[];
 }
 
 @Injectable()
@@ -24,12 +25,14 @@ export class CreateWalletService {
     privateKey,
     network,
     coin,
+    owners,
   }: CreateTemporaryWalletOptions): Promise<Wallet> {
     const temporaryWallet = new Wallet(
       pubKey,
       await this.encryptService.encrypt(privateKey),
       network,
       coin,
+      owners,
     );
 
     return await this.temporaryWalletRepository.save(temporaryWallet);

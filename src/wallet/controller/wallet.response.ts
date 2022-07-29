@@ -17,6 +17,12 @@ export class WalletResponse {
   })
   public readonly coin: CoinEnum;
 
+  @ApiProperty({
+    type: 'string',
+    isArray: true,
+  })
+  public readonly owners: string[];
+
   @ApiProperty()
   public readonly createdAt: Date;
 
@@ -24,6 +30,7 @@ export class WalletResponse {
     this.address = wallet.pubKey;
     this.coin = wallet.coin;
     this.network = wallet.network;
+    this.owners = wallet.owners;
     this.createdAt = wallet.createdAt;
   }
 }

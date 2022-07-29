@@ -91,6 +91,7 @@ export class EthereumAgentService implements AgentService {
       privateKey: account.privateKey,
       network: NetworkEnum.ETH,
       coin: CoinEnum.ETH,
+      owners: [],
     });
   }
 

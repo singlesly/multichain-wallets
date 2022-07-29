@@ -1,11 +1,14 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import { Application } from '../dao/entity/application';
+import { TokenService } from '@app/auth/services/token.service';
 
 type TokenType = 'bearer' | 'basic';
 
 @Injectable()
 export class AppGuard implements CanActivate {
+  constructor(private readonly token: TokenService) {}
+
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
     const authorization = request.headers.authorization;
@@ -13,11 +16,16 @@ export class AppGuard implements CanActivate {
       return false;
     }
 
-    const tokenType: TokenType = authorization.split(' ')[0] as TokenType;
+    const tokenType: TokenType = authorization
+      .split(' ')[0]
+      .toLowerCase() as TokenType;
     const encodedAuth = authorization.split(' ')[1] as `${string}:${string}`;
 
     if (tokenType === 'basic') {
       return await this.handleBasic(encodedAuth);
+    }
+    if (tokenType === 'bearer') {
+      return await this.handleBearer(encodedAuth);
     }
 
     return false;
@@ -42,5 +50,11 @@ export class AppGuard implements CanActivate {
     }
 
     return app.authId() === appId;
+  }
+
+  private async handleBearer(token: string): Promise<boolean> {
+    await this.token.verify(token);
+
+    return true;
   }
 }

@@ -14,6 +14,7 @@ import { ApplicationModule } from '@app/application/application.module';
 import { BridgeModule } from '@app/bridge/bridge.module';
 import { BaseExceptionFilter } from '@app/common/filters/base-exception.filter';
 import { AuthModule } from '@app/auth/auth.module';
+import { TokenModule } from '@app/token/token.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AuthModule } from '@app/auth/auth.module';
       rootPath: path.join(__dirname, '..', 'assets'),
       serveRoot: '/assets',
     }),
+    TokenModule,
   ],
   controllers: [],
   providers: [

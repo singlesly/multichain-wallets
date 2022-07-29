@@ -4,11 +4,11 @@ import { AuthResult } from '@app/auth/services/auth.service';
 import { AuthUser } from '@app/auth/dao/entity/auth-user';
 import { TokenService } from '@app/auth/services/token.service';
 import { EthereumWeb3Service } from '@app/ethereum/services/ethereum-web3.service';
+import web3 from 'web3';
 
 @Injectable()
 export class Web3AuthService {
-  private readonly signMessage =
-    Buffer.from('Authentication').toString('base64');
+  private readonly signMessage = 'Authentication';
 
   constructor(
     private readonly authUserPgRepository: AuthUserPgRepository,
@@ -17,9 +17,9 @@ export class Web3AuthService {
   ) {}
 
   public async web3Auth(signature: string): Promise<AuthResult> {
-    const address = this.web3.eth.accounts.recover(this.signMessage, signature);
-
-    console.log(address);
+    const address = this.web3.eth.accounts
+      .recover(web3.utils.toHex(this.signMessage), signature)
+      .toLowerCase();
 
     let authUser = await this.authUserPgRepository.findByAddress(address);
 

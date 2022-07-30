@@ -27,6 +27,7 @@ export class HttpClientLoggingInterceptor {
         this.logger.log({
           label: 'Http Response',
           response: {
+            url: response.config.url,
             status: response.status,
             statusText: response.statusText,
             headers: response.headers,
@@ -36,10 +37,11 @@ export class HttpClientLoggingInterceptor {
 
         return response;
       },
-      (err) => {
+      async (err) => {
         this.logger.log({
           label: 'Http Response Error',
           response: {
+            url: err.config?.url,
             status: err.response?.status,
             statusText: err.response?.statusText,
             headers: err.response?.headers,

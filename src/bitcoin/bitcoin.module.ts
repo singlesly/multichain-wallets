@@ -10,6 +10,7 @@ import { RequestContextModule } from '@ledius/request-context';
 import { BtcCommand } from './cli/btc.command';
 import { UptimeCommand } from './cli/uptime.command';
 import { HttpClientLoggingInterceptor } from '../common/interceptors/http-client-logging.interceptor';
+import { BitcoinNetworkExceptionFactory } from '@app/common/exceptions/bitcoin-network.exception.factory';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { HttpClientLoggingInterceptor } from '../common/interceptors/http-client
     HttpClientLoggingInterceptor,
     BtcCommand,
     UptimeCommand,
+    BitcoinNetworkExceptionFactory,
   ],
   exports: [BitcoinRpcClient],
 })

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { WalletPgRepository } from '../repositories/wallet-pg.repository';
 import { WalletResponse } from './wallet.response';
 import {
@@ -8,13 +8,12 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AppGuard } from '@app/application/guard/app.guard';
+import { WalletsListDto } from '@app/wallet/dto/wallets-list.dto';
 
 @Controller()
 @ApiTags('Wallets')
 export class WalletController {
-  constructor(
-    private readonly temporaryWalletPgRepository: WalletPgRepository,
-  ) {}
+  constructor(private readonly walletPgRepository: WalletPgRepository) {}
 
   @Get('wallets')
   @ApiOkResponse({
@@ -24,8 +23,11 @@ export class WalletController {
   @UseGuards(AppGuard)
   @ApiBasicAuth()
   @ApiBearerAuth()
-  public async list(): Promise<WalletResponse[]> {
-    const wallets = await this.temporaryWalletPgRepository.findAll();
+  public async list(@Query() dto: WalletsListDto): Promise<WalletResponse[]> {
+    console.log(dto);
+    const wallets = await this.walletPgRepository.findBy({
+      owners: dto.owners,
+    });
 
     return wallets.map((wallet) => new WalletResponse(wallet));
   }
@@ -39,7 +41,7 @@ export class WalletController {
   @ApiBearerAuth()
   public async get(@Param('address') address: string): Promise<WalletResponse> {
     return new WalletResponse(
-      await this.temporaryWalletPgRepository.getByAddress(address),
+      await this.walletPgRepository.getByAddress(address),
     );
   }
 }

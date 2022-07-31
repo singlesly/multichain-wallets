@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { FindConditions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Wallet } from '../dao/entity/wallet';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
 
 export interface FindOptions {
-  readonly owners?: string;
+  readonly owners?: string[];
 }
 
 @Injectable()
@@ -20,7 +20,7 @@ export class WalletPgRepository {
     const qb = this.repository.createQueryBuilder('w');
 
     if (options.owners && options.owners.length) {
-      qb.where('w.owners @> ARRAY[:...owners]', options);
+      qb.where('w.owners @> ARRAY[:...owners]::varchar[]', options);
     }
 
     return await qb.getMany();

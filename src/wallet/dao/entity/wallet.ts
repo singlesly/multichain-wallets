@@ -12,6 +12,7 @@ import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
 import { LocalEnvService } from '@app/env/services/local-env.service';
 import { LocalEnvPathEnum } from '@app/env/contants/local-env-path.enum';
+import { WalletTypeEnum } from '@app/wallet/constants/wallet-type.enum';
 
 @Entity('wallets')
 export class Wallet {
@@ -34,6 +35,13 @@ export class Wallet {
     nullable: false,
   })
   public readonly privateKey: string;
+
+  @Column({
+    enum: WalletTypeEnum,
+    type: 'enum',
+    default: WalletTypeEnum.MAIN,
+  })
+  public readonly type: WalletTypeEnum;
 
   @Column({
     type: 'enum',
@@ -70,12 +78,14 @@ export class Wallet {
     network: NetworkEnum,
     coin: CoinEnum,
     owners: string[] = [],
+    type: WalletTypeEnum = WalletTypeEnum.MAIN,
   ) {
     this.pubKey = pubKey;
     this.privateKey = privateKey;
     this.network = network;
     this.coin = coin;
     this.owners = owners;
+    this.type = type;
   }
 
   public checkOwnerOrFail(owner: string, env: LocalEnvService): void {

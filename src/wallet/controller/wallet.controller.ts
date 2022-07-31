@@ -1,5 +1,5 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { TemporaryWalletPgRepository } from '../repositories/temporary-wallet-pg.repository';
+import { WalletPgRepository } from '../repositories/wallet-pg.repository';
 import { WalletResponse } from './wallet.response';
 import {
   ApiBasicAuth,
@@ -13,7 +13,7 @@ import { AppGuard } from '@app/application/guard/app.guard';
 @ApiTags('Wallets')
 export class WalletController {
   constructor(
-    private readonly temporaryWalletPgRepository: TemporaryWalletPgRepository,
+    private readonly temporaryWalletPgRepository: WalletPgRepository,
   ) {}
 
   @Get('wallets')

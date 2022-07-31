@@ -40,6 +40,8 @@ declare module 'tronweb' {
       transactionId: string,
     ): Promise<UnconfirmedTransactionInfo>;
 
+    public async getCurrentBlock(): Promise<CurrentBlock>;
+
     public async getSignWeight(
       transaction: TransactionData | SignedTransaction,
     ): Promise<SignWeight>;
@@ -78,6 +80,15 @@ declare module 'tronweb' {
     readonly solidityNode: string;
     readonly eventServer?: string;
     readonly privateKey?: string;
+  }
+
+  interface CurrentBlock {
+    readonly blockId: string;
+    readonly block_header: {
+      readonly raw_data: {
+        readonly number: number;
+      };
+    };
   }
 
   interface TronAccount {
@@ -141,6 +152,7 @@ declare module 'tronweb' {
   interface UnconfirmedTransactionInfo {
     readonly id: string;
     readonly fee: number;
+    readonly blockNumber: number;
     readonly receipt: {
       energy_fee: number;
       origin_energy_usage: number;

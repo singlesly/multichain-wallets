@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [ develop ]
+    branches: [ main ]
 
 env:
   RELEASE_REVISION: "${{ github.event.pull_request.number }}"

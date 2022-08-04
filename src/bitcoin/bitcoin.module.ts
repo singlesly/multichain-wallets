@@ -25,6 +25,7 @@ import { BitcoinNetworkExceptionFactory } from '@app/common/exceptions/bitcoin-n
           baseURL: env.getSafety(LocalEnvPathEnum.BTC_RPC_BASE_URL),
           headers: {
             'Content-Type': 'text/plain',
+            'x-api-key': env.get(LocalEnvPathEnum.BTC_RPC_API_KEY),
           },
         };
       },

@@ -6,6 +6,10 @@ import { LocalEnvPathEnum } from '../contants/local-env-path.enum';
 export class LocalEnvService {
   constructor(private readonly envProvider: EnvProviderService) {}
 
+  public get(key: LocalEnvPathEnum): string {
+    return this.envProvider.get(key);
+  }
+
   public getSafety(key: LocalEnvPathEnum): string {
     return this.envProvider.getSafety(key);
   }

@@ -1,11 +1,13 @@
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from '@app/auth/services/auth.service';
 import { Web3AuthService } from '@app/auth/services/web3-auth.service';
 import { AuthResponse } from '@app/auth/controller/auth.response';
 import { AuthDto } from '@app/auth/dto/auth.dto';
 import { Web3AuthDto } from '@app/auth/dto/web3-auth.dto';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller()
+@ApiTags('Auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -13,14 +15,20 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  public async auth(dto: AuthDto): Promise<AuthResponse> {
+  @ApiOkResponse({
+    type: AuthResponse,
+  })
+  public async auth(@Body() dto: AuthDto): Promise<AuthResponse> {
     return new AuthResponse(
       await this.authService.auth(dto.login, dto.password),
     );
   }
 
   @Post('web3')
-  public async web3Auth(dto: Web3AuthDto): Promise<AuthResponse> {
+  @ApiOkResponse({
+    type: AuthResponse,
+  })
+  public async web3Auth(@Body() dto: Web3AuthDto): Promise<AuthResponse> {
     return new AuthResponse(await this.web3AuthService.web3Auth(dto.signature));
   }
 }

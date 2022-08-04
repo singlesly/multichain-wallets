@@ -11,6 +11,7 @@ declare module 'tronweb' {
     public async createAccount(): Promise<TronAccount>;
     public contract(): Contact;
     public setAddress(privateKey: string): void;
+    public setHeader(headers: Record<string, string>): void;
     public toAscii(str: string): string;
   }
 
@@ -76,10 +77,14 @@ declare module 'tronweb' {
   }
 
   interface InitOptions {
-    readonly fullNode: string;
+    readonly fullNode?: string;
+    readonly fullHost?: string;
     readonly solidityNode: string;
     readonly eventServer?: string;
     readonly privateKey?: string;
+    readonly headers?: Record<string, string> & {
+      'TRON-PRO-API-KEY': string;
+    };
   }
 
   interface CurrentBlock {

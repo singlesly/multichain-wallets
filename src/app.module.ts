@@ -13,11 +13,13 @@ import path from 'path';
 import { ApplicationModule } from '@app/application/application.module';
 import { BridgeModule } from '@app/bridge/bridge.module';
 import { BaseExceptionFilter } from '@app/common/filters/base-exception.filter';
-import { UnhandledExceptionFilter } from '@app/common/filters/unhandled-exception.filter';
+import { AuthModule } from '@app/auth/auth.module';
+import { TokenModule } from '@app/token/token.module';
 
 @Module({
   imports: [
     ApplicationModule,
+    AuthModule,
     BitcoinModule,
     BridgeModule,
     DatabaseModule,
@@ -28,9 +30,10 @@ import { UnhandledExceptionFilter } from '@app/common/filters/unhandled-exceptio
     HealthModule,
     RouterModule.register(routes),
     ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, '..', 'assets'),
-      serveRoot: '/assets',
+      rootPath: path.join(__dirname, '..', 'public'),
+      serveRoot: '/public',
     }),
+    TokenModule,
   ],
   controllers: [],
   providers: [

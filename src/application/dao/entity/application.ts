@@ -3,8 +3,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { AuthUser } from '@app/auth/dao/entity/auth-user';
 
 const TABLE_NAME = 'applications';
 
@@ -26,13 +28,21 @@ export class Application extends BaseEntity {
   })
   public readonly secret: string;
 
+  @ManyToOne(() => AuthUser, {
+    eager: true,
+  })
+  public readonly owner?: AuthUser | undefined;
+
   @CreateDateColumn()
   public readonly createdAt: string;
 
-  constructor(name: string, secret: string) {
+  constructor(name: string, secret: string, owner?: AuthUser) {
     super();
     this.name = name;
     this.secret = secret;
+    if (owner) {
+      this.owner = owner;
+    }
   }
 
   public authId(): string {

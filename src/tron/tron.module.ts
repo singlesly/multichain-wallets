@@ -31,8 +31,13 @@ import TronWeb from 'tronweb';
       provide: TronWeb,
       useFactory: (env: LocalEnvService) => {
         return new TronWeb({
-          fullNode: env.getSafety(LocalEnvPathEnum.TRON_RPC_BASE_URL),
+          fullHost: env.getSafety(LocalEnvPathEnum.TRON_RPC_BASE_URL),
           solidityNode: env.getSafety(LocalEnvPathEnum.TRON_RPC_BASE_URL),
+          headers: {
+            'TRON-PRO-API-KEY': env.getSafety(
+              LocalEnvPathEnum.TRON_RPC_PRO_API_KEY,
+            ),
+          },
         });
       },
       inject: [LocalEnvService],

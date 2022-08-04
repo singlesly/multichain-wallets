@@ -83,7 +83,7 @@ export class EthereumAgentService implements AgentService {
     return receipt.transactionHash;
   }
 
-  public async createWallet(): Promise<Wallet> {
+  public async createWallet(owners: string[] = []): Promise<Wallet> {
     const account = await this.ethereumWeb3Service.eth.accounts.create();
 
     return await this.createTemporaryWalletService.create({
@@ -91,6 +91,7 @@ export class EthereumAgentService implements AgentService {
       privateKey: account.privateKey,
       network: NetworkEnum.ETH,
       coin: CoinEnum.ETH,
+      owners,
     });
   }
 

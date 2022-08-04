@@ -5,12 +5,26 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
 
+export interface FindOptions {
+  readonly owners?: string[];
+}
+
 @Injectable()
-export class TemporaryWalletPgRepository {
+export class WalletPgRepository {
   constructor(
     @InjectRepository(Wallet)
     private readonly repository: Repository<Wallet>,
   ) {}
+
+  public async findBy(options: FindOptions): Promise<Wallet[]> {
+    const qb = this.repository.createQueryBuilder('w');
+
+    if (options.owners && options.owners.length) {
+      qb.where('w.owners @> ARRAY[:...owners]::varchar[]', options);
+    }
+
+    return await qb.getMany();
+  }
 
   public async findAll(): Promise<Wallet[]> {
     return await this.repository.find({

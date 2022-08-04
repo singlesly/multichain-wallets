@@ -52,7 +52,7 @@ export class TronAgentService implements AgentService {
     };
   }
 
-  public async createWallet(): Promise<Wallet> {
+  public async createWallet(owners: string[] = []): Promise<Wallet> {
     const account = await this.tronWeb.createAccount();
 
     return this.createTemporaryWalletService.create({
@@ -60,6 +60,7 @@ export class TronAgentService implements AgentService {
       pubKey: account.address.base58,
       network: NetworkEnum.TRON,
       coin: CoinEnum.TRX,
+      owners,
     });
   }
 

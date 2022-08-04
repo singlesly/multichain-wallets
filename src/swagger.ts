@@ -1,24 +1,31 @@
 import { INestApplication } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as fs from 'fs';
-import path from 'path';
+import {
+  DocumentBuilder,
+  ExpressSwaggerCustomOptions,
+  SwaggerModule,
+} from '@nestjs/swagger';
 
 export async function useSwagger(app: INestApplication): Promise<void> {
   const config = new DocumentBuilder()
     .setTitle('Crypto Bridge')
     .addBasicAuth()
-    .setDescription('The cryptocurrency bridge API description')
+    .addBearerAuth()
+    .setDescription(
+      'Welcome! Using endpoints below to interact with blockchains in any supported cryptocurrencies',
+    )
+    .setContact(
+      'Artem Ilinykh',
+      'https://gitlab.com/devsinglesly',
+      'devsinglesly@gmail.com',
+    )
+    .setLicense('MIT', 'https://choosealicense.com/licenses/mit')
     .setVersion('1.0')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
 
   SwaggerModule.setup('/api/docs', app, document, {
-    customSiteTitle: 'BCS | Crypto Bridge',
-    customCss: fs.readFileSync(
-      path.join(__dirname, '..', 'assets/swagger.css'),
-      'utf8',
-    ),
-    customJs: `/assets/swagger.js`,
-  });
+    customSiteTitle: 'Crypto Bridge',
+    customCssUrl: '/public/swagger/theme-feeling-blue.css',
+  } as ExpressSwaggerCustomOptions);
 }

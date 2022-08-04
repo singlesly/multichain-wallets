@@ -1,6 +1,7 @@
 import { EnvProviderService } from './env-provider.service';
 import { Injectable } from '@nestjs/common';
 import { LocalEnvPathEnum } from '../contants/local-env-path.enum';
+import { JwtModuleOptions } from '@nestjs/jwt/dist/interfaces/jwt-module-options.interface';
 
 @Injectable()
 export class LocalEnvService {
@@ -12,6 +13,17 @@ export class LocalEnvService {
 
   public getSafety(key: LocalEnvPathEnum): string {
     return this.envProvider.getSafety(key);
+  }
+
+  public getBoolean(key: LocalEnvPathEnum): boolean {
+    const v = this.getSafety(key);
+    return v === '1' || v === 'true';
+  }
+
+  public getJwtOptions(): JwtModuleOptions {
+    return {
+      secret: this.getSafety(LocalEnvPathEnum.JWT_SECRET),
+    };
   }
 
   public getUsdtContractAddress(): string {

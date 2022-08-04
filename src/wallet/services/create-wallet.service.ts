@@ -1,4 +1,4 @@
-import { TemporaryWalletPgRepository } from '../repositories/temporary-wallet-pg.repository';
+import { WalletPgRepository } from '../repositories/wallet-pg.repository';
 import { Injectable } from '@nestjs/common';
 import { Wallet } from '../dao/entity/wallet';
 import { NetworkEnum } from '@app/common/network.enum';
@@ -10,12 +10,13 @@ export interface CreateTemporaryWalletOptions {
   readonly privateKey: string;
   readonly network: NetworkEnum;
   readonly coin: CoinEnum;
+  readonly owners: string[];
 }
 
 @Injectable()
 export class CreateWalletService {
   constructor(
-    private readonly temporaryWalletRepository: TemporaryWalletPgRepository,
+    private readonly temporaryWalletRepository: WalletPgRepository,
     private readonly encryptService: EncryptService,
   ) {}
 
@@ -24,12 +25,14 @@ export class CreateWalletService {
     privateKey,
     network,
     coin,
+    owners,
   }: CreateTemporaryWalletOptions): Promise<Wallet> {
     const temporaryWallet = new Wallet(
       pubKey,
       await this.encryptService.encrypt(privateKey),
       network,
       coin,
+      owners,
     );
 
     return await this.temporaryWalletRepository.save(temporaryWallet);

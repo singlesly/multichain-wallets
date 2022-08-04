@@ -30,7 +30,7 @@ import { TokenModule } from '@app/token/token.module';
     HealthModule,
     RouterModule.register(routes),
     ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, '..', 'assets'),
+      rootPath: path.join(__dirname, '..', 'public'),
       serveRoot: '/public',
     }),
     TokenModule,

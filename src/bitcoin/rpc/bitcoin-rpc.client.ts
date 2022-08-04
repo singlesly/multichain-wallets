@@ -7,10 +7,16 @@ import {
   ListUnspentResult,
   RawTransactionResult,
 } from '../interfaces';
+import { BaseException } from '@app/common/base-exception';
+import { WebErrorsEnum } from '@app/common/web-errors.enum';
+import { BitcoinNetworkExceptionFactory } from '@app/common/exceptions/bitcoin-network.exception.factory';
 
 @Injectable()
 export class BitcoinRpcClient {
-  constructor(private readonly http: HttpService) {}
+  constructor(
+    private readonly http: HttpService,
+    private readonly bitcoinNetworkExceptionFactory: BitcoinNetworkExceptionFactory,
+  ) {}
 
   public async createWallet(
     name: string,
@@ -50,14 +56,24 @@ export class BitcoinRpcClient {
     return BigInt((balance * 10 ** 8).toFixed(0));
   }
 
-  public async estimateSmartFee(minconf = 6): Promise<bigint> {
-    const result = await this.rpcCall<{
-      feerate: number;
-      blocks: number;
-      errors: string[];
-    }>('estimatesmartfee', `wallet/${MAIN_WALLET}`, minconf);
+  public async estimateSmartFee(minconf = 3): Promise<bigint> {
+    try {
+      const result = await this.rpcCall<{
+        feerate: number;
+        blocks: number;
+        errors: string[];
+      }>('estimatesmartfee', `wallet/${MAIN_WALLET}`, minconf);
 
-    return BigInt(((result.feerate * 10 ** 8) / 1000).toFixed(0));
+      return BigInt(((result.feerate * 10 ** 8) / 1000).toFixed(0));
+    } catch (e) {
+      throw new BaseException(
+        {
+          statusCode: WebErrorsEnum.INTERNAL_ERROR,
+          message: 'Cannot estimate fee',
+        },
+        e,
+      );
+    }
   }
 
   public async listUnspent(
@@ -87,13 +103,22 @@ export class BitcoinRpcClient {
       includeWatching: boolean;
     },
   ): Promise<string> {
-    const response = await this.rpcCall<{
-      hex: string;
-      fee: number;
-      changepos: number;
-    }>('fundrawtransaction', `wallet/${MAIN_WALLET}`, transactionHash, options);
+    try {
+      const response = await this.rpcCall<{
+        hex: string;
+        fee: number;
+        changepos: number;
+      }>(
+        'fundrawtransaction',
+        `wallet/${MAIN_WALLET}`,
+        transactionHash,
+        options,
+      );
 
-    return response.hex;
+      return response.hex;
+    } catch (e) {
+      throw await this.bitcoinNetworkExceptionFactory.toThrow(e);
+    }
   }
 
   public async decodeRawTransaction(
@@ -174,15 +199,19 @@ export class BitcoinRpcClient {
     url = '',
     ...params: unknown[]
   ): Promise<R> {
-    const response = await lastValueFrom(
-      this.http.post<{ result: R }>(url, {
-        jsonrpc: '1.0',
-        id: 'crypto-bridge',
-        method,
-        params,
-      }),
-    );
+    try {
+      const response = await lastValueFrom(
+        this.http.post<{ result: R }>(url, {
+          jsonrpc: '1.0',
+          id: 'crypto-bridge',
+          method,
+          params,
+        }),
+      );
 
-    return response.data.result as R;
+      return response.data.result as R;
+    } catch (e) {
+      throw e;
+    }
   }
 }

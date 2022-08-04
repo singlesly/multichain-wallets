@@ -7,6 +7,10 @@ import { JwtModuleOptions } from '@nestjs/jwt/dist/interfaces/jwt-module-options
 export class LocalEnvService {
   constructor(private readonly envProvider: EnvProviderService) {}
 
+  public get(key: LocalEnvPathEnum): string {
+    return this.envProvider.get(key);
+  }
+
   public getSafety(key: LocalEnvPathEnum): string {
     return this.envProvider.getSafety(key);
   }

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BitcoinRpcClient } from '@app/bitcoin/rpc/bitcoin-rpc.client';
 import {
-  AgentCallOptions,
   AgentService,
   Balance,
   TransactionInfo,
@@ -13,7 +12,11 @@ import { CoinEnum } from '@app/common/coin.enum';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import { Wallet } from '@app/wallet/dao/entity/wallet';
-import { LocalEnvService } from '@app/env/services/local-env.service';
+import { ECPairFactory } from 'ecpair';
+import * as ecc from 'tiny-secp256k1';
+import * as bitcoin from 'bitcoinjs-lib';
+
+const ECPair = ECPairFactory(ecc);
 
 @Injectable()
 export class BitcoinAgentService implements AgentService {
@@ -21,19 +24,17 @@ export class BitcoinAgentService implements AgentService {
     private readonly bitcoinRpcClient: BitcoinRpcClient,
     private readonly createTemporaryWalletService: CreateWalletService,
     private readonly getTemporaryWalletService: GetWalletService,
-    private readonly localEnvService: LocalEnvService,
+    private readonly encryptService: EncryptService,
   ) {}
 
-  public async createWallet(owners: string[] = []): Promise<Wallet> {
+  public async createWallet(): Promise<Wallet> {
     const address = await this.bitcoinRpcClient.getNewAddress();
-    const privateKey = await this.bitcoinRpcClient.dumpPrivateKey(address);
 
     return await this.createTemporaryWalletService.create({
       pubKey: address,
-      privateKey: privateKey,
+      privateKey: '',
       network: NetworkEnum.BTC,
       coin: CoinEnum.BTC,
-      owners,
     });
   }
 
@@ -50,10 +51,8 @@ export class BitcoinAgentService implements AgentService {
     from: string,
     to: string,
     amount: bigint,
-    options: AgentCallOptions,
   ): Promise<TxID> {
     const wallet = await this.getTemporaryWalletService.getByAddress(from);
-    wallet.checkOwnerOrFail(options.initiator, this.localEnvService);
 
     const transactionHash = await this.bitcoinRpcClient.createRawTransaction(
       to,

@@ -55,6 +55,12 @@ export class UsdtTrc20AgentService implements AgentService {
     const transaction =
       await this.tronWeb.trx.getTransaction<TriggerSmartContractType>(id);
 
+    const transactionInfo =
+      await this.tronWeb.trx.getUnconfirmedTransactionInfo(id);
+    const currentBlock = await this.tronWeb.trx.getCurrentBlock();
+    const confirmations =
+      currentBlock.block_header.raw_data.number - transactionInfo.blockNumber;
+
     const [{ parameter }] = transaction.raw_data.contract;
 
     const [hexRecipient, amountBn] = await this.parameterService.decode<
@@ -66,7 +72,7 @@ export class UsdtTrc20AgentService implements AgentService {
       to: base58Address(hexRecipient),
       amount: BigInt(amountBn.toString()),
       from: base58Address(parameter.value.owner_address),
-      confirmations: 0,
+      confirmations,
     };
   }
 

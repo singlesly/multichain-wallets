@@ -50,13 +50,7 @@ export class HttpClientLoggingInterceptor {
             data: err.response?.data,
           },
         });
-        throw new BaseException(
-          {
-            statusCode: WebErrorsEnum.INTERNAL_ERROR,
-            message: 'Internal error',
-          },
-          err,
-        );
+        throw err;
       },
     );
   }

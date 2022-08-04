@@ -10,7 +10,15 @@ export async function useSwagger(app: INestApplication): Promise<void> {
     .setTitle('Crypto Bridge')
     .addBasicAuth()
     .addBearerAuth()
-    .setDescription('The cryptocurrency bridge API description')
+    .setDescription(
+      'Welcome! Using endpoints below to interact with blockchains in any supported cryptocurrencies',
+    )
+    .setContact(
+      'Artem Ilinykh',
+      'https://gitlab.com/devsinglesly',
+      'devsinglesly@gmail.com',
+    )
+    .setLicense('MIT', 'https://choosealicense.com/licenses/mit')
     .setVersion('1.0')
     .build();
 

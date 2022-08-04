@@ -25,7 +25,7 @@ export async function useSwagger(app: INestApplication): Promise<void> {
   const document = SwaggerModule.createDocument(app, config);
 
   SwaggerModule.setup('/api/docs', app, document, {
-    customSiteTitle: 'Crypto-Bridge',
+    customSiteTitle: 'Crypto Bridge',
     customCssUrl: '/public/swagger/theme-feeling-blue.css',
   } as ExpressSwaggerCustomOptions);
 }

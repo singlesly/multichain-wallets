@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [ develop ]
+    branches: [ main ]
 
 env:
   RELEASE_REVISION: "${{ github.event.pull_request.number }}"
@@ -37,7 +37,8 @@ jobs:
       id: vars
       run: |
         echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-        echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        echo "SHORT_SHA1=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        echo "SHORT_SHA=main" >> $GITHUB_ENV
 
     - name: Build, tag, and push the image to cr.selcloud.ru
       id: build-image

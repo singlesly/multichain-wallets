@@ -15,19 +15,11 @@ declare module 'tronweb' {
   }
 
   declare class Trx {
-    public async getCurrentBlock(): Promise<Block>;
-
-    public async getTransactionInfo(
-      transactionId: string,
-    ): Promise<TransactionInfo>;
-
     public async getBalance(address: string): Promise<number>;
-
     public async sign(
       transaction: TransactionData | string,
       privateKey: string,
     ): Promise<SignedTransaction>;
-
     public async sendTransaction<P>(
       to: string,
       amount: number,
@@ -47,6 +39,8 @@ declare module 'tronweb' {
     public async getUnconfirmedTransactionInfo(
       transactionId: string,
     ): Promise<UnconfirmedTransactionInfo>;
+
+    public async getCurrentBlock(): Promise<CurrentBlock>;
 
     public async getSignWeight(
       transaction: TransactionData | SignedTransaction,
@@ -86,6 +80,15 @@ declare module 'tronweb' {
     readonly solidityNode: string;
     readonly eventServer?: string;
     readonly privateKey?: string;
+  }
+
+  interface CurrentBlock {
+    readonly blockId: string;
+    readonly block_header: {
+      readonly raw_data: {
+        readonly number: number;
+      };
+    };
   }
 
   interface TronAccount {
@@ -149,28 +152,13 @@ declare module 'tronweb' {
   interface UnconfirmedTransactionInfo {
     readonly id: string;
     readonly fee: number;
+    readonly blockNumber: number;
     readonly receipt: {
       energy_fee: number;
       origin_energy_usage: number;
       energy_usage_total: number;
       net_fee: number;
       result: 'SUCCESS';
-    };
-  }
-
-  export interface TransactionInfo {
-    readonly blockNumber: number;
-    readonly receipt: {
-      result: 'SUCCESS' | string;
-    };
-  }
-
-  export interface Block {
-    readonly blockID: string;
-    readonly block_header: {
-      raw_data: {
-        number: number;
-      };
     };
   }
 

@@ -16,6 +16,7 @@ import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import TronWeb, { TransferContractType } from 'tronweb';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
+import { TronNetworkExceptionFactory } from '@app/common/exceptions/tron-network-exception.factory';
 
 @Injectable()
 export class TronAgentService implements AgentService {
@@ -27,33 +28,27 @@ export class TronAgentService implements AgentService {
     private readonly createTemporaryWalletService: CreateWalletService,
     private readonly getTemporaryWalletService: GetWalletService,
     private readonly encryptService: EncryptService,
+    private readonly tronNetworkExceptionFactory: TronNetworkExceptionFactory,
   ) {}
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
-    const [transaction, transactionInfo, currentBlock] = await Promise.all([
-      this.tronWeb.trx.getTransaction<TransferContractType>(id),
-      this.tronWeb.trx.getTransactionInfo(id),
-      this.tronWeb.trx.getCurrentBlock(),
-    ]);
+    const transaction =
+      await this.tronWeb.trx.getTransaction<TransferContractType>(id);
+    const transactionInfo =
+      await this.tronWeb.trx.getUnconfirmedTransactionInfo(id);
+    const currentBlock = await this.tronWeb.trx.getCurrentBlock();
 
     const [{ parameter }] = transaction.raw_data.contract;
 
-    const confirmations = () => {
-      if (!transactionInfo.blockNumber) {
-        return 0;
-      }
-
-      return (
-        currentBlock.block_header.raw_data.number - transactionInfo.blockNumber
-      );
-    };
+    const confirmations =
+      currentBlock.block_header.raw_data.number - transactionInfo.blockNumber;
 
     return {
       transactionId: transaction.txID,
       to: base58Address(parameter.value.to_address),
       amount: BigInt(parameter.value.amount),
       from: base58Address(parameter.value.owner_address),
-      confirmations: confirmations(),
+      confirmations,
     };
   }
 
@@ -64,7 +59,7 @@ export class TronAgentService implements AgentService {
       privateKey: account.privateKey,
       pubKey: account.address.base58,
       network: NetworkEnum.TRON,
-      coin: CoinEnum.TRON,
+      coin: CoinEnum.TRX,
     });
   }
 
@@ -111,18 +106,7 @@ export class TronAgentService implements AgentService {
 
       return transaction.transaction.txID;
     } catch (e) {
-      const error = e as unknown | string;
-      if (
-        typeof error === 'string' &&
-        error.search('balance is not sufficient')
-      ) {
-        throw new BaseException({
-          statusCode: WebErrorsEnum.INSUFFICIENT_FUNDS,
-          message: 'Insufficient funds',
-        });
-      }
-
-      throw e;
+      throw this.tronNetworkExceptionFactory.toThrow(e);
     }
   }
 }

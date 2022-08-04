@@ -9,10 +9,7 @@ import { Wallet } from '@app/wallet/dao/entity/wallet';
 import { USDTClientService } from '@app/usdt-trc20/services/usdt-client.service';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
-import TronWeb, {
-  TransferContractType,
-  TriggerSmartContractType,
-} from 'tronweb';
+import TronWeb, { TriggerSmartContractType } from 'tronweb';
 import { base58Address } from '@app/utils';
 import { ParameterService } from '@app/tron/services/parameter.service';
 import { BigNumber } from 'ethers';
@@ -55,11 +52,14 @@ export class UsdtTrc20AgentService implements AgentService {
   }
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
-    const [transaction, transactionInfo, currentBlock] = await Promise.all([
-      this.tronWeb.trx.getTransaction<TriggerSmartContractType>(id),
-      this.tronWeb.trx.getTransactionInfo(id),
-      this.tronWeb.trx.getCurrentBlock(),
-    ]);
+    const transaction =
+      await this.tronWeb.trx.getTransaction<TriggerSmartContractType>(id);
+
+    const transactionInfo =
+      await this.tronWeb.trx.getUnconfirmedTransactionInfo(id);
+    const currentBlock = await this.tronWeb.trx.getCurrentBlock();
+    const confirmations =
+      currentBlock.block_header.raw_data.number - transactionInfo.blockNumber;
 
     const [{ parameter }] = transaction.raw_data.contract;
 
@@ -67,22 +67,12 @@ export class UsdtTrc20AgentService implements AgentService {
       [string, BigNumber]
     >(['address', 'uint256'], parameter.value.data);
 
-    const confirmations = () => {
-      if (!transactionInfo.blockNumber) {
-        return 0;
-      }
-
-      return (
-        currentBlock.block_header.raw_data.number - transactionInfo.blockNumber
-      );
-    };
-
     return {
       transactionId: transaction.txID,
       to: base58Address(hexRecipient),
       amount: BigInt(amountBn.toString()),
       from: base58Address(parameter.value.owner_address),
-      confirmations: confirmations(),
+      confirmations,
     };
   }
 

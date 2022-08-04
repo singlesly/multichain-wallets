@@ -7,11 +7,13 @@ import { LocalEnvService } from '@app/env/services/local-env.service';
 import { EnvModule } from '@app/env/env.module';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
+import {TronNetworkExceptionFactory} from "@app/common/exceptions/tron-network-exception.factory";
 
 @Module({
   imports: [TronModule, EnvModule],
   providers: [
     USDTClientService,
+      TronNetworkExceptionFactory,
     {
       provide: USDT_CONTRACT,
       useFactory: async (

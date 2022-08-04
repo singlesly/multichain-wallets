@@ -12,6 +12,11 @@ import { CoinEnum } from '@app/common/coin.enum';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import { Wallet } from '@app/wallet/dao/entity/wallet';
+import { ECPairFactory } from 'ecpair';
+import * as ecc from 'tiny-secp256k1';
+import * as bitcoin from 'bitcoinjs-lib';
+
+const ECPair = ECPairFactory(ecc);
 
 @Injectable()
 export class BitcoinAgentService implements AgentService {
@@ -24,18 +29,17 @@ export class BitcoinAgentService implements AgentService {
 
   public async createWallet(): Promise<Wallet> {
     const address = await this.bitcoinRpcClient.getNewAddress();
-    const privateKey = await this.bitcoinRpcClient.dumpPrivateKey(address);
 
     return await this.createTemporaryWalletService.create({
       pubKey: address,
-      privateKey: privateKey,
+      privateKey: '',
       network: NetworkEnum.BTC,
       coin: CoinEnum.BTC,
     });
   }
 
   public async getBalance(address: string): Promise<Balance> {
-    const amount = await this.bitcoinRpcClient.getReceivedByAddress(address, 3);
+    const amount = await this.bitcoinRpcClient.getReceivedByAddress(address, 0);
 
     return {
       amount,

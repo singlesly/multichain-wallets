@@ -11,7 +11,8 @@ import { TronAgentService } from '@app/bridge/services/tron-agent.service';
 import { EncryptModule } from '@app/encrypt/encrypt.module';
 import { UsdtTrc20Module } from '@app/usdt-trc20/usdt-trc20.module';
 import { UsdtTrc20AgentService } from '@app/bridge/services/usdt-trc20-agent.service';
-import {TronNetworkExceptionFactory} from "@app/common/exceptions/tron-network-exception.factory";
+import { TronNetworkExceptionFactory } from '@app/common/exceptions/tron-network-exception.factory';
+import { LoggerModule } from '@ledius/logger';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import {TronNetworkExceptionFactory} from "@app/common/exceptions/tron-network-e
     BitcoinModule,
     EncryptModule,
     UsdtTrc20Module,
+    LoggerModule,
   ],
   controllers: [BridgeController],
   providers: [
@@ -29,7 +31,7 @@ import {TronNetworkExceptionFactory} from "@app/common/exceptions/tron-network-e
     EthereumAgentService,
     TronAgentService,
     UsdtTrc20AgentService,
-      TronNetworkExceptionFactory,
+    TronNetworkExceptionFactory,
   ],
 })
 export class BridgeModule {}

@@ -12,6 +12,7 @@ export class FeatureModule {
     provider: Type<any> = EnvFeatureProvider,
   ): DynamicModule {
     return {
+      global: true,
       module: FeatureModule,
       imports: [EnvModule],
       providers: [

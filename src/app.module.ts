@@ -15,6 +15,7 @@ import { BridgeModule } from '@app/bridge/bridge.module';
 import { BaseExceptionFilter } from '@app/common/filters/base-exception.filter';
 import { AuthModule } from '@app/auth/auth.module';
 import { TokenModule } from '@app/token/token.module';
+import { FeatureModule } from '@app/feature/feature.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { TokenModule } from '@app/token/token.module';
       serveRoot: '/public',
     }),
     TokenModule,
+    FeatureModule,
   ],
   controllers: [],
   providers: [

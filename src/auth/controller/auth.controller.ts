@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from '@app/auth/services/auth.service';
 import { Web3AuthService } from '@app/auth/services/web3-auth.service';
 import { AuthResponse } from '@app/auth/controller/auth.response';
@@ -7,6 +7,7 @@ import { Web3AuthDto } from '@app/auth/dto/web3-auth.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UseFeatures } from '@app/feature/decorators/features';
 import { LocalEnvPathEnum } from '@app/env/contants/local-env-path.enum';
+import { FeatureGuard } from '@app/feature/guards/feature.guard';
 
 @Controller()
 @ApiTags('Auth')
@@ -21,6 +22,7 @@ export class AuthController {
     type: AuthResponse,
   })
   @UseFeatures(LocalEnvPathEnum.FEATURE_AUTHENTICATION)
+  @UseGuards(FeatureGuard)
   public async auth(@Body() dto: AuthDto): Promise<AuthResponse> {
     return new AuthResponse(
       await this.authService.auth(dto.login, dto.password),
@@ -32,6 +34,7 @@ export class AuthController {
     type: AuthResponse,
   })
   @UseFeatures(LocalEnvPathEnum.FEATURE_AUTHENTICATION)
+  @UseGuards(FeatureGuard)
   public async web3Auth(@Body() dto: Web3AuthDto): Promise<AuthResponse> {
     return new AuthResponse(await this.web3AuthService.web3Auth(dto.signature));
   }

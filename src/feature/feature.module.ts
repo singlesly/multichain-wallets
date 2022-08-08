@@ -44,6 +44,7 @@ export class FeatureModule {
           inject: [FEATURE_PROVIDER, LoggerService],
         },
       ],
+      exports: [FeatureService],
     };
   }
 }

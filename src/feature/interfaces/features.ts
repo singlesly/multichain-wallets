@@ -3,6 +3,10 @@ import { Feature } from '@app/feature/interfaces/feature-provider';
 export class Features {
   private features: Record<string, Feature> = {};
 
+  public getFeatures(): Feature[] {
+    return Object.values(this.features);
+  }
+
   public apply(feature: Feature): this {
     this.features[feature.key] = feature;
 

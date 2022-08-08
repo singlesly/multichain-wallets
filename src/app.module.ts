@@ -35,7 +35,7 @@ import { FeatureModule } from '@app/feature/feature.module';
       serveRoot: '/public',
     }),
     TokenModule,
-    FeatureModule,
+    FeatureModule.forRoot(),
   ],
   controllers: [],
   providers: [

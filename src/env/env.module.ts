@@ -4,6 +4,6 @@ import { LocalEnvService } from './services/local-env.service';
 
 @Module({
   providers: [EnvProviderService, LocalEnvService],
-  exports: [LocalEnvService],
+  exports: [LocalEnvService, EnvProviderService],
 })
 export class EnvModule {}

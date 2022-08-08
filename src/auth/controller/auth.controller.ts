@@ -5,6 +5,8 @@ import { AuthResponse } from '@app/auth/controller/auth.response';
 import { AuthDto } from '@app/auth/dto/auth.dto';
 import { Web3AuthDto } from '@app/auth/dto/web3-auth.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { UseFeatures } from '@app/feature/decorators/features';
+import { LocalEnvPathEnum } from '@app/env/contants/local-env-path.enum';
 
 @Controller()
 @ApiTags('Auth')
@@ -18,6 +20,7 @@ export class AuthController {
   @ApiOkResponse({
     type: AuthResponse,
   })
+  @UseFeatures(LocalEnvPathEnum.FEATURE_AUTHENTICATION)
   public async auth(@Body() dto: AuthDto): Promise<AuthResponse> {
     return new AuthResponse(
       await this.authService.auth(dto.login, dto.password),
@@ -28,6 +31,7 @@ export class AuthController {
   @ApiOkResponse({
     type: AuthResponse,
   })
+  @UseFeatures(LocalEnvPathEnum.FEATURE_AUTHENTICATION)
   public async web3Auth(@Body() dto: Web3AuthDto): Promise<AuthResponse> {
     return new AuthResponse(await this.web3AuthService.web3Auth(dto.signature));
   }

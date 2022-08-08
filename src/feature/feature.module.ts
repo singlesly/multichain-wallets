@@ -6,6 +6,8 @@ import { Features } from '@app/feature/interfaces/features';
 import { EnvFeatureProvider } from '@app/feature/providers/env-feature-provider';
 import { FEATURE_PROVIDER } from '@app/feature/contants';
 import { LoggerModule, LoggerService } from '@ledius/logger';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 @Module({})
 export class FeatureModule {
@@ -15,7 +17,14 @@ export class FeatureModule {
     return {
       global: true,
       module: FeatureModule,
-      imports: [EnvModule, LoggerModule],
+      imports: [
+        EnvModule,
+        LoggerModule,
+        ServeStaticModule.forRoot({
+          serveRoot: '/features',
+          rootPath: path.join(__dirname, '../..', 'public', 'features'),
+        }),
+      ],
       providers: [
         {
           provide: FEATURE_PROVIDER,

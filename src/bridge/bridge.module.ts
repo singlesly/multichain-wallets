@@ -13,6 +13,8 @@ import { UsdtTrc20Module } from '@app/usdt-trc20/usdt-trc20.module';
 import { UsdtTrc20AgentService } from '@app/bridge/services/usdt-trc20-agent.service';
 import { TronNetworkExceptionFactory } from '@app/common/exceptions/tron-network-exception.factory';
 import { EnvModule } from '@app/env/env.module';
+import { TronNetworkExceptionFactory } from '@app/common/exceptions/tron-network-exception.factory';
+import { LoggerModule } from '@ledius/logger';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { EnvModule } from '@app/env/env.module';
     BitcoinModule,
     EncryptModule,
     UsdtTrc20Module,
+    LoggerModule,
     EnvModule,
   ],
   controllers: [BridgeController],

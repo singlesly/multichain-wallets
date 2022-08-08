@@ -16,6 +16,7 @@ import utils from 'web3-utils';
 import { Wallet } from '@app/wallet/dao/entity/wallet';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
+import { LoggerService } from '@ledius/logger';
 
 @Injectable()
 export class EthereumAgentService implements AgentService {
@@ -24,6 +25,7 @@ export class EthereumAgentService implements AgentService {
     private readonly createTemporaryWalletService: CreateWalletService,
     private readonly getTemporaryWalletService: GetWalletService,
     private readonly encryptorService: EncryptService,
+    private readonly logger: LoggerService,
   ) {}
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
@@ -119,8 +121,18 @@ export class EthereumAgentService implements AgentService {
 
     const gas = await this.ethereumWeb3Service.eth
       .estimateGas(transactionConfig)
-      .catch(() => {
-        return 0;
+      .catch((e) => {
+        this.logger.log(
+          new BaseException(
+            {
+              message: 'Estimate fee catch',
+              statusCode: WebErrorsEnum.INTERNAL_ERROR,
+            },
+            e,
+          ),
+        );
+
+        return utils.toWei(utils.toBN(5), 'gwei').toString();
       });
 
     const feeAmount = BigInt(

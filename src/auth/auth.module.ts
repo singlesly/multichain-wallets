@@ -7,9 +7,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthUser } from '@app/auth/dao/entity/auth-user';
 import { EthereumModule } from '@app/ethereum/ethereum.module';
 import { TokenModule } from '@app/token/token.module';
+import { LoggerModule } from '@ledius/logger';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AuthUser]), EthereumModule, TokenModule],
+  imports: [
+    TypeOrmModule.forFeature([AuthUser]),
+    EthereumModule,
+    TokenModule,
+    LoggerModule,
+  ],
   controllers: [AuthController],
   providers: [AuthService, Web3AuthService, AuthUserPgRepository],
 })

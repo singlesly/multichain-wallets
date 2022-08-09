@@ -3,12 +3,7 @@ import { BitcoinModule } from '@app/bitcoin/bitcoin.module';
 import { DatabaseModule } from '@app/database/database.module';
 import { EncryptModule } from '@app/encrypt/encrypt.module';
 import { WalletModule } from '@app/wallet/wallet.module';
-import {
-  APP_FILTER,
-  APP_GUARD,
-  APP_INTERCEPTOR,
-  RouterModule,
-} from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR, RouterModule } from '@nestjs/core';
 import { RequestContextModule } from '@ledius/request-context';
 import { LoggerModule } from '@ledius/logger';
 import { HealthModule } from '@app/health/health.module';
@@ -20,9 +15,7 @@ import { BridgeModule } from '@app/bridge/bridge.module';
 import { BaseExceptionFilter } from '@app/common/filters/base-exception.filter';
 import { AuthModule } from '@app/auth/auth.module';
 import { TokenModule } from '@app/token/token.module';
-import { FeatureModule } from '@app/feature/feature.module';
-import { FeatureGuard } from '@app/feature/guards/feature.guard';
-import { EnvFeatureProvider } from '@app/feature/providers/env-feature-provider';
+import { FeatureModule } from '@ledius/feature/dist/feature.module';
 
 @Module({
   imports: [

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@ledius/env": "^1.0.2",
+    "@ledius/feature": "^1.0.0",
     "@ledius/logger": "^1.0.3",
     "@ledius/request-context": "^1.0.1",
     "@nestjs/axios": "^0.0.7",

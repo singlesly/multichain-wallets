@@ -1,2 +1,0 @@
-export const ENV_FEATURE_PREFIX = 'FEATURE_';
-export const FEATURE_PROVIDER = 'FEATURE_PROVIDER';

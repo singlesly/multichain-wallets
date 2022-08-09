@@ -1,30 +1,22 @@
-import { DynamicModule, Module, Type } from '@nestjs/common';
+import { DynamicModule, Module } from '@nestjs/common';
 import { EnvModule } from '@app/env/env.module';
 import { FeatureService } from '@app/feature/services/feature.service';
 import { FeatureProvider } from '@app/feature/interfaces/feature-provider';
 import { Features } from '@app/feature/interfaces/features';
-import { EnvFeatureProvider } from '@app/feature/providers/env-feature-provider';
 import { FEATURE_PROVIDER } from '@app/feature/contants';
 import { LoggerModule, LoggerService } from '@ledius/logger';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import * as path from 'path';
+import { FeatureModuleOptions } from '@app/feature/interfaces/feature-module.options';
+import { EnvFeatureProvider } from '@app/feature/providers/env-feature-provider';
 
 @Module({})
 export class FeatureModule {
-  public static forRoot(
-    provider: Type<any> = EnvFeatureProvider,
-  ): DynamicModule {
+  public static forRoot(options: FeatureModuleOptions = {}): DynamicModule {
+    const provider = options.provider ?? EnvFeatureProvider;
+
     return {
       global: true,
       module: FeatureModule,
-      imports: [
-        EnvModule,
-        LoggerModule,
-        ServeStaticModule.forRoot({
-          serveRoot: '/features',
-          rootPath: path.join(__dirname, '../..', 'public', 'features'),
-        }),
-      ],
+      imports: [EnvModule, LoggerModule],
       providers: [
         {
           provide: FEATURE_PROVIDER,

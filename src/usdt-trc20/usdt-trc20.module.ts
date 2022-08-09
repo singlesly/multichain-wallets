@@ -3,17 +3,17 @@ import { TronModule } from '@app/tron/tron.module';
 import { USDT_CONTRACT } from '@app/usdt-trc20/constants';
 import TronWeb, { TRC20Contract } from 'tronweb';
 import { USDTClientService } from '@app/usdt-trc20/services/usdt-client.service';
-import { LocalEnvService } from '@app/env/services/local-env.service';
-import { EnvModule } from '@app/env/env.module';
+import { LocalEnvService } from '@app/local-env/services/local-env.service';
+import { LocalEnvModule } from '@app/local-env/local-env.module';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
-import {TronNetworkExceptionFactory} from "@app/common/exceptions/tron-network-exception.factory";
+import { TronNetworkExceptionFactory } from '@app/common/exceptions/tron-network-exception.factory';
 
 @Module({
-  imports: [TronModule, EnvModule],
+  imports: [TronModule, LocalEnvModule],
   providers: [
     USDTClientService,
-      TronNetworkExceptionFactory,
+    TronNetworkExceptionFactory,
     {
       provide: USDT_CONTRACT,
       useFactory: async (

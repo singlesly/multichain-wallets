@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { LocalEnvService } from '../../env/services/local-env.service';
+import { LocalEnvService } from '@app/local-env/services/local-env.service';
 import {
   Cipher,
   CipherGCMTypes,
   createCipheriv,
   createDecipheriv,
-  Decipher,
   scryptSync,
 } from 'crypto';
-import { LocalEnvPathEnum } from '../../env/contants/local-env-path.enum';
+import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 
 /**
  * !!! IMPORTANT

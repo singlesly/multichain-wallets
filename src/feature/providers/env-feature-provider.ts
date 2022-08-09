@@ -3,7 +3,7 @@ import {
   Feature,
   FeatureProvider,
 } from '@app/feature/interfaces/feature-provider';
-import { EnvProviderService } from '@app/env/services/env-provider.service';
+import { EnvProviderService } from '@ledius/env';
 import { ENV_FEATURE_PREFIX } from '@app/feature/contants';
 
 @Injectable()

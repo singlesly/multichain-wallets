@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { EncryptService } from './encrypt.service';
-import { LocalEnvService } from '../../env/services/local-env.service';
+import { LocalEnvService } from '../../local-env/services/local-env.service';
 
 describe('encrypt service', () => {
   let encryptService: EncryptService;

@@ -1,14 +1,14 @@
 import { Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { EnvModule } from '@app/env/env.module';
-import { LocalEnvService } from '@app/env/services/local-env.service';
+import { LocalEnvModule } from '@app/local-env/local-env.module';
+import { LocalEnvService } from '@app/local-env/services/local-env.service';
 import { TokenService } from '@app/token/token.service';
 
 @Global()
 @Module({
   imports: [
     JwtModule.registerAsync({
-      imports: [EnvModule],
+      imports: [LocalEnvModule],
       inject: [LocalEnvService],
       useFactory: (env: LocalEnvService) => env.getJwtOptions(),
     }),

@@ -6,7 +6,7 @@ import { AuthDto } from '@app/auth/dto/auth.dto';
 import { Web3AuthDto } from '@app/auth/dto/web3-auth.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UseFeatures } from '@app/feature/decorators/features';
-import { LocalEnvPathEnum } from '@app/env/contants/local-env-path.enum';
+import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 import { FeatureGuard } from '@app/feature/guards/feature.guard';
 
 @Controller()

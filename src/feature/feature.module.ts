@@ -1,5 +1,4 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { EnvModule } from '@app/env/env.module';
 import { FeatureService } from '@app/feature/services/feature.service';
 import { FeatureProvider } from '@app/feature/interfaces/feature-provider';
 import { Features } from '@app/feature/interfaces/features';
@@ -7,6 +6,7 @@ import { FEATURE_PROVIDER } from '@app/feature/contants';
 import { LoggerModule, LoggerService } from '@ledius/logger';
 import { FeatureModuleOptions } from '@app/feature/interfaces/feature-module.options';
 import { EnvFeatureProvider } from '@app/feature/providers/env-feature-provider';
+import { EnvModule } from '@ledius/env';
 
 @Module({})
 export class FeatureModule {

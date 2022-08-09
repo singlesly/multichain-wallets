@@ -2,10 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import TronWeb, { TRC20Contract } from 'tronweb';
 import { TRC20 } from '@app/tron/interfaces/trc20';
 import { USDT_CONTRACT } from '@app/usdt-trc20/constants';
-import { LocalEnvService } from '@app/env/services/local-env.service';
+import { LocalEnvService } from '@app/local-env/services/local-env.service';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
-import {TronNetworkExceptionFactory} from "@app/common/exceptions/tron-network-exception.factory";
+import { TronNetworkExceptionFactory } from '@app/common/exceptions/tron-network-exception.factory';
 
 @Injectable()
 export class USDTClientService implements TRC20 {
@@ -13,7 +13,7 @@ export class USDTClientService implements TRC20 {
     private readonly tronWeb: TronWeb,
     @Inject(USDT_CONTRACT) private readonly usdtContract: TRC20Contract,
     private readonly localEnvService: LocalEnvService,
-    private readonly tronNetworkExceptionFactory: TronNetworkExceptionFactory
+    private readonly tronNetworkExceptionFactory: TronNetworkExceptionFactory,
   ) {}
 
   public async getDecimals(): Promise<number> {

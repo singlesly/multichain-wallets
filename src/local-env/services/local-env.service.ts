@@ -1,18 +1,18 @@
-import { EnvProviderService } from './env-provider.service';
 import { Injectable } from '@nestjs/common';
 import { LocalEnvPathEnum } from '../contants/local-env-path.enum';
 import { JwtModuleOptions } from '@nestjs/jwt/dist/interfaces/jwt-module-options.interface';
+import { EnvProviderService } from '@ledius/env';
 
 @Injectable()
 export class LocalEnvService {
-  constructor(private readonly envProvider: EnvProviderService) {}
+  constructor(private readonly envProviderService: EnvProviderService) {}
 
   public get(key: LocalEnvPathEnum): string {
-    return this.envProvider.get(key);
+    return this.envProviderService.get(key);
   }
 
   public getSafety(key: LocalEnvPathEnum): string {
-    return this.envProvider.getSafety(key);
+    return this.envProviderService.getOrFail(key);
   }
 
   public getBoolean(key: LocalEnvPathEnum): boolean {
@@ -27,7 +27,7 @@ export class LocalEnvService {
   }
 
   public getUsdtContractAddress(): string {
-    const fromEnvsAddress = this.envProvider.get(
+    const fromEnvsAddress = this.envProviderService.get(
       LocalEnvPathEnum.USDT_CONTRACT_ADDRESS,
     );
 
@@ -40,7 +40,7 @@ export class LocalEnvService {
     };
 
     const tronNetworkUrl = new URL(
-      this.envProvider.getSafety(LocalEnvPathEnum.TRON_RPC_BASE_URL),
+      this.envProviderService.getOrFail(LocalEnvPathEnum.TRON_RPC_BASE_URL),
     );
     const mapAddress = networkAddressMap[tronNetworkUrl.host];
 

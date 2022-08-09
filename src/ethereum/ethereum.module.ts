@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { EthereumWeb3Service } from './services/ethereum-web3.service';
-import { LocalEnvService } from '../env/services/local-env.service';
-import { LocalEnvPathEnum } from '../env/contants/local-env-path.enum';
-import { EnvModule } from '../env/env.module';
+import { LocalEnvService } from '../local-env/services/local-env.service';
+import { LocalEnvPathEnum } from '../local-env/contants/local-env-path.enum';
+import { LocalEnvModule } from '@app/local-env/local-env.module';
 
 @Module({
-  imports: [EnvModule],
+  imports: [LocalEnvModule],
   providers: [
     {
       provide: EthereumWeb3Service,

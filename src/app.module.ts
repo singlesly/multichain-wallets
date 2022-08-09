@@ -22,6 +22,7 @@ import { AuthModule } from '@app/auth/auth.module';
 import { TokenModule } from '@app/token/token.module';
 import { FeatureModule } from '@app/feature/feature.module';
 import { FeatureGuard } from '@app/feature/guards/feature.guard';
+import { EnvFeatureProvider } from '@app/feature/providers/env-feature-provider';
 
 @Module({
   imports: [

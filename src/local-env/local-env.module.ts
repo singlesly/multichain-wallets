@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { EnvProviderService } from './services/env-provider.service';
 import { LocalEnvService } from './services/local-env.service';
+import { EnvModule } from '@ledius/env';
 
 @Module({
-  providers: [EnvProviderService, LocalEnvService],
+  imports: [EnvModule],
+  providers: [LocalEnvService],
   exports: [LocalEnvService],
 })
-export class EnvModule {}
+export class LocalEnvModule {}

@@ -27,10 +27,22 @@ export class BitcoinNetworkExceptionFactory {
       });
     }
 
+    if (
+      typeof e === 'object' &&
+      (e as AxiosError).response.data.error.message.includes(
+        'Transaction amount too small',
+      )
+    ) {
+      throw new BaseException({
+        statusCode: WebErrorsEnum.INVALID_AMOUNT_PROVIDED,
+        message: 'Transaction amount too small',
+      });
+    }
+
     return new BaseException(
       {
         statusCode: WebErrorsEnum.INTERNAL_ERROR,
-        message: 'Unhandled tron exception',
+        message: 'Unhandled bitcoin exception',
       },
       e,
     );

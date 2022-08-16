@@ -1,9 +1,14 @@
 import { Wallet } from '@app/wallet/dao/entity/wallet';
 
 export interface AgentService {
-  createWallet(): Promise<Wallet>;
+  createWallet(owners?: string[]): Promise<Wallet>;
   getBalance(address: string): Promise<Balance>;
-  transfer(from: string, to: string, amount: bigint): Promise<TxID>;
+  transfer(
+    from: string,
+    to: string,
+    amount: bigint,
+    options: AgentCallOptions,
+  ): Promise<TxID>;
   estimateFee(from: string, to: string, amount: bigint): Promise<Balance>;
   getTransaction(id: string): Promise<TransactionInfo>;
 }
@@ -21,4 +26,8 @@ export interface TransactionInfo {
   readonly to: string;
   readonly amount: bigint;
   readonly confirmations: number;
+}
+
+export interface AgentCallOptions {
+  readonly initiator: string;
 }

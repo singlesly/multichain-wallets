@@ -1,9 +1,17 @@
 import { AuthUser } from '@app/auth/dao/entity/auth-user';
-import { NotImplementedException } from '@nestjs/common';
+import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
+@Injectable()
 export class AuthUserPgRepository {
+  constructor(
+    @InjectRepository(AuthUser)
+    private readonly repository: Repository<AuthUser>,
+  ) {}
+
   public async save(authUser: AuthUser): Promise<void> {
-    throw new NotImplementedException();
+    await this.repository.save(authUser);
   }
 
   public async getById(id: string): Promise<AuthUser> {
@@ -15,7 +23,11 @@ export class AuthUserPgRepository {
   }
 
   public async findByAddress(address: string): Promise<AuthUser | undefined> {
-    throw new NotImplementedException();
+    return await this.repository.findOne({
+      where: {
+        address,
+      },
+    });
   }
 
   public async findByLogin(login: string): Promise<AuthUser | undefined> {

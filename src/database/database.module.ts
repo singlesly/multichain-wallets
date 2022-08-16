@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EnvModule } from '../env/env.module';
-import { LocalEnvService } from '../env/services/local-env.service';
-import { LocalEnvPathEnum } from '../env/contants/local-env-path.enum';
+import { LocalEnvModule } from '../local-env/local-env.module';
+import { LocalEnvService } from '../local-env/services/local-env.service';
+import { LocalEnvPathEnum } from '../local-env/contants/local-env-path.enum';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      imports: [EnvModule],
+      imports: [LocalEnvModule],
       useFactory: (env: LocalEnvService) => ({
         type: 'postgres',
         host: env.getSafety(LocalEnvPathEnum.DB_HOST),

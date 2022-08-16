@@ -1,9 +1,9 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { BitcoinRpcClient } from './rpc/bitcoin-rpc.client';
-import { EnvModule } from '../env/env.module';
-import { LocalEnvService } from '../env/services/local-env.service';
-import { LocalEnvPathEnum } from '../env/contants/local-env-path.enum';
+import { LocalEnvModule } from '../local-env/local-env.module';
+import { LocalEnvService } from '../local-env/services/local-env.service';
+import { LocalEnvPathEnum } from '../local-env/contants/local-env-path.enum';
 import { LoggerModule } from '@ledius/logger';
 import { BitcoinWalletWarmupService } from './services/bitcoin-wallet-warmup.service';
 import { RequestContextModule } from '@ledius/request-context';
@@ -15,7 +15,7 @@ import { BitcoinNetworkExceptionFactory } from '@app/common/exceptions/bitcoin-n
 @Module({
   imports: [
     HttpModule.registerAsync({
-      imports: [EnvModule],
+      imports: [LocalEnvModule],
       useFactory: (env: LocalEnvService) => {
         return {
           auth: {

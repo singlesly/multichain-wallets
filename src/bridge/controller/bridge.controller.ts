@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AgentServiceFactory } from '../factories/agent-service.factory';
 import {
   ApiBasicAuth,
+  ApiBearerAuth,
   ApiOkResponse,
   ApiParam,
   ApiTags,
@@ -13,6 +14,8 @@ import { TransferWalletDto } from '@app/wallet/dto/transfer-wallet.dto';
 import { WalletResponse } from '@app/wallet/controller/wallet.response';
 import { AppGuard } from '@app/application/guard/app.guard';
 import { TransactionResponse } from '@app/bridge/controller/transaction.response';
+import { RequestPayload } from '@app/auth/decorators/request-payload';
+import { RequestMeta } from '@app/auth/contants';
 
 @Controller()
 @ApiTags('Bridge')
@@ -30,12 +33,16 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiBearerAuth()
   public async createWallet(
     @Param('network') network: NetworkEnum,
     @Param('coin') coin: CoinEnum,
+    @RequestPayload() meta: RequestMeta,
   ) {
     return new WalletResponse(
-      await this.agentServiceFactory.for(network, coin).createWallet(),
+      await this.agentServiceFactory
+        .for(network, coin)
+        .createWallet([meta.ownerId]),
     );
   }
 
@@ -50,6 +57,7 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiBearerAuth()
   public async getBalance(
     @Param('network') network: NetworkEnum,
     @Param('coin') coin: CoinEnum,
@@ -69,6 +77,7 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiBearerAuth()
   @ApiOkResponse({
     type: TransactionResponse,
   })
@@ -76,13 +85,16 @@ export class BridgeController {
     @Param('network') network: NetworkEnum,
     @Param('coin') coin: CoinEnum,
     @Body() dto: TransferWalletDto,
+    @RequestPayload() meta: RequestMeta,
   ): Promise<TransactionResponse> {
     const { from, to, amount } = dto;
 
     return new TransactionResponse(
       await this.agentServiceFactory
         .for(network, coin)
-        .transfer(from, to, amount),
+        .transfer(from, to, amount, {
+          initiator: meta.ownerId,
+        }),
     );
   }
 
@@ -97,6 +109,7 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiBearerAuth()
   public async estimateFee(
     @Param('network') network: NetworkEnum,
     @Param('coin') coin: CoinEnum,
@@ -118,6 +131,7 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiBearerAuth()
   public async getTransaction(
     @Param('network') network: NetworkEnum,
     @Param('coin') coin: CoinEnum,
@@ -134,6 +148,7 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
+  @ApiBearerAuth()
   public async supportedCoins(): Promise<Record<string, string[]>> {
     const map = this.agentServiceFactory.supportedMap;
 

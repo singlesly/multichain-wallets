@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { EnvModule } from '../env/env.module';
+import { LocalEnvModule } from '../local-env/local-env.module';
 import { EncryptService } from './services/encrypt.service';
 
 @Module({
-  imports: [EnvModule],
+  imports: [LocalEnvModule],
   providers: [EncryptService],
   exports: [EncryptService],
 })

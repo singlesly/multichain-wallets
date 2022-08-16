@@ -98,6 +98,7 @@ export class BitcoinRpcClient {
   public async fundRawTransaction(
     transactionHash: string,
     options: {
+      add_inputs: boolean;
       changeAddress: string;
       changePosition: number;
       includeWatching: boolean;
@@ -134,11 +135,12 @@ export class BitcoinRpcClient {
   public async createRawTransaction(
     recipientAddress: string,
     amount: bigint,
+    inputs: { txid: string; vout: number; sequence?: number }[] = [],
   ): Promise<string> {
     return this.rpcCall<string>(
       'createrawtransaction',
       `wallet/${MAIN_WALLET}`,
-      [],
+      inputs,
       [
         {
           [recipientAddress]: Number(amount) * 10 ** -8,

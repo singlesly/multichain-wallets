@@ -1,7 +1,7 @@
 export type ListUnspentResult<A = bigint> = {
   txid: string;
   address: string;
-  vout: string;
+  vout: number;
   confirmations: number;
   spendable: boolean;
   amount: A;

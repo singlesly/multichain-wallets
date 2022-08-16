@@ -12,6 +12,8 @@ import { CoinEnum } from '@app/common/coin.enum';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import { Wallet } from '@app/wallet/dao/entity/wallet';
+import { BaseException } from '@app/common/base-exception';
+import { WebErrorsEnum } from '@app/common/web-errors.enum';
 
 @Injectable()
 export class BitcoinAgentService implements AgentService {
@@ -35,10 +37,15 @@ export class BitcoinAgentService implements AgentService {
   }
 
   public async getBalance(address: string): Promise<Balance> {
-    const amount = await this.bitcoinRpcClient.getReceivedByAddress(address, 0);
+    const unspents = await this.bitcoinRpcClient.listUnspent(address, 0);
+
+    const balance = unspents.reduce(
+      (total, unspent) => total + unspent.amount,
+      BigInt(0),
+    );
 
     return {
-      amount,
+      amount: balance,
       decimals: 8,
     };
   }
@@ -49,14 +56,26 @@ export class BitcoinAgentService implements AgentService {
     amount: bigint,
   ): Promise<TxID> {
     const wallet = await this.getTemporaryWalletService.getByAddress(from);
+    const unspents = await this.bitcoinRpcClient.listUnspent(wallet.pubKey, 3);
+
+    if (unspents.length <= 0) {
+      throw new BaseException({
+        statusCode: WebErrorsEnum.INSUFFICIENT_FUNDS,
+        message: 'Insufficient funds',
+      });
+    }
+
+    console.log(unspents);
 
     const transactionHash = await this.bitcoinRpcClient.createRawTransaction(
       to,
       amount,
+      unspents,
     );
 
     const fundedTransactionHash =
       await this.bitcoinRpcClient.fundRawTransaction(transactionHash, {
+        add_inputs: false,
         changeAddress: wallet.pubKey,
         changePosition: 0,
         includeWatching: true,
@@ -82,6 +101,7 @@ export class BitcoinAgentService implements AgentService {
 
     const fundedTransactionHash =
       await this.bitcoinRpcClient.fundRawTransaction(transactionHash, {
+        add_inputs: true,
         changeAddress: from,
         changePosition: 0,
         includeWatching: true,

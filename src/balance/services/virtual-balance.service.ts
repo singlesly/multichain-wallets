@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { VirtualBalance } from '@app/balance/dao/entity/virtual-balance';
 import { VirtualBalancePgRepository } from '@app/balance/repositories/virtual-balance-pg.repository';
+import { NetworkEnum } from '@app/common/network.enum';
+import { CoinEnum } from '@app/common/coin.enum';
 
 @Injectable()
 export class VirtualBalanceService {
@@ -8,18 +10,30 @@ export class VirtualBalanceService {
     private readonly virtualBalancePgRepository: VirtualBalancePgRepository,
   ) {}
 
-  public async getBalance(walletId: string): Promise<VirtualBalance> {
+  public async getBalance(
+    walletId: string,
+    network: NetworkEnum,
+    coin: CoinEnum,
+  ): Promise<VirtualBalance> {
     return await this.virtualBalancePgRepository.findByWalletIdOrCreate(
       walletId,
+      network,
+      coin,
     );
   }
 
   public async decrease(
     walletId: string,
     amount: bigint,
+    network: NetworkEnum,
+    coin: CoinEnum,
   ): Promise<VirtualBalance> {
     const virtualBalance =
-      await this.virtualBalancePgRepository.findByWalletIdOrCreate(walletId);
+      await this.virtualBalancePgRepository.findByWalletIdOrCreate(
+        walletId,
+        network,
+        coin,
+      );
 
     return await virtualBalance
       .decrease(amount)
@@ -29,9 +43,15 @@ export class VirtualBalanceService {
   public async increase(
     walletId: string,
     amount: bigint,
+    network: NetworkEnum,
+    coin: CoinEnum,
   ): Promise<VirtualBalance> {
     const virtualBalance =
-      await this.virtualBalancePgRepository.findByWalletIdOrCreate(walletId);
+      await this.virtualBalancePgRepository.findByWalletIdOrCreate(
+        walletId,
+        network,
+        coin,
+      );
 
     return await virtualBalance
       .increase(amount)
@@ -42,10 +62,20 @@ export class VirtualBalanceService {
     fromWalletId: string,
     toWalletId: string,
     amount: bigint,
+    network: NetworkEnum,
+    coin: CoinEnum,
   ): Promise<{ from: VirtualBalance; to: VirtualBalance }> {
     const [from, to] = await Promise.all([
-      this.virtualBalancePgRepository.findByWalletIdOrCreate(fromWalletId),
-      this.virtualBalancePgRepository.findByWalletIdOrCreate(toWalletId),
+      this.virtualBalancePgRepository.findByWalletIdOrCreate(
+        fromWalletId,
+        network,
+        coin,
+      ),
+      this.virtualBalancePgRepository.findByWalletIdOrCreate(
+        toWalletId,
+        network,
+        coin,
+      ),
     ]);
 
     return {

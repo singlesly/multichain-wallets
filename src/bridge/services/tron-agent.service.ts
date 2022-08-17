@@ -92,6 +92,8 @@ export class TronAgentService implements AgentService {
     const balance = await this.tronWeb.trx.getBalance(address);
     const virtualBalance = await this.virtualBalanceService.getBalance(
       wallet.id,
+      wallet.network,
+      wallet.coin,
     );
     const virtualAmount = this.features.isOn(
       LocalEnvPathEnum.FEATURE_VIRTUAL_BALANCES,

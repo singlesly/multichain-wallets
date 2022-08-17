@@ -46,6 +46,8 @@ export class BitcoinAgentService implements AgentService {
     const unspents = await this.bitcoinRpcClient.listUnspent(address, 3);
     const virtualBalance = await this.virtualBalanceService.getBalance(
       wallet.id,
+      wallet.network,
+      wallet.coin,
     );
 
     const balance = unspents.reduce(

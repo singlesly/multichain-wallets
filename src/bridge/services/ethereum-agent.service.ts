@@ -107,6 +107,8 @@ export class EthereumAgentService implements AgentService {
     const amount = await this.ethereumWeb3Service.eth.getBalance(address);
     const virtualBalance = await this.virtualBalanceService.getBalance(
       wallet.id,
+      wallet.network,
+      wallet.coin,
     );
     const virtualAmount = this.features.isOn(
       LocalEnvPathEnum.FEATURE_VIRTUAL_BALANCES,

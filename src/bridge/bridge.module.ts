@@ -14,6 +14,7 @@ import { UsdtTrc20AgentService } from '@app/bridge/services/usdt-trc20-agent.ser
 import { TronNetworkExceptionFactory } from '@app/common/exceptions/tron-network-exception.factory';
 import { LocalEnvModule } from '@app/local-env/local-env.module';
 import { LoggerModule } from '@ledius/logger';
+import { BalanceModule } from '@app/balance/balance.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { LoggerModule } from '@ledius/logger';
     UsdtTrc20Module,
     LoggerModule,
     LocalEnvModule,
+    BalanceModule,
   ],
   controllers: [BridgeController],
   providers: [

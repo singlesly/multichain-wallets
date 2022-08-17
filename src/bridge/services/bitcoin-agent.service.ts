@@ -14,6 +14,9 @@ import { Wallet } from '@app/wallet/dao/entity/wallet';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
 import { LoggerService } from '@ledius/logger';
+import { VirtualBalanceService } from '@app/balance/services/virtual-balance.service';
+import { FeatureService } from '@ledius/feature/dist/services/feature.service';
+import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 
 @Injectable()
 export class BitcoinAgentService implements AgentService {
@@ -22,6 +25,8 @@ export class BitcoinAgentService implements AgentService {
     private readonly createTemporaryWalletService: CreateWalletService,
     private readonly getTemporaryWalletService: GetWalletService,
     private readonly logger: LoggerService,
+    private readonly virtualBalanceService: VirtualBalanceService,
+    private readonly features: FeatureService,
   ) {}
 
   public async createWallet(owners: string[] = []): Promise<Wallet> {
@@ -37,11 +42,19 @@ export class BitcoinAgentService implements AgentService {
   }
 
   public async getBalance(address: string): Promise<Balance> {
+    const wallet = await this.getTemporaryWalletService.getByAddress(address);
     const unspents = await this.bitcoinRpcClient.listUnspent(address, 3);
+    const virtualBalance = await this.virtualBalanceService.getBalance(
+      wallet.id,
+    );
 
     const balance = unspents.reduce(
       (total, unspent) => total + unspent.amount,
-      BigInt(0),
+      BigInt(
+        this.features.isOn(LocalEnvPathEnum.FEATURE_VIRTUAL_BALANCES)
+          ? virtualBalance.balance
+          : 0,
+      ),
     );
 
     return {

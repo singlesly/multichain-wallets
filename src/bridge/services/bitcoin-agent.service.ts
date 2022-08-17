@@ -50,17 +50,19 @@ export class BitcoinAgentService implements AgentService {
       wallet.coin,
     );
 
+    const virtualAmount = this.features.isOn(
+      LocalEnvPathEnum.FEATURE_VIRTUAL_BALANCES,
+    )
+      ? virtualBalance.balance
+      : BigInt(0);
+
     const balance = unspents.reduce(
       (total, unspent) => total + unspent.amount,
-      BigInt(
-        this.features.isOn(LocalEnvPathEnum.FEATURE_VIRTUAL_BALANCES)
-          ? virtualBalance.balance
-          : 0,
-      ),
+      BigInt(0),
     );
 
     return {
-      amount: balance,
+      amount: balance + virtualAmount,
       decimals: 8,
     };
   }

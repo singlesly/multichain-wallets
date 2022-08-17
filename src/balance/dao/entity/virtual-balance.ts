@@ -1,5 +1,4 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { VirtualBalancePgRepository } from '@app/balance/repositories/virtual-balance-pg.repository';
 
 const TABLE_NAME = 'virtual_balances';
 
@@ -27,9 +26,9 @@ export class VirtualBalance {
     return new VirtualBalance(this.walletId, this.balance - amount);
   }
 
-  public async save(
-    repository: VirtualBalancePgRepository,
-  ): Promise<VirtualBalance> {
+  public async save(repository: {
+    save: (self: VirtualBalance) => Promise<VirtualBalance>;
+  }): Promise<VirtualBalance> {
     return await repository.save(this);
   }
 }

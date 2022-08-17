@@ -56,6 +56,16 @@ export class TronNetworkExceptionFactory {
       );
     }
 
+    if (typeof e === 'string' && e.includes('Invalid recipient provided')) {
+      throw new BaseException(
+        {
+          statusCode: WebErrorsEnum.INVALID_ARGUMENT,
+          message: 'Invalid recipient provided',
+        },
+        e,
+      );
+    }
+
     throw new BaseException(
       {
         statusCode: WebErrorsEnum.INTERNAL_ERROR,

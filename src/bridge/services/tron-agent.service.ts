@@ -17,6 +17,9 @@ import TronWeb, { TransferContractType } from 'tronweb';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
 import { TronNetworkExceptionFactory } from '@app/common/exceptions/tron-network-exception.factory';
+import { VirtualBalanceService } from '@app/balance/services/virtual-balance.service';
+import { FeatureService } from '@ledius/feature/dist/services/feature.service';
+import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 
 @Injectable()
 export class TronAgentService implements AgentService {
@@ -29,6 +32,8 @@ export class TronAgentService implements AgentService {
     private readonly getTemporaryWalletService: GetWalletService,
     private readonly encryptService: EncryptService,
     private readonly tronNetworkExceptionFactory: TronNetworkExceptionFactory,
+    private readonly virtualBalanceService: VirtualBalanceService,
+    private readonly features: FeatureService,
   ) {}
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
@@ -83,10 +88,19 @@ export class TronAgentService implements AgentService {
   }
 
   public async getBalance(address: string): Promise<Balance> {
+    const wallet = await this.getTemporaryWalletService.getByAddress(address);
     const balance = await this.tronWeb.trx.getBalance(address);
+    const virtualBalance = await this.virtualBalanceService.getBalance(
+      wallet.id,
+    );
+    const virtualAmount = this.features.isOn(
+      LocalEnvPathEnum.FEATURE_VIRTUAL_BALANCES,
+    )
+      ? virtualBalance.balance
+      : BigInt(0);
 
     return {
-      amount: BigInt(balance),
+      amount: BigInt(balance) + virtualAmount,
       decimals: this.decimals,
     };
   }

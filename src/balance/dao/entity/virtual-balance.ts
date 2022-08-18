@@ -18,12 +18,14 @@ export class VirtualBalance {
   @Column({
     type: 'enum',
     enum: NetworkEnum,
+    primary: true,
   })
   public readonly network: NetworkEnum;
 
   @Column({
     type: 'enum',
     enum: CoinEnum,
+    primary: true,
   })
   public readonly coin: CoinEnum;
 

@@ -51,6 +51,14 @@ export class WalletPgRepository {
     return wallet;
   }
 
+  public async findByAddress(address: string): Promise<Wallet | undefined> {
+    return await this.repository.findOne({
+      where: {
+        pubKey: address,
+      },
+    });
+  }
+
   public async save(temporaryWallet: Wallet): Promise<Wallet> {
     return this.repository.save(temporaryWallet);
   }

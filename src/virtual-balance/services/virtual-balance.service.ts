@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { VirtualBalance } from '@app/balance/dao/entity/virtual-balance';
-import { VirtualBalancePgRepository } from '@app/balance/repositories/virtual-balance-pg.repository';
+import { VirtualBalance } from '@app/virtual-balance/dao/entity/virtual-balance';
+import { VirtualBalancePgRepository } from '@app/virtual-balance/repositories/virtual-balance-pg.repository';
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
 

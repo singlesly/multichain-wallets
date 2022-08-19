@@ -14,7 +14,7 @@ import { Wallet } from '@app/wallet/dao/entity/wallet';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
 import { LoggerService } from '@ledius/logger';
-import { VirtualBalanceService } from '@app/balance/services/virtual-balance.service';
+import { VirtualBalanceService } from '@app/virtual-balance/services/virtual-balance.service';
 import { FeatureService } from '@ledius/feature/dist/services/feature.service';
 import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 

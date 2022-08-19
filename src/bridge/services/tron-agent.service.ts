@@ -17,7 +17,7 @@ import TronWeb, { TransferContractType } from 'tronweb';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
 import { TronNetworkExceptionFactory } from '@app/common/exceptions/tron-network-exception.factory';
-import { VirtualBalanceService } from '@app/balance/services/virtual-balance.service';
+import { VirtualBalanceService } from '@app/virtual-balance/services/virtual-balance.service';
 import { FeatureService } from '@ledius/feature/dist/services/feature.service';
 import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 

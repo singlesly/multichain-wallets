@@ -16,7 +16,7 @@ import { BigNumber } from 'ethers';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
 import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
-import { VirtualBalanceService } from '@app/balance/services/virtual-balance.service';
+import { VirtualBalanceService } from '@app/virtual-balance/services/virtual-balance.service';
 import { FeatureService } from '@ledius/feature/dist/services/feature.service';
 
 @Injectable()

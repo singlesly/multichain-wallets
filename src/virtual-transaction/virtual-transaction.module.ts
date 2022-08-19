@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { BalanceModule } from '@app/balance/balance.module';
+import { VirtualBalanceModule } from '@app/virtual-balance/virtual-balance.module';
 import { WalletModule } from '@app/wallet/wallet.module';
 import { VirtualTransactionService } from '@app/virtual-transaction/services/virtual-transaction.service';
 import { VirtualTransactionPgRepository } from '@app/virtual-transaction/repositories/virtual-transaction-pg.repository';
@@ -8,7 +8,7 @@ import { VirtualTransaction } from '@app/virtual-transaction/dao/entity/virtual-
 
 @Module({
   imports: [
-    BalanceModule,
+    VirtualBalanceModule,
     WalletModule,
     TypeOrmModule.forFeature([VirtualTransaction]),
   ],

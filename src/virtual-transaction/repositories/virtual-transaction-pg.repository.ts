@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { VirtualTransaction } from '@app/transaction/dao/entity/virtual-transaction';
+import { VirtualTransaction } from '@app/virtual-transaction/dao/entity/virtual-transaction';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseException } from '@app/common/base-exception';

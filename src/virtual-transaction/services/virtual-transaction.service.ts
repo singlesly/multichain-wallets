@@ -22,6 +22,12 @@ export class VirtualTransactionService {
     private readonly getWalletService: GetWalletService,
   ) {}
 
+  public async getById(
+    transactionId: string,
+  ): Promise<VirtualTransaction | undefined> {
+    return this.virtualTransactionPgRepository.getById(transactionId);
+  }
+
   public async submit(
     options: SubmitTransactionOptions,
     network: NetworkEnum,

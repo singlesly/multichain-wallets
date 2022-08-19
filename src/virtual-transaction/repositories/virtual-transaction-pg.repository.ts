@@ -12,6 +12,14 @@ export class VirtualTransactionPgRepository {
     private readonly repository: Repository<VirtualTransaction>,
   ) {}
 
+  public async getById(id: string): Promise<VirtualTransaction | undefined> {
+    return await this.repository.findOne({
+      where: {
+        id,
+      },
+    });
+  }
+
   public async getByIdOrFail(id: string): Promise<VirtualTransaction> {
     const found = await this.repository.findOne({
       where: {

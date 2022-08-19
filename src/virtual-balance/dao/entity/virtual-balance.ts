@@ -1,6 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
+import { BigIntColumn } from '@app/common/typeorm/bigint.column';
 
 const TABLE_NAME = 'virtual_balances';
 
@@ -9,10 +10,7 @@ export class VirtualBalance {
   @PrimaryColumn('uuid')
   public readonly walletId: string;
 
-  @Column({
-    type: 'numeric',
-    default: '0',
-  })
+  @BigIntColumn()
   public readonly balance: bigint;
 
   @Column({

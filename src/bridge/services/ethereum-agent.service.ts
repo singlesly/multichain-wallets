@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
-  Balance,
   AgentService,
+  Balance,
   TransactionInfo,
   TxID,
 } from '@app/bridge/services/agent.service';
@@ -20,6 +20,7 @@ import { LoggerService } from '@ledius/logger';
 import { VirtualBalanceService } from '@app/virtual-balance/services/virtual-balance.service';
 import { FeatureService } from '@ledius/feature/dist/services/feature.service';
 import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
+import { VirtualTransactionService } from '@app/virtual-transaction/services/virtual-transaction.service';
 
 @Injectable()
 export class EthereumAgentService implements AgentService {
@@ -30,6 +31,7 @@ export class EthereumAgentService implements AgentService {
     private readonly encryptorService: EncryptService,
     private readonly logger: LoggerService,
     private readonly virtualBalanceService: VirtualBalanceService,
+    private readonly virtualTransactionService: VirtualTransactionService,
     private readonly features: FeatureService,
   ) {}
 
@@ -57,6 +59,8 @@ export class EthereumAgentService implements AgentService {
     amount: bigint,
   ): Promise<TxID> {
     const wallet = await this.getTemporaryWalletService.getByAddress(from);
+    const internalRecipient =
+      await this.getTemporaryWalletService.findByAddress(to);
 
     if (wallet.network !== NetworkEnum.ETH) {
       throw new BaseException({
@@ -70,6 +74,22 @@ export class EthereumAgentService implements AgentService {
         statusCode: WebErrorsEnum.INVALID_ARGUMENT,
       });
     }
+
+    if (internalRecipient) {
+      const transaction = await this.virtualTransactionService.submit(
+        {
+          from,
+          to,
+          amount,
+          note: '',
+        },
+        NetworkEnum.ETH,
+        CoinEnum.ETH,
+      );
+
+      return transaction.id;
+    }
+
     await this.ethereumWeb3Service.eth.accounts.wallet.add({
       address: wallet.pubKey,
       privateKey: await this.encryptorService.decrypt(wallet.privateKey),

@@ -36,17 +36,6 @@ export class EthereumAgentService implements AgentService {
   ) {}
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
-    const virtualTransaction = await this.virtualTransactionService.getById(id);
-    if (virtualTransaction) {
-      return {
-        transactionId: virtualTransaction.id,
-        amount: virtualTransaction.amount,
-        to: virtualTransaction.to,
-        from: virtualTransaction.from,
-        confirmations: 1000,
-      };
-    }
-
     const transaction = await this.ethereumWeb3Service.eth.getTransaction(id);
     const currentBlock = await this.ethereumWeb3Service.eth.getBlockNumber();
 
@@ -70,8 +59,6 @@ export class EthereumAgentService implements AgentService {
     amount: bigint,
   ): Promise<TxID> {
     const wallet = await this.getTemporaryWalletService.getByAddress(from);
-    const internalRecipient =
-      await this.getTemporaryWalletService.findByAddress(to);
 
     if (wallet.network !== NetworkEnum.ETH) {
       throw new BaseException({
@@ -84,21 +71,6 @@ export class EthereumAgentService implements AgentService {
         message: `Wallet coin is ${wallet.coin} but not ${CoinEnum.ETH}`,
         statusCode: WebErrorsEnum.INVALID_ARGUMENT,
       });
-    }
-
-    if (internalRecipient) {
-      const transaction = await this.virtualTransactionService.submit(
-        {
-          from,
-          to,
-          amount,
-          note: '',
-        },
-        NetworkEnum.ETH,
-        CoinEnum.ETH,
-      );
-
-      return transaction.id;
     }
 
     await this.ethereumWeb3Service.eth.accounts.wallet.add({
@@ -134,21 +106,10 @@ export class EthereumAgentService implements AgentService {
   }
 
   public async getBalance(address: string): Promise<Balance> {
-    const wallet = await this.getTemporaryWalletService.getByAddress(address);
     const amount = await this.ethereumWeb3Service.eth.getBalance(address);
-    const virtualBalance = await this.virtualBalanceService.getBalance(
-      wallet.id,
-      wallet.network,
-      wallet.coin,
-    );
-    const virtualAmount = this.features.isOn(
-      LocalEnvPathEnum.FEATURE_VIRTUAL_BALANCES,
-    )
-      ? virtualBalance.balance
-      : BigInt(0);
 
     return {
-      amount: BigInt(amount) + virtualAmount,
+      amount: BigInt(amount),
       decimals: 18,
     };
   }

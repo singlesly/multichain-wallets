@@ -47,23 +47,11 @@ export class UsdtTrc20AgentService implements AgentService {
   }
 
   public async getBalance(address: string): Promise<Balance> {
-    const wallet = await this.getWalletService.getByAddress(address);
     const amount = await this.usdtClientService.balanceOf(address);
-
-    const virtualBalance = await this.virtualBalanceService.getBalance(
-      wallet.id,
-      wallet.network,
-      wallet.coin,
-    );
-    const virtualAmount = this.features.isOn(
-      LocalEnvPathEnum.FEATURE_VIRTUAL_BALANCES,
-    )
-      ? virtualBalance.balance
-      : BigInt(0);
 
     return {
       decimals: await this.usdtClientService.getDecimals(),
-      amount: amount + virtualAmount,
+      amount: amount,
     };
   }
 

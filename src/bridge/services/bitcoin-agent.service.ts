@@ -15,8 +15,6 @@ import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
 import { LoggerService } from '@ledius/logger';
 import { VirtualBalanceService } from '@app/virtual-balance/services/virtual-balance.service';
-import { FeatureService } from '@ledius/feature/dist/services/feature.service';
-import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 import { VirtualTransactionService } from '@app/virtual-transaction/services/virtual-transaction.service';
 
 @Injectable()
@@ -28,7 +26,6 @@ export class BitcoinAgentService implements AgentService {
     private readonly logger: LoggerService,
     private readonly virtualBalanceService: VirtualBalanceService,
     private readonly virtualTransactionService: VirtualTransactionService,
-    private readonly features: FeatureService,
   ) {}
 
   public async createWallet(owners: string[] = []): Promise<Wallet> {
@@ -44,19 +41,7 @@ export class BitcoinAgentService implements AgentService {
   }
 
   public async getBalance(address: string): Promise<Balance> {
-    const wallet = await this.getTemporaryWalletService.getByAddress(address);
     const unspents = await this.bitcoinRpcClient.listUnspent(address, 3);
-    const virtualBalance = await this.virtualBalanceService.getBalance(
-      wallet.id,
-      wallet.network,
-      wallet.coin,
-    );
-
-    const virtualAmount = this.features.isOn(
-      LocalEnvPathEnum.FEATURE_VIRTUAL_BALANCES,
-    )
-      ? virtualBalance.balance
-      : BigInt(0);
 
     const balance = unspents.reduce(
       (total, unspent) => total + unspent.amount,
@@ -64,7 +49,7 @@ export class BitcoinAgentService implements AgentService {
     );
 
     return {
-      amount: balance + virtualAmount,
+      amount: balance,
       decimals: 8,
     };
   }
@@ -75,22 +60,6 @@ export class BitcoinAgentService implements AgentService {
     amount: bigint,
   ): Promise<TxID> {
     const wallet = await this.getTemporaryWalletService.getByAddress(from);
-    const internalRecipient =
-      await this.getTemporaryWalletService.findByAddress(to);
-
-    if (internalRecipient) {
-      const transaction = await this.virtualTransactionService.submit(
-        {
-          from,
-          to,
-          amount,
-        },
-        NetworkEnum.BTC,
-        CoinEnum.BTC,
-      );
-
-      return transaction.id;
-    }
 
     const unspents = await this.bitcoinRpcClient.listUnspent(wallet.pubKey, 3);
 
@@ -155,17 +124,6 @@ export class BitcoinAgentService implements AgentService {
   }
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
-    const virtualTransaction = await this.virtualTransactionService.getById(id);
-    if (virtualTransaction) {
-      return {
-        transactionId: virtualTransaction.id,
-        amount: virtualTransaction.amount,
-        to: virtualTransaction.to,
-        from: virtualTransaction.from,
-        confirmations: 1000,
-      };
-    }
-
     const transaction = await this.bitcoinRpcClient.getRawTransaction(id);
 
     const firstAddress = transaction.vout[0]?.scriptPubKey.address || '';

@@ -88,21 +88,10 @@ export class TronAgentService implements AgentService {
   }
 
   public async getBalance(address: string): Promise<Balance> {
-    const wallet = await this.getTemporaryWalletService.getByAddress(address);
     const balance = await this.tronWeb.trx.getBalance(address);
-    const virtualBalance = await this.virtualBalanceService.getBalance(
-      wallet.id,
-      wallet.network,
-      wallet.coin,
-    );
-    const virtualAmount = this.features.isOn(
-      LocalEnvPathEnum.FEATURE_VIRTUAL_BALANCES,
-    )
-      ? virtualBalance.balance
-      : BigInt(0);
 
     return {
-      amount: BigInt(balance) + virtualAmount,
+      amount: BigInt(balance),
       decimals: this.decimals,
     };
   }

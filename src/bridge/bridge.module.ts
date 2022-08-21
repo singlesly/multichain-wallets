@@ -16,6 +16,7 @@ import { LocalEnvModule } from '@app/local-env/local-env.module';
 import { LoggerModule } from '@ledius/logger';
 import { VirtualBalanceModule } from '@app/virtual-balance/virtual-balance.module';
 import { VirtualTransactionModule } from '@app/virtual-transaction/virtual-transaction.module';
+import { VirtualAgentServiceFactory } from '@app/bridge/factories/virtual-agent-service.factory';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { VirtualTransactionModule } from '@app/virtual-transaction/virtual-trans
     TronAgentService,
     UsdtTrc20AgentService,
     TronNetworkExceptionFactory,
+    VirtualAgentServiceFactory,
   ],
 })
 export class BridgeModule {}

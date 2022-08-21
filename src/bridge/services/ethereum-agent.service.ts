@@ -36,6 +36,17 @@ export class EthereumAgentService implements AgentService {
   ) {}
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
+    const virtualTransaction = await this.virtualTransactionService.getById(id);
+    if (virtualTransaction) {
+      return {
+        transactionId: virtualTransaction.id,
+        amount: virtualTransaction.amount,
+        to: virtualTransaction.to,
+        from: virtualTransaction.from,
+        confirmations: 1000,
+      };
+    }
+
     const transaction = await this.ethereumWeb3Service.eth.getTransaction(id);
     const currentBlock = await this.ethereumWeb3Service.eth.getBlockNumber();
 

@@ -14,6 +14,7 @@ import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
 import { Injectable } from '@nestjs/common';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class VirtualAgentService implements AgentService {
@@ -60,6 +61,10 @@ export class VirtualAgentService implements AgentService {
   }
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
+    if (!isUUID(id)) {
+      return this.agentService.getTransaction(id);
+    }
+
     const virtualTransaction = await this.virtualTransactionService.getById(id);
     if (virtualTransaction) {
       return {

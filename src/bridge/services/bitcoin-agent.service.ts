@@ -10,10 +10,12 @@ import { CreateWalletService } from '@app/wallet/services/create-wallet.service'
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
-import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import { Wallet } from '@app/wallet/dao/entity/wallet';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
+import { LoggerService } from '@ledius/logger';
+import { VirtualBalanceService } from '@app/virtual-balance/services/virtual-balance.service';
+import { VirtualTransactionService } from '@app/virtual-transaction/services/virtual-transaction.service';
 
 @Injectable()
 export class BitcoinAgentService implements AgentService {
@@ -21,7 +23,9 @@ export class BitcoinAgentService implements AgentService {
     private readonly bitcoinRpcClient: BitcoinRpcClient,
     private readonly createTemporaryWalletService: CreateWalletService,
     private readonly getTemporaryWalletService: GetWalletService,
-    private readonly encryptService: EncryptService,
+    private readonly logger: LoggerService,
+    private readonly virtualBalanceService: VirtualBalanceService,
+    private readonly virtualTransactionService: VirtualTransactionService,
   ) {}
 
   public async createWallet(owners: string[] = []): Promise<Wallet> {
@@ -37,7 +41,7 @@ export class BitcoinAgentService implements AgentService {
   }
 
   public async getBalance(address: string): Promise<Balance> {
-    const unspents = await this.bitcoinRpcClient.listUnspent(address, 0);
+    const unspents = await this.bitcoinRpcClient.listUnspent(address, 3);
 
     const balance = unspents.reduce(
       (total, unspent) => total + unspent.amount,
@@ -56,6 +60,7 @@ export class BitcoinAgentService implements AgentService {
     amount: bigint,
   ): Promise<TxID> {
     const wallet = await this.getTemporaryWalletService.getByAddress(from);
+
     const unspents = await this.bitcoinRpcClient.listUnspent(wallet.pubKey, 3);
 
     if (unspents.length <= 0) {
@@ -65,7 +70,7 @@ export class BitcoinAgentService implements AgentService {
       });
     }
 
-    console.log(unspents);
+    this.logger.log(unspents);
 
     const transactionHash = await this.bitcoinRpcClient.createRawTransaction(
       to,

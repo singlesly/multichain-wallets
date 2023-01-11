@@ -14,6 +14,9 @@ import { UsdtTrc20AgentService } from '@app/bridge/services/usdt-trc20-agent.ser
 import { TronNetworkExceptionFactory } from '@app/common/exceptions/tron-network-exception.factory';
 import { LocalEnvModule } from '@app/local-env/local-env.module';
 import { LoggerModule } from '@ledius/logger';
+import { VirtualBalanceModule } from '@app/virtual-balance/virtual-balance.module';
+import { VirtualTransactionModule } from '@app/virtual-transaction/virtual-transaction.module';
+import { VirtualAgentServiceFactory } from '@app/bridge/factories/virtual-agent-service.factory';
 
 @Module({
   imports: [
@@ -25,6 +28,8 @@ import { LoggerModule } from '@ledius/logger';
     UsdtTrc20Module,
     LoggerModule,
     LocalEnvModule,
+    VirtualBalanceModule,
+    VirtualTransactionModule,
   ],
   controllers: [BridgeController],
   providers: [
@@ -34,6 +39,7 @@ import { LoggerModule } from '@ledius/logger';
     TronAgentService,
     UsdtTrc20AgentService,
     TronNetworkExceptionFactory,
+    VirtualAgentServiceFactory,
   ],
 })
 export class BridgeModule {}

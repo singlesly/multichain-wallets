@@ -4,5 +4,12 @@ import { CommandFactory } from 'nest-commander';
 import { AppModule } from './app.module';
 
 (async function () {
-  await CommandFactory.run(AppModule);
+  try {
+    await CommandFactory.run(AppModule);
+  } catch (e) {
+    console.log(e);
+    process.exit(1);
+  } finally {
+    process.exit(0);
+  }
 })();

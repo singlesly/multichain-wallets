@@ -15,6 +15,9 @@ import { ParameterService } from '@app/tron/services/parameter.service';
 import { BigNumber } from 'ethers';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
+import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
+import { VirtualBalanceService } from '@app/virtual-balance/services/virtual-balance.service';
+import { FeatureService } from '@ledius/feature/dist/services/feature.service';
 
 @Injectable()
 export class UsdtTrc20AgentService implements AgentService {
@@ -24,6 +27,8 @@ export class UsdtTrc20AgentService implements AgentService {
     private readonly getWalletService: GetWalletService,
     private readonly encryptService: EncryptService,
     private readonly parameterService: ParameterService,
+    private readonly virtualBalanceService: VirtualBalanceService,
+    private readonly features: FeatureService,
   ) {}
 
   public async createWallet(): Promise<Wallet> {
@@ -46,7 +51,7 @@ export class UsdtTrc20AgentService implements AgentService {
 
     return {
       decimals: await this.usdtClientService.getDecimals(),
-      amount,
+      amount: amount,
     };
   }
 

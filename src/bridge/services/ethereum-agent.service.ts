@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
-  Balance,
   AgentService,
+  Balance,
   TransactionInfo,
   TxID,
 } from '@app/bridge/services/agent.service';
@@ -17,6 +17,10 @@ import { Wallet } from '@app/wallet/dao/entity/wallet';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
 import { LoggerService } from '@ledius/logger';
+import { VirtualBalanceService } from '@app/virtual-balance/services/virtual-balance.service';
+import { FeatureService } from '@ledius/feature/dist/services/feature.service';
+import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
+import { VirtualTransactionService } from '@app/virtual-transaction/services/virtual-transaction.service';
 
 @Injectable()
 export class EthereumAgentService implements AgentService {
@@ -26,6 +30,9 @@ export class EthereumAgentService implements AgentService {
     private readonly getTemporaryWalletService: GetWalletService,
     private readonly encryptorService: EncryptService,
     private readonly logger: LoggerService,
+    private readonly virtualBalanceService: VirtualBalanceService,
+    private readonly virtualTransactionService: VirtualTransactionService,
+    private readonly features: FeatureService,
   ) {}
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
@@ -65,6 +72,7 @@ export class EthereumAgentService implements AgentService {
         statusCode: WebErrorsEnum.INVALID_ARGUMENT,
       });
     }
+
     await this.ethereumWeb3Service.eth.accounts.wallet.add({
       address: wallet.pubKey,
       privateKey: await this.encryptorService.decrypt(wallet.privateKey),

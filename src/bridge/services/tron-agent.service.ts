@@ -17,6 +17,9 @@ import TronWeb, { TransferContractType } from 'tronweb';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
 import { TronNetworkExceptionFactory } from '@app/common/exceptions/tron-network-exception.factory';
+import { VirtualBalanceService } from '@app/virtual-balance/services/virtual-balance.service';
+import { FeatureService } from '@ledius/feature/dist/services/feature.service';
+import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 
 @Injectable()
 export class TronAgentService implements AgentService {
@@ -29,6 +32,8 @@ export class TronAgentService implements AgentService {
     private readonly getTemporaryWalletService: GetWalletService,
     private readonly encryptService: EncryptService,
     private readonly tronNetworkExceptionFactory: TronNetworkExceptionFactory,
+    private readonly virtualBalanceService: VirtualBalanceService,
+    private readonly features: FeatureService,
   ) {}
 
   public async getTransaction(id: string): Promise<TransactionInfo> {

@@ -1,11 +1,11 @@
 version: "3.8"
 
 services:
-  bitcom-crypto-bridge:
+  ledius-crypto-bridge:
     build:
       dockerfile: docker/app/Dockerfile
       context: .
-    container_name: bitcom-crypto-bridge
+    container_name: ledius-crypto-bridge
     extra_hosts:
       - "host.docker.internal:host-gateway"
     env_file:
@@ -18,9 +18,9 @@ services:
     ports:
       - "3000:3000"
 
-  bitcom-crypto-bridge-postgres:
+  ledius-crypto-bridge-postgres:
     image: postgres:12.3-alpine
-    container_name: bitcom-crypto-bridge-postgres
+    container_name: ledius-crypto-bridge-postgres
     env_file:
       - .env
     environment:
@@ -28,8 +28,8 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
 
-  bitcom-crypto-bridge-bitcoin:
-    container_name: bitcom-crypto-bridge-bitcoin
+  ledius-crypto-bridge-bitcoin:
+    container_name: ledius-crypto-bridge-bitcoin
     build:
       context: ./bitcoin
       dockerfile: docker/Dockerfile

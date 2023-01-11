@@ -8,43 +8,45 @@ import { TronAgentService } from '../services/tron-agent.service';
 import { UsdtTrc20AgentService } from '@app/bridge/services/usdt-trc20-agent.service';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
+import { ModuleRef } from '@nestjs/core';
+import { VirtualAgentServiceFactory } from '@app/bridge/factories/virtual-agent-service.factory';
 
 @Injectable()
 export class AgentServiceFactory {
   public readonly supportedMap = {
     [NetworkEnum.BTC]: {
-      [CoinEnum.BTC]: this.bitcoinAgentService,
+      [CoinEnum.BTC]: BitcoinAgentService,
     },
     [NetworkEnum.ETH]: {
-      [CoinEnum.ETH]: this.ethereumAgentService,
+      [CoinEnum.ETH]: EthereumAgentService,
     },
     [NetworkEnum.TRON]: {
-      [CoinEnum.TRX]: this.tronAgentService,
-      [CoinEnum.USDT]: this.usdtTrc20AgentService,
+      [CoinEnum.TRX]: TronAgentService,
+      [CoinEnum.USDT]: UsdtTrc20AgentService,
     },
   };
 
   constructor(
-    private readonly bitcoinAgentService: BitcoinAgentService,
-    private readonly ethereumAgentService: EthereumAgentService,
-    private readonly tronAgentService: TronAgentService,
-    private readonly usdtTrc20AgentService: UsdtTrc20AgentService,
+    private readonly moduleRef: ModuleRef,
+    private readonly virtualAgentServiceFactory: VirtualAgentServiceFactory,
   ) {}
 
   public for(
     network: NetworkEnum,
     coin: CoinEnum = network as unknown as CoinEnum,
   ): AgentService {
-    const temporaryWalletService =
+    const agentService =
       this.supportedMap[network.toUpperCase()]?.[coin.toUpperCase()];
 
-    if (!temporaryWalletService) {
+    if (!agentService) {
       throw new BaseException({
         message: `Unsupported ${network}:${coin}`,
         statusCode: WebErrorsEnum.INVALID_ARGUMENT,
       });
     }
 
-    return temporaryWalletService;
+    const resolveAgent = this.moduleRef.get(agentService);
+
+    return this.virtualAgentServiceFactory.for(resolveAgent);
   }
 }

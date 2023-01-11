@@ -3,7 +3,7 @@ check: lint test-full
 test-full: init test-unit test-e2e
 up: docker-up app-up
 
-appContainer = bitcom-crypto-bridge
+appContainer = ledius-crypto-bridge
 
 logs:
 	docker-compose logs -f

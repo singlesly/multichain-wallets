@@ -11,4 +11,8 @@ export class GetWalletService {
   public async getByAddress(pubKey: string): Promise<Wallet> {
     return this.temporaryWalletPgRepository.getByAddress(pubKey);
   }
+
+  public async findByAddress(pubKey: string): Promise<Wallet | undefined> {
+    return this.temporaryWalletPgRepository.findByAddress(pubKey);
+  }
 }

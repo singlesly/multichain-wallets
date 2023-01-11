@@ -1,0 +1,21 @@
+version: "3.8"
+
+networks:
+  ledius:
+    external: true
+
+services:
+  ledius-crypto-bridge:
+    build:
+      dockerfile: docker/app/Dockerfile
+      context: .
+    container_name: ledius-crypto-bridge
+    env_file:
+      - .env
+    environment:
+      - MODE=prod
+      - VIRTUAL_HOST=crypto-bridge-dev.ledius.ru
+      - VIRTUAL_PATH=/
+      - VIRTUAL_PORT=3000
+    networks:
+      - ledius

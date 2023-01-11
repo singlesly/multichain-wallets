@@ -4,7 +4,7 @@ const { SnakeNamingStrategy } = require('typeorm-naming-strategies');
 module.exports = {
   name: 'default',
   type: 'postgres',
-  host: 'bitcom-crypto-bridge-postgres',
+  host: 'ledius-crypto-bridge-postgres',
   username: 'root',
   password: '1234',
   port: '5432',

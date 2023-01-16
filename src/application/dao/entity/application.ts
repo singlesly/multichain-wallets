@@ -36,7 +36,7 @@ export class Application extends BaseEntity {
   @CreateDateColumn()
   public readonly createdAt: string;
 
-  constructor(name: string, secret: string, owner?: AuthUser) {
+  constructor(name?: string, secret?: string, owner?: AuthUser) {
     super();
     this.name = name;
     this.secret = secret;

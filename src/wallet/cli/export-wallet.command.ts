@@ -8,13 +8,15 @@ import { ConsoleLogger } from '@nestjs/common';
   arguments: '<address>',
   description: 'export wallet private key by address',
 })
-export class ExportWalletCommand implements CommandRunner {
+export class ExportWalletCommand extends CommandRunner {
   private readonly logger: ConsoleLogger = new ConsoleLogger();
 
   constructor(
     private readonly walletService: GetWalletService,
     private readonly encrypt: EncryptService,
-  ) {}
+  ) {
+    super();
+  }
 
   public async run(passedParams: string[]): Promise<void> {
     const address = passedParams[0];

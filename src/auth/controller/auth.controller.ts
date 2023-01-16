@@ -22,7 +22,6 @@ export class AuthController {
     type: AuthResponse,
   })
   @UseFeatures(LocalEnvPathEnum.FEATURE_AUTHENTICATION)
-  @UseGuards(FeatureGuard)
   public async auth(@Body() dto: AuthDto): Promise<AuthResponse> {
     return new AuthResponse(
       await this.authService.auth(dto.login, dto.password),
@@ -34,7 +33,6 @@ export class AuthController {
     type: AuthResponse,
   })
   @UseFeatures(LocalEnvPathEnum.FEATURE_AUTHENTICATION)
-  @UseGuards(FeatureGuard)
   public async web3Auth(@Body() dto: Web3AuthDto): Promise<AuthResponse> {
     return new AuthResponse(await this.web3AuthService.web3Auth(dto.signature));
   }

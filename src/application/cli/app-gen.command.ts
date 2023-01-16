@@ -8,7 +8,7 @@ import { ConsoleLogger } from '@nestjs/common';
   arguments: '<name>',
   description: 'generate new application',
 })
-export class AppGenCommand implements CommandRunner {
+export class AppGenCommand extends CommandRunner {
   private readonly logger: ConsoleLogger = new ConsoleLogger();
 
   public async run(passedParams: string[]): Promise<void> {

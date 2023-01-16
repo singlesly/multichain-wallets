@@ -6,10 +6,12 @@ import { ConsoleLogger } from '@nestjs/common';
   name: 'uptime',
   description: 'get bitcoin node uptime',
 })
-export class UptimeCommand implements CommandRunner {
+export class UptimeCommand extends CommandRunner {
   private readonly logger: ConsoleLogger = new ConsoleLogger();
 
-  constructor(private readonly bitcoinRpcClient: BitcoinRpcClient) {}
+  constructor(private readonly bitcoinRpcClient: BitcoinRpcClient) {
+    super();
+  }
 
   public async run(): Promise<void> {
     const uptime = await this.bitcoinRpcClient.uptime();

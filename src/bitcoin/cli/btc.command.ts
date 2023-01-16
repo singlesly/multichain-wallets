@@ -7,7 +7,7 @@ import { UptimeCommand } from './uptime.command';
   description: 'Bitcoin entry',
   subCommands: [UptimeCommand],
 })
-export class BtcCommand implements CommandRunner {
+export class BtcCommand extends CommandRunner {
   public async run(): Promise<void> {
     return void 0;
   }

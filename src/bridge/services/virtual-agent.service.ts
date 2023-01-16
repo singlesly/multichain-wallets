@@ -86,8 +86,11 @@ export class VirtualAgentService implements AgentService {
     options: AgentCallOptions,
   ): Promise<TxID> {
     const internalRecipient = await this.getWalletService.findByAddress(to);
+    const isVirtualTransaction = this.features.isOn(
+      LocalEnvPathEnum.FEATURE_VIRTUAL_TRANSACTIONS,
+    );
 
-    if (internalRecipient) {
+    if (internalRecipient && isVirtualTransaction) {
       const transaction = await this.virtualTransactionService.submit(
         {
           from,

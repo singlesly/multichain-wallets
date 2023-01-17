@@ -39,6 +39,10 @@ export class AuthUserPgRepository {
   }
 
   public async getByLogin(login: string): Promise<AuthUser> {
-    throw new NotImplementedException();
+    return await this.repository.findOne({
+      where: {
+        login,
+      },
+    });
   }
 }

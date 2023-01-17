@@ -1,10 +1,12 @@
 import { AuthUserPgRepository } from '@app/auth/repositories/auth-user-pg.repository';
 import { TokenService } from '@app/token/token.service';
+import { Injectable } from '@nestjs/common';
 
 export interface AuthResult {
   readonly token: string;
 }
 
+@Injectable()
 export class AuthService {
   constructor(
     private readonly authUserPgRepository: AuthUserPgRepository,

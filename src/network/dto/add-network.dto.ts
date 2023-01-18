@@ -39,6 +39,7 @@ export class AddNetworkDto
   @IsDefined()
   @IsString()
   @IsUrl()
+  @ApiProperty()
   readonly url: string;
 
   @ValidateIf(

@@ -7,7 +7,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { NetworkService } from '@app/network/services/network.service';
 import { Network } from '@app/network/dao/entity/network';
 import { AddNetworkDto } from '@app/network/dto/add-network.dto';
@@ -20,6 +20,7 @@ export class NetworkController {
 
   @Post('network')
   @UseGuards(AppGuard)
+  @ApiBearerAuth()
   public async add(@Body() dto: AddNetworkDto): Promise<Network> {
     return this.networkService.add(dto);
   }
@@ -31,6 +32,7 @@ export class NetworkController {
 
   @Delete('network/:code')
   @UseGuards(AppGuard)
+  @ApiBearerAuth()
   public async remove(@Param('code') code: string): Promise<void> {
     await this.networkService.remove(code);
   }

@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Network } from '@app/network/dao/entity/network';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,6 +17,20 @@ export class NetworkService {
 
   public async getAll(): Promise<Network[]> {
     return this.repository.find();
+  }
+
+  public async getByCode(code: string): Promise<Network> {
+    const network = await this.repository.findOne({
+      where: {
+        code,
+      },
+    });
+
+    if (!network) {
+      throw new NotFoundException('network not found');
+    }
+
+    return network;
   }
 
   public async add(dto: AddNetworkDto): Promise<Network> {

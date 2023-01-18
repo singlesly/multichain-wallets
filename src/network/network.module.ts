@@ -8,5 +8,6 @@ import { Network } from '@app/network/dao/entity/network';
   imports: [TypeOrmModule.forFeature([Network])],
   controllers: [NetworkController],
   providers: [NetworkService],
+  exports: [NetworkService],
 })
 export class NetworkModule {}

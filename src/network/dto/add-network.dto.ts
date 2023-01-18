@@ -7,6 +7,7 @@ import {
 import {
   IsDefined,
   IsEnum,
+  IsLowercase,
   IsString,
   IsUrl,
   ValidateIf,
@@ -22,6 +23,7 @@ export class AddNetworkDto
   @IsDefined()
   @ApiProperty()
   @IsString()
+  @IsLowercase()
   public readonly code: string;
 
   @IsDefined()

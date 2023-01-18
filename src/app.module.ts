@@ -22,6 +22,7 @@ import { AuthModule } from '@app/auth/auth.module';
 import { JwtModule } from '@app/jwt/jwt.module';
 import { FeatureModule } from '@ledius/feature/dist/feature.module';
 import { NetworkModule } from '@app/network/network.module';
+import { TokenModule } from '@app/token/token.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { NetworkModule } from '@app/network/network.module';
     JwtModule,
     FeatureModule.forRoot(),
     NetworkModule,
+    TokenModule,
   ],
   controllers: [],
   providers: [

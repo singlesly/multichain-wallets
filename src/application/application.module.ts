@@ -4,12 +4,12 @@ import { AppListCommand } from './cli/app-list.command';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Application } from './dao/entity/application';
 import { AppGenCommand } from './cli/app-gen.command';
-import { TokenModule } from '@app/token/token.module';
+import { JwtModule } from '@app/jwt/jwt.module';
 import { ApplicationService } from '@app/application/service/application.service';
 import { ApplicationController } from '@app/application/controller/application.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Application]), TokenModule],
+  imports: [TypeOrmModule.forFeature([Application]), JwtModule],
   controllers: [ApplicationController],
   providers: [AppCommand, AppListCommand, AppGenCommand, ApplicationService],
 })

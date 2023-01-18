@@ -19,7 +19,7 @@ import { ApplicationModule } from '@app/application/application.module';
 import { BridgeModule } from '@app/bridge/bridge.module';
 import { BaseExceptionFilter } from '@app/common/filters/base-exception.filter';
 import { AuthModule } from '@app/auth/auth.module';
-import { TokenModule } from '@app/token/token.module';
+import { JwtModule } from '@app/jwt/jwt.module';
 import { FeatureModule } from '@ledius/feature/dist/feature.module';
 import { NetworkModule } from '@app/network/network.module';
 
@@ -40,7 +40,7 @@ import { NetworkModule } from '@app/network/network.module';
       rootPath: path.join(__dirname, '..', 'public'),
       serveRoot: '/public',
     }),
-    TokenModule,
+    JwtModule,
     FeatureModule.forRoot(),
     NetworkModule,
   ],

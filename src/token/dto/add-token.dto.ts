@@ -38,5 +38,6 @@ export class AddTokenDto {
 
   @IsOptional()
   @IsString()
+  @ApiProperty()
   public readonly contractAddress?: string;
 }

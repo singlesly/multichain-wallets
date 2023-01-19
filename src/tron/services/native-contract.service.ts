@@ -20,16 +20,36 @@ export class NativeContractService implements NativeInterface {
     from: string,
     to: string,
     amount: bigint,
+    privateKey: string,
   ): Promise<Balance> {
+    const resources = await this.tronWeb.trx.getAccountResources(from);
     const transaction = await this.tronWeb.transactionBuilder.sendTrx(
       to,
       Number(amount),
       from,
     );
+    const signedTransaction = await this.tronWeb.trx.sign(
+      transaction,
+      privateKey,
+    );
+    let howManyNeed = transaction.raw_data_hex.length;
+    for (const sign of signedTransaction.signature) {
+      howManyNeed += sign.length;
+    }
+    howManyNeed = Math.ceil(howManyNeed / 2) + 69;
+    const isFree =
+      howManyNeed <= resources.freeNetLimit - (resources.freeNetUsed || 0);
+
+    if (isFree) {
+      return {
+        decimals: this.decimals,
+        amount: BigInt(0),
+      };
+    }
 
     return {
       decimals: this.decimals,
-      amount: BigInt(transaction.raw_data_hex.length * 1_000),
+      amount: BigInt(howManyNeed * 1_000),
     };
   }
 

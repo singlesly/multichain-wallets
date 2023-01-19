@@ -8,7 +8,12 @@ import { TronAccount } from 'tronweb';
 export interface NativeInterface {
   getTransaction(id: string): Promise<TransactionInfo>;
   createWallet(): Promise<TronAccount>;
-  estimateFee(from: string, to: string, amount: bigint): Promise<Balance>;
+  estimateFee(
+    from: string,
+    to: string,
+    amount: bigint,
+    privateKey: string,
+  ): Promise<Balance>;
   getBalance(address: string): Promise<Balance>;
   transfer(fromPrivateKey: string, to: string, amount: bigint): Promise<TxID>;
 }

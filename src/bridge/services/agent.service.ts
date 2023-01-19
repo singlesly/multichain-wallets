@@ -41,7 +41,12 @@ export class AgentService implements AgentServiceInterface {
   ): Promise<Balance> {
     const wallet = await this.getWalletService.getByAddress(from);
 
-    return await this.contract.estimateFee(wallet.pubKey, to, amount);
+    return await this.contract.estimateFee(
+      wallet.pubKey,
+      to,
+      amount,
+      await this.encryptService.decrypt(wallet.privateKey),
+    );
   }
 
   public async getBalance(address: string): Promise<Balance> {

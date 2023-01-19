@@ -1,6 +1,9 @@
 declare module 'tronweb' {
+  import { TxID } from '@app/bridge/interfaces/agent-service.interface';
+
   declare class TronWeb {
     public readonly trx: Trx;
+    public readonly utils: utils;
     public readonly transactionBuilder: TransactionBuilder;
     public readonly address: {
       fromPrivateKey(privateKey: string): string;
@@ -9,7 +12,6 @@ declare module 'tronweb' {
     constructor(options: InitOptions);
 
     public async createAccount(): Promise<TronAccount>;
-    public async getAccountResources(): Promise<TronAccountResources>;
     public contract(): Contact;
     public setAddress(privateKey: string): void;
     public setHeader(headers: Record<string, string>): void;
@@ -17,6 +19,9 @@ declare module 'tronweb' {
   }
 
   declare class Trx {
+    public async getAccountResources(
+      address: string,
+    ): Promise<TronAccountResources>;
     public async getBalance(address: string): Promise<number>;
     public async sign(
       transaction: TransactionData | string,
@@ -77,6 +82,13 @@ declare module 'tronweb' {
     ): Promise<TransactionResult<TransactionData>>;
   }
 
+  declare interface utils {
+    transaction: {
+      txJsonToPb(txJson: SignedTransaction): object;
+      txPbToTxID(): TxID;
+    };
+  }
+
   interface InitOptions {
     readonly fullNode?: string;
     readonly fullHost?: string;
@@ -108,6 +120,7 @@ declare module 'tronweb' {
 
   export interface TronAccountResources {
     freeNetLimit: number;
+    freeNetUsed?: number;
     NetLimit: number;
     TotalNetLimit: number;
     TotalNetWeight: number;

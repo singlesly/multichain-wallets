@@ -1,6 +1,5 @@
 import TronWeb, {
   Address,
-  TransferFunctionSelector,
   TRC20Contract,
   TriggerSmartContractType,
   TronAccount,
@@ -38,12 +37,10 @@ export class Trc20ContractService implements TRC20Interface {
     amount: bigint,
     privateKey: string,
   ): Promise<Balance> {
-    const resources = await this.tronWeb.trx.getAccountResources(from);
     const parameter = [
       { type: 'address', value: to },
       { type: 'uint256', value: Number(amount) },
     ] as [{ type: Address; value: string }, { type: Uint256; value: number }];
-    console.log('triggerr');
     const transaction =
       await this.tronWeb.transactionBuilder.triggerSmartContract(
         this.token.contractAddress,
@@ -52,13 +49,11 @@ export class Trc20ContractService implements TRC20Interface {
         parameter,
         from,
       );
-    console.log('triggerr');
 
     const signedTransaction = await this.tronWeb.trx.sign(
       transaction.transaction,
       privateKey,
     );
-    console.log('triggerr');
 
     let howManyNeed = transaction.transaction.raw_data_hex.length;
     for (const sign of signedTransaction.signature) {

@@ -6,16 +6,19 @@ import {
   TxID,
 } from '@app/bridge/interfaces/agent-service.interface';
 import { base58Address } from '@app/utils';
+import { HandleTronWebException } from '@app/tron/decorators/handle-tron-web-exception';
 
 export class NativeContractService implements NativeInterface {
   private readonly decimals = 6;
 
   constructor(private readonly tronWeb: TronWeb) {}
 
+  @HandleTronWebException()
   public async createWallet(): Promise<TronAccount> {
     return await this.tronWeb.createAccount();
   }
 
+  @HandleTronWebException()
   public async estimateFee(
     from: string,
     to: string,
@@ -53,6 +56,7 @@ export class NativeContractService implements NativeInterface {
     };
   }
 
+  @HandleTronWebException()
   public async getBalance(address: string): Promise<Balance> {
     const balance = await this.tronWeb.trx.getBalance(address);
 
@@ -62,6 +66,7 @@ export class NativeContractService implements NativeInterface {
     };
   }
 
+  @HandleTronWebException()
   public async getTransaction(id: string): Promise<TransactionInfo> {
     const transaction =
       await this.tronWeb.trx.getTransaction<TransferContractType>(id);
@@ -83,6 +88,7 @@ export class NativeContractService implements NativeInterface {
     };
   }
 
+  @HandleTronWebException()
   public async transfer(
     fromPrivateKey: string,
     to: string,

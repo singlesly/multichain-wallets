@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import {
-  AgentService,
+  AgentServiceInterface,
   Balance,
   TransactionInfo,
   TxID,
-} from '@app/bridge/services/agent.service';
+} from '@app/bridge/interfaces/agent-service.interface';
 import { Wallet } from '@app/wallet/dao/entity/wallet';
 import { USDTClientService } from '@app/usdt-trc20/services/usdt-client.service';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
@@ -20,7 +20,7 @@ import { VirtualBalanceService } from '@app/virtual-balance/services/virtual-bal
 import { FeatureService } from '@ledius/feature/dist/services/feature.service';
 
 @Injectable()
-export class UsdtTrc20AgentService implements AgentService {
+export class UsdtTrc20AgentService implements AgentServiceInterface {
   constructor(
     private readonly tronWeb: TronWeb,
     private readonly usdtClientService: USDTClientService,

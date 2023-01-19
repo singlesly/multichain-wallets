@@ -9,7 +9,7 @@ import {
   Balance,
   TransactionInfo,
   TxID,
-} from '@app/bridge/services/agent.service';
+} from '@app/bridge/interfaces/agent-service.interface';
 import { BigNumber } from 'ethers';
 import { base58Address } from '@app/utils';
 import { ParameterService } from '@app/tron/services/parameter.service';

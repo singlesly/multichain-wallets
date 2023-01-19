@@ -4,7 +4,7 @@ import {
   Balance,
   TransactionInfo,
   TxID,
-} from '@app/bridge/services/agent.service';
+} from '@app/bridge/interfaces/agent-service.interface';
 import { base58Address } from '@app/utils';
 
 export class NativeContractService implements NativeInterface {

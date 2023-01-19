@@ -1,4 +1,4 @@
-import { AgentService } from '@app/bridge/services/agent.service';
+import { AgentServiceInterface } from '@app/bridge/interfaces/agent-service.interface';
 import { VirtualAgentService } from '@app/bridge/services/virtual-agent.service';
 import { Injectable } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
@@ -19,7 +19,7 @@ export class VirtualAgentServiceFactory {
     private readonly featureService: FeatureService,
   ) {}
 
-  public for(agent: AgentService): VirtualAgentService {
+  public for(agent: AgentServiceInterface): VirtualAgentService {
     this.logger.log({
       message: 'Virtualize agent',
       agentType: agent.constructor.name,

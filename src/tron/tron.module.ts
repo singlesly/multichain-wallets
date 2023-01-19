@@ -8,6 +8,7 @@ import { RequestContextModule } from '@ledius/request-context';
 import { HttpClientLoggingInterceptor } from '../common/interceptors/http-client-logging.interceptor';
 import { ParameterService } from '@app/tron/services/parameter.service';
 import TronWeb from 'tronweb';
+import { TronCompatibleFactory } from '@app/tron/services/tron-compatible.factory';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import TronWeb from 'tronweb';
   providers: [
     HttpClientLoggingInterceptor,
     ParameterService,
+    TronCompatibleFactory,
     {
       provide: TronWeb,
       useFactory: (env: LocalEnvService) => {
@@ -41,6 +43,6 @@ import TronWeb from 'tronweb';
       inject: [LocalEnvService],
     },
   ],
-  exports: [ParameterService, TronWeb],
+  exports: [ParameterService, TronWeb, TronCompatibleFactory],
 })
 export class TronModule {}

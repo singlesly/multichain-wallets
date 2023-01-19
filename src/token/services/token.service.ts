@@ -4,6 +4,10 @@ import { Token } from '@app/token/dao/entity/token';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AddTokenDto } from '@app/token/dto/add-token.dto';
 import { NetworkService } from '@app/network/services/network.service';
+import { FindOptions } from '@nestjs/schematics';
+import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
+import { BaseException } from '@app/common/base-exception';
+import { WebErrorsEnum } from '@app/common/web-errors.enum';
 
 @Injectable()
 export class TokenService {
@@ -28,6 +32,34 @@ export class TokenService {
 
   public async getAll(): Promise<Token[]> {
     return this.repository.find();
+  }
+
+  public async getBySymbol(
+    symbol: string,
+    networkCode?: string,
+  ): Promise<Token> {
+    const where: FindOptionsWhere<Token> = {
+      symbol,
+    };
+    if (networkCode) {
+      where.network = {
+        code: networkCode,
+      };
+    }
+
+    const token = await this.repository.findOne({
+      where,
+      relations: ['network'],
+    });
+
+    if (!token) {
+      throw new BaseException({
+        message: 'Token not found',
+        statusCode: WebErrorsEnum.NOT_FOUND,
+      });
+    }
+
+    return token;
   }
 
   public async remove(id: string): Promise<void> {

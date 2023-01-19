@@ -24,7 +24,6 @@ export class WalletController {
   @ApiBasicAuth()
   @ApiBearerAuth()
   public async list(@Query() dto: WalletsListDto): Promise<WalletResponse[]> {
-    console.log(dto);
     const wallets = await this.walletPgRepository.findBy({
       owners: dto.owners,
     });

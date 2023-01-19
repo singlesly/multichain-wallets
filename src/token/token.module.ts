@@ -9,5 +9,6 @@ import { TokenController } from '@app/token/controllers/token.controller';
   imports: [NetworkModule, TypeOrmModule.forFeature([Token])],
   controllers: [TokenController],
   providers: [TokenService],
+  exports: [TokenService],
 })
 export class TokenModule {}

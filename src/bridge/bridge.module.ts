@@ -17,6 +17,8 @@ import { LoggerModule } from '@ledius/logger';
 import { VirtualBalanceModule } from '@app/virtual-balance/virtual-balance.module';
 import { VirtualTransactionModule } from '@app/virtual-transaction/virtual-transaction.module';
 import { VirtualAgentServiceFactory } from '@app/bridge/factories/virtual-agent-service.factory';
+import { NetworkModule } from '@app/network/network.module';
+import { TokenModule } from '@app/token/token.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { VirtualAgentServiceFactory } from '@app/bridge/factories/virtual-agent-
     LocalEnvModule,
     VirtualBalanceModule,
     VirtualTransactionModule,
+    NetworkModule,
+    TokenModule,
   ],
   controllers: [BridgeController],
   providers: [

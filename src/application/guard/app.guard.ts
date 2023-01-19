@@ -66,10 +66,10 @@ export class AppGuard implements CanActivate {
     token: string,
     context: ExecutionContext,
   ): Promise<boolean> {
-    const payload = await this.token.verify(token);
+    const payload = await this.token.verify<RequestMeta>(token);
     this.setAuthPayload(context, {
-      userId: payload.id,
-      ownerId: payload.id,
+      userId: payload.userId,
+      ownerId: payload.ownerId,
     });
 
     return true;

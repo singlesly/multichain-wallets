@@ -23,7 +23,7 @@ export class Token {
     eager: true,
   })
   @JoinColumn()
-  public readonly network: Network;
+  public network: Network;
 
   @Column('text')
   public readonly type: TokenTypeEnum;

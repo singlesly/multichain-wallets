@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import {
-  AgentService,
+  AgentServiceInterface,
   Balance,
   TransactionInfo,
   TxID,
-} from '@app/bridge/services/agent.service';
+} from '@app/bridge/interfaces/agent-service.interface';
 import { EthereumWeb3Service } from '@app/ethereum/services/ethereum-web3.service';
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
@@ -23,7 +23,7 @@ import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 import { VirtualTransactionService } from '@app/virtual-transaction/services/virtual-transaction.service';
 
 @Injectable()
-export class EthereumAgentService implements AgentService {
+export class EthereumAgentService implements AgentServiceInterface {
   constructor(
     private readonly ethereumWeb3Service: EthereumWeb3Service,
     private readonly createTemporaryWalletService: CreateWalletService,

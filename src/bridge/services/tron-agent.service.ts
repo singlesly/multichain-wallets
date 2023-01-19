@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import {
   Balance,
-  AgentService,
+  AgentServiceInterface,
   TransactionInfo,
   TxID,
-} from '@app/bridge/services/agent.service';
+} from '@app/bridge/interfaces/agent-service.interface';
 import { Wallet } from '@app/wallet/dao/entity/wallet';
 import { CreateWalletService } from '@app/wallet/services/create-wallet.service';
 import { NetworkEnum } from '@app/common/network.enum';
@@ -18,7 +18,7 @@ import { VirtualBalanceService } from '@app/virtual-balance/services/virtual-bal
 import { FeatureService } from '@ledius/feature/dist/services/feature.service';
 
 @Injectable()
-export class TronAgentService implements AgentService {
+export class TronAgentService implements AgentServiceInterface {
   private readonly decimals: number = 6;
 
   constructor(

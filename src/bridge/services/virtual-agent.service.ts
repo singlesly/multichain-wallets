@@ -1,10 +1,10 @@
 import {
   AgentCallOptions,
-  AgentService,
+  AgentServiceInterface,
   Balance,
   TransactionInfo,
   TxID,
-} from '@app/bridge/services/agent.service';
+} from '@app/bridge/interfaces/agent-service.interface';
 import { VirtualTransactionService } from '@app/virtual-transaction/services/virtual-transaction.service';
 import { Wallet } from '@app/wallet/dao/entity/wallet';
 import { VirtualBalanceService } from '@app/virtual-balance/services/virtual-balance.service';
@@ -17,9 +17,9 @@ import { Injectable } from '@nestjs/common';
 import { isUUID } from 'class-validator';
 
 @Injectable()
-export class VirtualAgentService implements AgentService {
+export class VirtualAgentService implements AgentServiceInterface {
   constructor(
-    private readonly agentService: AgentService,
+    private readonly agentService: AgentServiceInterface,
     private readonly virtualBalanceService: VirtualBalanceService,
     private readonly virtualTransactionService: VirtualTransactionService,
     private readonly getWalletService: GetWalletService,

@@ -9,6 +9,7 @@ declare module 'tronweb' {
     constructor(options: InitOptions);
 
     public async createAccount(): Promise<TronAccount>;
+    public async getAccountResources(): Promise<TronAccountResources>;
     public contract(): Contact;
     public setAddress(privateKey: string): void;
     public setHeader(headers: Record<string, string>): void;
@@ -103,6 +104,16 @@ declare module 'tronweb' {
     };
     publicKey: string;
     privateKey: string;
+  }
+
+  export interface TronAccountResources {
+    freeNetLimit: number;
+    NetLimit: number;
+    TotalNetLimit: number;
+    TotalNetWeight: number;
+    EnergyLimit: number;
+    TotalEnergyLimit: number;
+    TotalEnergyWeight: number;
   }
 
   export interface TRC20Contract {

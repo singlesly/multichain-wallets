@@ -1,9 +1,9 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-  JoinColumn,
 } from 'typeorm';
 import { Network } from '@app/network/dao/entity/network';
 import { TokenTypeEnum } from '@app/token/enums/token-type.enum';
@@ -45,5 +45,9 @@ export class Token {
     this.network = network;
     this.type = type;
     this.contractAddress = contractAddress;
+  }
+
+  public isNative(): this is { type: TokenTypeEnum.NATIVE } {
+    return this.type === TokenTypeEnum.NATIVE;
   }
 }

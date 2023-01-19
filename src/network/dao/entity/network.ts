@@ -1,6 +1,9 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { NetworkKindEnum } from '@app/network/enums/network-kind.enum';
-import { NetworkInterface } from '@app/network/interfaces/network.interface';
+import {
+  NetworkInterface,
+  TronCompatibleNetworkInterface,
+} from '@app/network/interfaces/network.interface';
 
 @Entity('networks')
 export class Network {
@@ -33,5 +36,11 @@ export class Network {
     this.url = url;
     this.kind = kind;
     this.options = options;
+  }
+
+  public isTronCompatible(): this is {
+    options: TronCompatibleNetworkInterface;
+  } {
+    return this.options.kind === NetworkKindEnum.TRON_COMPATIBLE;
   }
 }

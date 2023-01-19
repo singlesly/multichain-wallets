@@ -96,7 +96,7 @@ declare module 'tronweb' {
     };
   }
 
-  interface TronAccount {
+  export interface TronAccount {
     address: {
       base58: string;
       hex: string;

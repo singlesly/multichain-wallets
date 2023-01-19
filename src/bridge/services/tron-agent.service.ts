@@ -9,24 +9,19 @@ import { Wallet } from '@app/wallet/dao/entity/wallet';
 import { CreateWalletService } from '@app/wallet/services/create-wallet.service';
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
-import { TronClientService } from '@app/tron/services/tron-client.service';
 import { base58Address } from '@app/utils';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import TronWeb, { TransferContractType } from 'tronweb';
-import { BaseException } from '@app/common/base-exception';
-import { WebErrorsEnum } from '@app/common/web-errors.enum';
 import { TronNetworkExceptionFactory } from '@app/common/exceptions/tron-network-exception.factory';
 import { VirtualBalanceService } from '@app/virtual-balance/services/virtual-balance.service';
 import { FeatureService } from '@ledius/feature/dist/services/feature.service';
-import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 
 @Injectable()
 export class TronAgentService implements AgentService {
   private readonly decimals: number = 6;
 
   constructor(
-    private readonly tronClientService: TronClientService,
     private readonly tronWeb: TronWeb,
     private readonly createTemporaryWalletService: CreateWalletService,
     private readonly getTemporaryWalletService: GetWalletService,

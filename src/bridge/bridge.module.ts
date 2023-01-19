@@ -9,8 +9,6 @@ import { BitcoinAgentService } from '@app/bridge/services/bitcoin-agent.service'
 import { EthereumAgentService } from '@app/bridge/services/ethereum-agent.service';
 import { TronAgentService } from '@app/bridge/services/tron-agent.service';
 import { EncryptModule } from '@app/encrypt/encrypt.module';
-import { UsdtTrc20Module } from '@app/usdt-trc20/usdt-trc20.module';
-import { UsdtTrc20AgentService } from '@app/bridge/services/usdt-trc20-agent.service';
 import { TronNetworkExceptionFactory } from '@app/common/exceptions/tron-network-exception.factory';
 import { LocalEnvModule } from '@app/local-env/local-env.module';
 import { LoggerModule } from '@ledius/logger';
@@ -27,7 +25,6 @@ import { TokenModule } from '@app/token/token.module';
     EthereumModule,
     BitcoinModule,
     EncryptModule,
-    UsdtTrc20Module,
     LoggerModule,
     LocalEnvModule,
     VirtualBalanceModule,
@@ -41,7 +38,6 @@ import { TokenModule } from '@app/token/token.module';
     BitcoinAgentService,
     EthereumAgentService,
     TronAgentService,
-    UsdtTrc20AgentService,
     TronNetworkExceptionFactory,
     VirtualAgentServiceFactory,
   ],

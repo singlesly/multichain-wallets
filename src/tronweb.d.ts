@@ -59,6 +59,7 @@ declare module 'tronweb' {
   }
 
   declare class TransactionBuilder {
+    public async sendToken(): Promise<SignedTransaction>;
     public async sendTrx(
       to: string,
       amount: number,

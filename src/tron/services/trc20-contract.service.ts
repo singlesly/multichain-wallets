@@ -1,7 +1,10 @@
 import TronWeb, {
+  Address,
+  TransferFunctionSelector,
   TRC20Contract,
   TriggerSmartContractType,
   TronAccount,
+  Uint256,
 } from 'tronweb';
 import { Token } from '@app/token/dao/entity/token';
 import { TRC20Interface } from '@app/tron/interfaces/trc20.interface';
@@ -29,11 +32,43 @@ export class Trc20ContractService implements TRC20Interface {
     return this.tronWeb.createAccount();
   }
 
-  public async estimateFee(): Promise<Balance> {
-    // TODO use pb for calculation fee
+  public async estimateFee(
+    from: string,
+    to: string,
+    amount: bigint,
+    privateKey: string,
+  ): Promise<Balance> {
+    const resources = await this.tronWeb.trx.getAccountResources(from);
+    const parameter = [
+      { type: 'address', value: to },
+      { type: 'uint256', value: Number(amount) },
+    ] as [{ type: Address; value: string }, { type: Uint256; value: number }];
+    console.log('triggerr');
+    const transaction =
+      await this.tronWeb.transactionBuilder.triggerSmartContract(
+        this.token.contractAddress,
+        'transfer(address,uint256)',
+        {},
+        parameter,
+        from,
+      );
+    console.log('triggerr');
+
+    const signedTransaction = await this.tronWeb.trx.sign(
+      transaction.transaction,
+      privateKey,
+    );
+    console.log('triggerr');
+
+    let howManyNeed = transaction.transaction.raw_data_hex.length;
+    for (const sign of signedTransaction.signature) {
+      howManyNeed += sign.length;
+    }
+    howManyNeed = Math.ceil(howManyNeed / 2) + 69;
+
     return {
-      amount: BigInt(264000),
-      decimals: 6,
+      decimals: this.token.decimals,
+      amount: BigInt(howManyNeed * 1_000),
     };
   }
 

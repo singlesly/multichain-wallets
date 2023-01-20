@@ -10,11 +10,13 @@ import { AgentService } from '@app/bridge/services/agent.service';
 import { CreateWalletService } from '@app/wallet/services/create-wallet.service';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
+import { EthereumCompatibleFactory } from '@app/ethereum/services/ethereum-compatible.factory';
 
 @Injectable()
 export class AgentServiceFactory {
   constructor(
     private readonly tronCompatibleFactory: TronCompatibleFactory,
+    private readonly ethereumCompatibleFactory: EthereumCompatibleFactory,
     private readonly networkService: NetworkService,
     private readonly tokenService: TokenService,
     private readonly getWalletService: GetWalletService,
@@ -34,6 +36,21 @@ export class AgentServiceFactory {
         .then(({ at }) => at(token));
 
       return new AgentService(
+        network,
+        token,
+        contract,
+        this.createWalletService,
+        this.getWalletService,
+        this.encrypt,
+      );
+    } else if (network.isEthereumCompatible()) {
+      const contract = await this.ethereumCompatibleFactory
+        .for(network)
+        .then(({ at }) => at(token));
+
+      return new AgentService(
+        network,
+        token,
         contract,
         this.createWalletService,
         this.getWalletService,

@@ -22,7 +22,7 @@ import { LocalEnvModule } from '@app/local-env/local-env.module';
   controllers: [AuthController],
   providers: [
     AuthService,
-    Web3AuthService,
+    // Web3AuthService,
     AuthUserPgRepository,
     DefaultAdminUserService,
   ],

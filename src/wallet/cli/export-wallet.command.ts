@@ -23,7 +23,7 @@ export class ExportWalletCommand extends CommandRunner {
 
     const wallet = await this.walletService.getByAddress(address);
 
-    this.logger.log(`Exported wallet: ${wallet.network}/${wallet.coin}`);
+    this.logger.log(`Exported wallet: ${wallet.networkCode}`);
     this.logger.log(`address: ${wallet.pubKey}`);
     this.logger.log(
       `private key: ${await this.encrypt.decrypt(wallet.privateKey)}`,

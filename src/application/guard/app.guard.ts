@@ -1,14 +1,14 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import { Application } from '../dao/entity/application';
-import { TokenService } from '@app/token/token.service';
 import { REQUEST_META_KEY, RequestMeta } from '@app/auth/contants';
+import { JwtService } from '@nestjs/jwt';
 
 type TokenType = 'bearer' | 'basic';
 
 @Injectable()
 export class AppGuard implements CanActivate {
-  constructor(private readonly token: TokenService) {}
+  constructor(private readonly token: JwtService) {}
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
@@ -66,10 +66,10 @@ export class AppGuard implements CanActivate {
     token: string,
     context: ExecutionContext,
   ): Promise<boolean> {
-    const payload = await this.token.verify(token);
+    const payload = await this.token.verify<RequestMeta>(token);
     this.setAuthPayload(context, {
-      userId: payload.id,
-      ownerId: payload.id,
+      userId: payload.userId,
+      ownerId: payload.ownerId,
     });
 
     return true;

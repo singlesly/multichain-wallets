@@ -66,10 +66,20 @@ export class TronNetworkExceptionFactory {
       );
     }
 
+    if (typeof e === 'string' && e.includes('Invalid address provided')) {
+      throw new BaseException(
+        {
+          statusCode: WebErrorsEnum.INVALID_ARGUMENT,
+          message: 'Invalid address provided',
+        },
+        e,
+      );
+    }
+
     throw new BaseException(
       {
         statusCode: WebErrorsEnum.INTERNAL_ERROR,
-        message: 'Unhandled tron exception',
+        message: typeof e === 'string' ? e : 'Unhandled tron exception',
       },
       e,
     );

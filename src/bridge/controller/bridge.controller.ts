@@ -7,7 +7,10 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { Balance, TransactionInfo } from '@app/bridge/services/agent.service';
+import {
+  Balance,
+  TransactionInfo,
+} from '@app/bridge/interfaces/agent-service.interface';
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
 import { TransferWalletDto } from '@app/wallet/dto/transfer-wallet.dto';
@@ -16,64 +19,69 @@ import { AppGuard } from '@app/application/guard/app.guard';
 import { TransactionResponse } from '@app/bridge/controller/transaction.response';
 import { RequestPayload } from '@app/auth/decorators/request-payload';
 import { RequestMeta } from '@app/auth/contants';
+import { BalanceResponse } from '@app/bridge/controller/balance.response';
+import { response } from 'express';
 
 @Controller()
 @ApiTags('Bridge')
 export class BridgeController {
   constructor(private readonly agentServiceFactory: AgentServiceFactory) {}
 
-  @Post(':network/:coin/wallet')
+  @Post(':network/:symbol/wallet')
   @ApiParam({
     name: 'network',
-    enum: NetworkEnum,
+    example: 'nile',
   })
   @ApiParam({
-    name: 'coin',
-    enum: CoinEnum,
+    name: 'symbol',
+    example: 'usdt',
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
   @ApiBearerAuth()
   public async createWallet(
-    @Param('network') network: NetworkEnum,
-    @Param('coin') coin: CoinEnum,
+    @Param('network') network: string,
+    @Param('symbol') symbol: string,
     @RequestPayload() meta: RequestMeta,
   ) {
     return new WalletResponse(
       await this.agentServiceFactory
-        .for(network, coin)
-        .createWallet([meta.ownerId]),
+        .for(network, symbol)
+        .then((agent) => agent.createWallet([meta.ownerId])),
     );
   }
 
-  @Get(':network/:coin/wallet/:address/balance')
+  @Get(':network/:symbol/wallet/:address/balance')
   @ApiParam({
     name: 'network',
-    enum: NetworkEnum,
+    example: 'nile',
   })
   @ApiParam({
-    name: 'coin',
-    enum: CoinEnum,
+    name: 'symbol',
+    example: 'usdt',
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
   @ApiBearerAuth()
   public async getBalance(
-    @Param('network') network: NetworkEnum,
-    @Param('coin') coin: CoinEnum,
+    @Param('network') network: string,
+    @Param('symbol') coin: string,
     @Param('address') address: string,
-  ): Promise<Balance> {
-    return this.agentServiceFactory.for(network, coin).getBalance(address);
+  ): Promise<BalanceResponse> {
+    return this.agentServiceFactory
+      .for(network, coin)
+      .then((agent) => agent.getBalance(address))
+      .then((balance) => new BalanceResponse(balance));
   }
 
-  @Post(':network/:coin/transfer')
+  @Post(':network/:symbol/transfer')
   @ApiParam({
     name: 'network',
-    enum: NetworkEnum,
+    example: 'nile',
   })
   @ApiParam({
-    name: 'coin',
-    enum: CoinEnum,
+    name: 'symbol',
+    example: 'usdt',
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
@@ -82,79 +90,63 @@ export class BridgeController {
     type: TransactionResponse,
   })
   public async transfer(
-    @Param('network') network: NetworkEnum,
-    @Param('coin') coin: CoinEnum,
+    @Param('network') network: string,
+    @Param('symbol') coin: string,
     @Body() dto: TransferWalletDto,
     @RequestPayload() meta: RequestMeta,
   ): Promise<TransactionResponse> {
     const { from, to, amount } = dto;
 
     return new TransactionResponse(
-      await this.agentServiceFactory
-        .for(network, coin)
-        .transfer(from, to, amount, {
+      await this.agentServiceFactory.for(network, coin).then((agent) =>
+        agent.transfer(from, to, amount, {
           initiator: meta.ownerId,
         }),
+      ),
     );
   }
 
-  @Post(':network/:coin/estimate-fee')
+  @Post(':network/:symbol/estimate-fee')
   @ApiParam({
     name: 'network',
-    enum: NetworkEnum,
+    example: 'nile',
   })
   @ApiParam({
-    name: 'coin',
-    enum: CoinEnum,
+    name: 'symbol',
+    example: 'usdt',
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
   @ApiBearerAuth()
   public async estimateFee(
     @Param('network') network: NetworkEnum,
-    @Param('coin') coin: CoinEnum,
+    @Param('symbol') coin: CoinEnum,
     @Body() { from, to, amount }: TransferWalletDto,
   ): Promise<Balance> {
     return this.agentServiceFactory
       .for(network, coin)
-      .estimateFee(from, to, amount);
+      .then((agent) => agent.estimateFee(from, to, amount));
   }
 
-  @Get(':network/:coin/transaction/:transactionId')
+  @Get(':network/:symbol/transaction/:transactionId')
   @ApiParam({
     name: 'network',
-    enum: NetworkEnum,
+    example: 'nile',
   })
   @ApiParam({
-    name: 'coin',
-    enum: CoinEnum,
+    name: 'symbol',
+    example: 'usdt',
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
   @ApiBearerAuth()
   public async getTransaction(
     @Param('network') network: NetworkEnum,
-    @Param('coin') coin: CoinEnum,
+    @Param('symbol') coin: CoinEnum,
     @Param('transactionId') transactionId: string,
   ): Promise<TransactionInfo> {
     return this.agentServiceFactory
       .for(network, coin)
-      .getTransaction(transactionId);
-  }
-
-  @Get('supported-coins')
-  @ApiOkResponse({
-    description: 'Key of object is network, value is symbol supported coins',
-  })
-  @UseGuards(AppGuard)
-  @ApiBasicAuth()
-  @ApiBearerAuth()
-  public async supportedCoins(): Promise<Record<string, string[]>> {
-    const map = this.agentServiceFactory.supportedMap;
-
-    return Object.entries(map).reduce((accum, [net, coin]) => {
-      accum[net] = Object.keys(coin);
-      return accum;
-    }, {});
+      .then((agent) => agent.getTransaction(transactionId));
   }
 }

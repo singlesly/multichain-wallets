@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { BitcoinRpcClient } from '@app/bitcoin/rpc/bitcoin-rpc.client';
 import {
-  AgentService,
+  AgentServiceInterface,
   Balance,
   TransactionInfo,
   TxID,
-} from '@app/bridge/services/agent.service';
+} from '@app/bridge/interfaces/agent-service.interface';
 import { CreateWalletService } from '@app/wallet/services/create-wallet.service';
 import { NetworkEnum } from '@app/common/network.enum';
 import { CoinEnum } from '@app/common/coin.enum';
@@ -18,7 +18,7 @@ import { VirtualBalanceService } from '@app/virtual-balance/services/virtual-bal
 import { VirtualTransactionService } from '@app/virtual-transaction/services/virtual-transaction.service';
 
 @Injectable()
-export class BitcoinAgentService implements AgentService {
+export class BitcoinAgentService implements AgentServiceInterface {
   constructor(
     private readonly bitcoinRpcClient: BitcoinRpcClient,
     private readonly createTemporaryWalletService: CreateWalletService,
@@ -36,7 +36,6 @@ export class BitcoinAgentService implements AgentService {
       privateKey: '',
       owners,
       network: NetworkEnum.BTC,
-      coin: CoinEnum.BTC,
     });
   }
 

@@ -16,13 +16,13 @@ export class AuthUser {
     type: 'varchar',
     nullable: true,
   })
-  public readonly login?: string;
+  public login?: string;
 
   @Column({
     type: 'varchar',
     nullable: true,
   })
-  public readonly password?: string;
+  public password?: string;
 
   @Column({
     type: 'varchar',
@@ -35,6 +35,13 @@ export class AuthUser {
 
   constructor() {
     this.id = v4();
+  }
+
+  public static createByLogin(login: string, password: string) {
+    const self = new AuthUser();
+    self.login = login;
+    self.password = password;
+    return self;
   }
 
   public static createByAddress(address: string) {

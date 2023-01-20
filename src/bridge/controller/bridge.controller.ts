@@ -19,6 +19,8 @@ import { AppGuard } from '@app/application/guard/app.guard';
 import { TransactionResponse } from '@app/bridge/controller/transaction.response';
 import { RequestPayload } from '@app/auth/decorators/request-payload';
 import { RequestMeta } from '@app/auth/contants';
+import { BalanceResponse } from '@app/bridge/controller/balance.response';
+import { response } from 'express';
 
 @Controller()
 @ApiTags('Bridge')
@@ -65,10 +67,11 @@ export class BridgeController {
     @Param('network') network: string,
     @Param('symbol') coin: string,
     @Param('address') address: string,
-  ): Promise<Balance> {
+  ): Promise<BalanceResponse> {
     return this.agentServiceFactory
       .for(network, coin)
-      .then((agent) => agent.getBalance(address));
+      .then((agent) => agent.getBalance(address))
+      .then((balance) => new BalanceResponse(balance));
   }
 
   @Post(':network/:symbol/transfer')

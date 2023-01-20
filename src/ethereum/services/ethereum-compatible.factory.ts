@@ -21,7 +21,7 @@ export class EthereumCompatibleFactory {
       });
     }
 
-    const web3 = new EthereumWeb3Service(network.url, '', '');
+    const web3 = new EthereumWeb3Service(network.url);
 
     return {
       at: (token: Token) => {

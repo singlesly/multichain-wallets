@@ -46,7 +46,7 @@ export class BridgeController {
   ) {
     return new WalletResponse(
       await this.agentServiceFactory
-        .for(network, symbol)
+        .for(network.toLowerCase(), symbol.toLowerCase())
         .then((agent) => agent.createWallet([meta.ownerId])),
     );
   }
@@ -69,7 +69,7 @@ export class BridgeController {
     @Param('address') address: string,
   ): Promise<BalanceResponse> {
     return this.agentServiceFactory
-      .for(network, coin)
+      .for(network.toLowerCase(), coin.toLowerCase())
       .then((agent) => agent.getBalance(address))
       .then((balance) => new BalanceResponse(balance));
   }
@@ -91,18 +91,20 @@ export class BridgeController {
   })
   public async transfer(
     @Param('network') network: string,
-    @Param('symbol') coin: string,
+    @Param('symbol') symbol: string,
     @Body() dto: TransferWalletDto,
     @RequestPayload() meta: RequestMeta,
   ): Promise<TransactionResponse> {
     const { from, to, amount } = dto;
 
     return new TransactionResponse(
-      await this.agentServiceFactory.for(network, coin).then((agent) =>
-        agent.transfer(from, to, amount, {
-          initiator: meta.ownerId,
-        }),
-      ),
+      await this.agentServiceFactory
+        .for(network.toLowerCase(), symbol.toLowerCase())
+        .then((agent) =>
+          agent.transfer(from, to, amount, {
+            initiator: meta.ownerId,
+          }),
+        ),
     );
   }
 
@@ -120,11 +122,11 @@ export class BridgeController {
   @ApiBearerAuth()
   public async estimateFee(
     @Param('network') network: NetworkEnum,
-    @Param('symbol') coin: CoinEnum,
+    @Param('symbol') symbol: CoinEnum,
     @Body() { from, to, amount }: TransferWalletDto,
   ): Promise<Balance> {
     return this.agentServiceFactory
-      .for(network, coin)
+      .for(network.toLowerCase(), symbol.toLowerCase())
       .then((agent) => agent.estimateFee(from, to, amount));
   }
 
@@ -142,11 +144,11 @@ export class BridgeController {
   @ApiBearerAuth()
   public async getTransaction(
     @Param('network') network: NetworkEnum,
-    @Param('symbol') coin: CoinEnum,
+    @Param('symbol') symbol: CoinEnum,
     @Param('transactionId') transactionId: string,
   ): Promise<TransactionInfo> {
     return this.agentServiceFactory
-      .for(network, coin)
+      .for(network.toLowerCase(), symbol.toLowerCase())
       .then((agent) => agent.getTransaction(transactionId));
   }
 }

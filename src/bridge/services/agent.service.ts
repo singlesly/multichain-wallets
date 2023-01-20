@@ -43,8 +43,7 @@ export class AgentService implements AgentServiceInterface {
     return this.createWalletService.create({
       privateKey: account.privateKey,
       pubKey: address,
-      network: NetworkEnum.TRON,
-      coin: CoinEnum.TRX,
+      network: this.network.code,
       owners,
     });
   }

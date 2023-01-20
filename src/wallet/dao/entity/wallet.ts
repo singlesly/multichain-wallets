@@ -44,18 +44,10 @@ export class Wallet {
   public readonly type: WalletTypeEnum;
 
   @Column({
-    type: 'enum',
-    enum: NetworkEnum,
+    type: 'text',
     nullable: false,
   })
-  public readonly network: NetworkEnum;
-
-  @Column({
-    type: 'enum',
-    enum: CoinEnum,
-    nullable: false,
-  })
-  public readonly coin: CoinEnum;
+  public readonly networkCode: string;
 
   @Column('varchar', {
     array: true,
@@ -75,15 +67,13 @@ export class Wallet {
   constructor(
     pubKey: string,
     privateKey: string,
-    network: NetworkEnum,
-    coin: CoinEnum,
+    networkCode: string,
     owners: string[] = [],
     type: WalletTypeEnum = WalletTypeEnum.MAIN,
   ) {
     this.pubKey = pubKey;
     this.privateKey = privateKey;
-    this.network = network;
-    this.coin = coin;
+    this.networkCode = networkCode;
     this.owners = owners;
     this.type = type;
   }

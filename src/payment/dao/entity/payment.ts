@@ -40,7 +40,7 @@ export class Payment {
     eager: true,
   })
   @JoinColumn()
-  public readonly application: Application | null;
+  public readonly application: Application;
 
   @Column('text', {
     nullable: true,

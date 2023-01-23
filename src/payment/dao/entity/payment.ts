@@ -62,43 +62,43 @@ export class Payment {
     nullable: true,
     default: null,
   })
-  private paidNetworkCode: string | null;
+  public paidNetworkCode: string | null = null;
 
   @Column({
     nullable: true,
     default: null,
   })
-  private paidTokenSymbol: string | null;
+  public paidTokenSymbol: string | null = null;
 
   @Column('jsonb', {
     nullable: true,
     default: null,
   })
-  private paidAmount: PaidAmount | null;
+  public paidAmount: PaidAmount | null = null;
 
   @Column('text', {
     nullable: true,
     default: null,
   })
-  private recipientWalletAddress: string | null;
+  public recipientWalletAddress: string | null = null;
 
   @Column('text', {
     nullable: true,
     default: null,
   })
-  private txId: string | null;
+  public txId: string | null = null;
 
   @Column('timestamp with time zone', {
     nullable: true,
     default: null,
   })
-  private paymentDate: Date | null;
+  public paymentDate: Date | null = null;
 
   @Column('text', {
     nullable: true,
     default: null,
   })
-  private webhookStatus: PaymentWebhookStatusEnum | null;
+  public webhookStatus: PaymentWebhookStatusEnum | null = null;
 
   @Column('text')
   private status: PaymentStatusEnum;
@@ -107,17 +107,17 @@ export class Payment {
   private declinedReason = '';
 
   @CreateDateColumn()
-  public readonly createdAt: Date;
+  public readonly createdAt!: Date;
 
   @UpdateDateColumn()
-  public readonly updatedAt: Date;
+  public readonly updatedAt!: Date;
 
   constructor(
     application: Application,
     amount: GroupAmount,
     wallets: Wallets,
     orderId: string,
-    webhook: string = null,
+    webhook: string | null = null,
     id: string = v4(),
   ) {
     this.id = id;

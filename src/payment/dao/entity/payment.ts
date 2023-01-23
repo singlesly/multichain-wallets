@@ -31,7 +31,7 @@ export type PaidAmount = {
   amountScaled: string;
 };
 
-@Entity('Payments')
+@Entity('payments')
 export class Payment {
   @PrimaryGeneratedColumn('uuid')
   public readonly id: string;

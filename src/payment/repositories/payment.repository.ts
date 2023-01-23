@@ -38,6 +38,14 @@ export class PaymentRepository {
     return found;
   }
 
+  public async getByOrderId(orderId: string): Promise<Payment | undefined> {
+    return this.repository.findOne({
+      where: {
+        orderId,
+      },
+    });
+  }
+
   public async save(payment: Payment): Promise<void> {
     await this.repository.save(payment);
   }

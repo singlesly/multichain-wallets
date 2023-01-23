@@ -116,12 +116,16 @@ export class Payment {
     application: Application,
     amount: GroupAmount,
     wallets: Wallets,
+    orderId: string,
+    webhook: string = null,
     id: string = v4(),
   ) {
     this.id = id;
     this.application = application;
+    this.orderId = orderId;
     this.groupAmount = amount;
     this.wallets = wallets;
+    this.webhook = webhook;
     this.status = PaymentStatusEnum.AWAITING_PAYMENT;
   }
 

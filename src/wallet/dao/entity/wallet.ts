@@ -78,11 +78,7 @@ export class Wallet {
     this.type = type;
   }
 
-  public checkOwnerOrFail(owner: string, env: LocalEnvService): void {
-    if (!env.getBoolean(LocalEnvPathEnum.FEATURE_CHECK_OWNERS_PERMISSION)) {
-      return;
-    }
-
+  public checkOwnerOrFail(owner: string): void {
     const has = (this.owners || []).some((item) => item === owner);
     if (!has) {
       throw new BaseException({

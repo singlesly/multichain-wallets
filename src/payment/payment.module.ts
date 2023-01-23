@@ -10,6 +10,8 @@ import { CheckWalletService } from '@app/payment/services/check-wallet.service';
 import { CheckOrderAlreadyExistsService } from '@app/payment/services/check-order-already-exists.service';
 import { CheckGroupAmountService } from '@app/payment/services/check-group-amount.service';
 import { CheckAmountCompatibleWalletService } from '@app/payment/services/check-amount-compatible-wallet.service';
+import { WalletModule } from '@app/wallet/wallet.module';
+import { PaymentController } from '@app/payment/controllers/payment.controller';
 
 @Module({
   imports: [
@@ -17,7 +19,9 @@ import { CheckAmountCompatibleWalletService } from '@app/payment/services/check-
     ApplicationModule,
     NetworkModule,
     TokenModule,
+    WalletModule,
   ],
+  controllers: [PaymentController],
   providers: [
     CreatePaymentService,
     CheckWalletService,

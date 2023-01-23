@@ -1,11 +1,14 @@
 import { IsDefined, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class RecipientWalletDto {
   @IsDefined()
   @IsString()
-  public readonly networkCode: string;
+  @ApiProperty()
+  public readonly networkCode!: string;
 
   @IsDefined()
   @IsString()
-  public readonly address: string;
+  @ApiProperty()
+  public readonly address!: string;
 }

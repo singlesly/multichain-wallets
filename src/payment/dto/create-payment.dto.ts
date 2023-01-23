@@ -10,18 +10,22 @@ import {
 } from 'class-validator';
 import { GroupAmountDto } from '@app/payment/dto/group-amount.dto';
 import { RecipientWalletDto } from '@app/payment/dto/recipient-wallet.dto';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePaymentDto {
   @IsDefined()
   @IsString()
-  public readonly orderId: string;
+  @ApiProperty()
+  public readonly orderId!: string;
 
   @IsDefined()
   @IsUUID('4')
-  public readonly applicationId: string;
+  @ApiProperty()
+  public readonly applicationId!: string;
 
   @IsOptional()
   @IsUrl()
+  @ApiProperty()
   public readonly webhook: string | null = null;
 
   @IsDefined()
@@ -30,7 +34,11 @@ export class CreatePaymentDto {
   })
   @IsArray()
   @MinLength(1)
-  public readonly groupAmount: GroupAmountDto[];
+  @ApiProperty({
+    type: GroupAmountDto,
+    isArray: true,
+  })
+  public readonly groupAmount: GroupAmountDto[] = [];
 
   @IsDefined()
   @ValidateNested({
@@ -38,5 +46,9 @@ export class CreatePaymentDto {
   })
   @IsArray()
   @MinLength(1)
-  public readonly recipientWallets: RecipientWalletDto[];
+  @ApiProperty({
+    type: RecipientWalletDto,
+    isArray: true,
+  })
+  public readonly recipientWallets: RecipientWalletDto[] = [];
 }

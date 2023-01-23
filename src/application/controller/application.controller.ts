@@ -24,6 +24,7 @@ export class ApplicationController {
     return {
       name: app.name,
       authId: app.authId(),
+      id: app.id,
     };
   }
 
@@ -34,6 +35,7 @@ export class ApplicationController {
     return apps.map((app) => ({
       name: app.name,
       authId: app.authId(),
+      id: app.id,
     }));
   }
 }

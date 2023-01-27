@@ -17,6 +17,7 @@ import { JwtModule } from '@app/jwt/jwt.module';
 import { FeatureModule } from '@ledius/feature/dist/feature.module';
 import { NetworkModule } from '@app/network/network.module';
 import { TokenModule } from '@app/token/token.module';
+import { WalletBalanceModule } from '@app/wallet-balance/wallet-balance.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { TokenModule } from '@app/token/token.module';
     DatabaseModule,
     EncryptModule,
     WalletModule,
+    WalletBalanceModule,
     RequestContextModule,
     LoggerModule,
     RouterModule.register(routes),

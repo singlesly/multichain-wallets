@@ -30,5 +30,6 @@ import { TokenModule } from '@app/token/token.module';
   ],
   controllers: [BridgeController],
   providers: [AgentServiceFactory, BitcoinAgentService],
+  exports: [AgentServiceFactory],
 })
 export class BridgeModule {}

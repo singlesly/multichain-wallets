@@ -34,6 +34,17 @@ export class TokenService {
     return this.repository.find();
   }
 
+  public async getByNetwork(networkCode: string): Promise<Token[]> {
+    return this.repository.find({
+      where: {
+        network: {
+          code: networkCode,
+        },
+      },
+      relations: ['network'],
+    });
+  }
+
   public async getBySymbol(
     symbol: string,
     networkCode?: string,

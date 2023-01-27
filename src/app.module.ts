@@ -18,6 +18,7 @@ import { FeatureModule } from '@ledius/feature/dist/feature.module';
 import { NetworkModule } from '@app/network/network.module';
 import { TokenModule } from '@app/token/token.module';
 import { PaymentModule } from '@app/payment/payment.module';
+import { WalletBalanceModule } from '@app/wallet-balance/wallet-balance.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { PaymentModule } from '@app/payment/payment.module';
     DatabaseModule,
     EncryptModule,
     WalletModule,
+    WalletBalanceModule,
     RequestContextModule,
     LoggerModule,
     RouterModule.register(routes),

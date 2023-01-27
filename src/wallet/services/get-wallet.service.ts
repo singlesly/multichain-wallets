@@ -15,4 +15,10 @@ export class GetWalletService {
   public async findByAddress(pubKey: string): Promise<Wallet | undefined> {
     return this.temporaryWalletPgRepository.findByAddress(pubKey);
   }
+
+  public async getWallets(options: { owners?: string[] }): Promise<Wallet[]> {
+    return await this.temporaryWalletPgRepository.findBy({
+      owners: options.owners,
+    });
+  }
 }

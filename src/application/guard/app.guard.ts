@@ -20,7 +20,7 @@ export class AppGuard implements CanActivate {
     const tokenType: TokenType = authorization
       .split(' ')[0]
       .toLowerCase() as TokenType;
-    const encodedAuth = authorization.split(' ')[1] as `${string}:${string}`;
+    const encodedAuth = authorization.split(' ')[1] as `${string}`;
 
     if (tokenType === 'basic') {
       return await this.handleBasic(encodedAuth, context);
@@ -33,7 +33,7 @@ export class AppGuard implements CanActivate {
   }
 
   private async handleBasic(
-    encodedAuth: `${string}:${string}`,
+    encodedAuth: `${string}`,
     context: ExecutionContext,
   ): Promise<boolean> {
     if (!encodedAuth) {

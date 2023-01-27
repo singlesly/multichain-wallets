@@ -3,6 +3,7 @@ import { WalletModule } from '@app/wallet/wallet.module';
 import { AuthModule } from '@app/auth/auth.module';
 import { NetworkModule } from '@app/network/network.module';
 import { TokenModule } from '@app/token/token.module';
+import { ApplicationModule } from '@app/application/application.module';
 
 export const routes = [
   {
@@ -24,5 +25,9 @@ export const routes = [
   {
     path: '/api',
     module: TokenModule,
+  },
+  {
+    path: '/api',
+    module: ApplicationModule,
   },
 ];

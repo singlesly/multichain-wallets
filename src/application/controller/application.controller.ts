@@ -23,6 +23,7 @@ export class ApplicationController {
 
     return {
       name: app.name,
+      id: app.id,
       authId: app.authId(),
       secretKey: app.secret,
     };
@@ -35,6 +36,7 @@ export class ApplicationController {
     const apps = await Application.find();
 
     return apps.map((app) => ({
+      id: app.id,
       name: app.name,
       authId: app.authId(),
       secretKey: app.secret,

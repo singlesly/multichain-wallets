@@ -5,12 +5,12 @@ export class GroupAmountDto {
   @IsDefined()
   @IsString()
   @ApiProperty()
-  public readonly networkCode: string;
+  public readonly networkCode!: string;
 
   @IsDefined()
   @IsString()
   @ApiProperty()
-  public readonly tokenSymbol: string;
+  public readonly tokenSymbol!: string;
 
   @IsDefined()
   @IsNumberString()
@@ -18,5 +18,5 @@ export class GroupAmountDto {
     type: 'string',
     example: '10000',
   })
-  public readonly amountScaled: string;
+  public readonly amountScaled!: string;
 }

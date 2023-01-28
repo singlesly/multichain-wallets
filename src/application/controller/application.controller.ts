@@ -24,16 +24,20 @@ export class ApplicationController {
     return {
       name: app.name,
       authId: app.authId(),
+      secretKey: app.secret,
     };
   }
 
   @Get('applications')
+  @ApiBearerAuth()
+  @UseGuards(AppGuard)
   public async list(): Promise<ApplicationResponse[]> {
     const apps = await Application.find();
 
     return apps.map((app) => ({
       name: app.name,
       authId: app.authId(),
+      secretKey: app.secret,
     }));
   }
 }

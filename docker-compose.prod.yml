@@ -14,8 +14,8 @@ services:
       - .env
     environment:
       - MODE=prod
-      - VIRTUAL_HOST=crypto-bridge-dev.ledius.ru
-      - VIRTUAL_PATH=/
+      - VIRTUAL_HOST=crypto-bridge-dev.ledius.ru,admin-sipex.ledius.space
+      - VIRTUAL_PATH=/api
       - VIRTUAL_PORT=3000
     networks:
       - ledius

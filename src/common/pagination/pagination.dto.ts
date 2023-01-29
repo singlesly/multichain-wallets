@@ -28,7 +28,7 @@ export class PaginationDto {
   @IsOptional()
   @Type(() => Number)
   @IsInt()
-  public readonly page: number = 0;
+  public readonly page: number | undefined = 0;
 
   @ApiPropertyOptional({
     type: 'number',
@@ -38,7 +38,7 @@ export class PaginationDto {
   @IsOptional()
   @Type(() => Number)
   @IsInt()
-  public readonly pageSize: number = 10;
+  public readonly pageSize: number | undefined = 10;
 
   @ApiPropertyOptional({
     type: 'number',
@@ -46,7 +46,7 @@ export class PaginationDto {
   })
   @IsOptional()
   @IsInt()
-  public readonly total: number | null = null;
+  public readonly total: number | null | undefined = null;
 
   constructor(data: Partial<PaginationDto> = {}) {
     this.page = data.page;

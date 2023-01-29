@@ -17,24 +17,24 @@ export class AddTokenDto {
   @IsDefined()
   @IsString()
   @ApiProperty()
-  public readonly symbol: string;
+  public readonly symbol!: string;
 
   @IsDefined()
   @IsNumber()
   @ApiProperty()
   @IsPositive()
-  public readonly decimals: number;
+  public readonly decimals!: number;
 
   @IsDefined()
   @IsString()
   @IsLowercase()
   @ApiProperty()
-  public readonly networkCode: string;
+  public readonly networkCode!: string;
 
   @IsDefined()
   @IsEnum(TokenTypeEnum)
   @ApiProperty()
-  public readonly type: TokenTypeEnum;
+  public readonly type!: TokenTypeEnum;
 
   @IsOptional()
   @IsString()

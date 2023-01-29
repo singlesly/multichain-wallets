@@ -5,10 +5,10 @@ export class AuthDto {
   @ApiProperty()
   @IsString()
   @IsDefined()
-  public readonly login: string;
+  public readonly login!: string;
 
   @ApiProperty()
   @IsString()
   @IsDefined()
-  public readonly password: string;
+  public readonly password!: string;
 }

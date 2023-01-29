@@ -33,7 +33,7 @@ export class AgentService implements AgentServiceInterface {
     private readonly encryptService: EncryptService,
   ) {}
 
-  public async createWallet(owners?: string[]): Promise<Wallet> {
+  public async createWallet(owners: string[] = []): Promise<Wallet> {
     const account = await this.contract.createWallet();
     const address =
       typeof account.address === 'string'

@@ -84,7 +84,7 @@ export class NativeContractService implements NativeInterface {
 
     return {
       amount: BigInt(transaction.value),
-      to: transaction.to,
+      to: transaction.to as string,
       transactionId: transaction.hash,
       from: transaction.from,
       confirmations: confirmations,

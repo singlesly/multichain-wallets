@@ -7,10 +7,18 @@ import { AppGenCommand } from './cli/app-gen.command';
 import { JwtModule } from '@app/jwt/jwt.module';
 import { ApplicationService } from '@app/application/service/application.service';
 import { ApplicationController } from '@app/application/controller/application.controller';
+import { ApplicationRepository } from '@app/application/repositories/application.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Application]), JwtModule],
   controllers: [ApplicationController],
-  providers: [AppCommand, AppListCommand, AppGenCommand, ApplicationService],
+  providers: [
+    AppCommand,
+    AppListCommand,
+    AppGenCommand,
+    ApplicationService,
+    ApplicationRepository,
+  ],
+  exports: [ApplicationRepository],
 })
 export class ApplicationModule {}

@@ -22,7 +22,7 @@ export class AuthUserPgRepository {
     throw new NotImplementedException();
   }
 
-  public async findByAddress(address: string): Promise<AuthUser | undefined> {
+  public async findByAddress(address: string): Promise<AuthUser | null> {
     return await this.repository.findOne({
       where: {
         address,
@@ -38,7 +38,7 @@ export class AuthUserPgRepository {
     throw new NotImplementedException();
   }
 
-  public async getByLogin(login: string): Promise<AuthUser | undefined> {
+  public async getByLogin(login: string): Promise<AuthUser | null> {
     return await this.repository.findOne({
       where: {
         login,

@@ -1,5 +1,7 @@
 export interface ApplicationResponse {
+  id: string;
   name: string;
   authId: string;
-  id: string;
+
+  secretKey: string;
 }

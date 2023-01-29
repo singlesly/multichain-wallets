@@ -30,6 +30,8 @@ export class ApplicationController {
 
   @Get('applications')
   public async list(): Promise<ApplicationResponse[]> {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const apps = await Application.find();
 
     return apps.map((app) => ({

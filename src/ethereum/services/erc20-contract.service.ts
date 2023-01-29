@@ -7,6 +7,7 @@ import {
   TransactionInfo,
   TxID,
 } from '@app/bridge/interfaces/agent-service.interface';
+import { NotImplementedException } from '@nestjs/common';
 
 export class Erc20ContractService implements Erc20Interface {
   constructor(
@@ -24,15 +25,15 @@ export class Erc20ContractService implements Erc20Interface {
     amount: bigint,
     privateKey: string,
   ): Promise<Balance> {
-    return Promise.resolve(undefined);
+    throw new NotImplementedException();
   }
 
   public async getBalance(address: string): Promise<Balance> {
-    return Promise.resolve(undefined);
+    throw new NotImplementedException();
   }
 
   public async getTransaction(id: string): Promise<TransactionInfo> {
-    return Promise.resolve(undefined);
+    throw new NotImplementedException();
   }
 
   public async transfer(
@@ -40,6 +41,6 @@ export class Erc20ContractService implements Erc20Interface {
     to: string,
     amount: bigint,
   ): Promise<TxID> {
-    return Promise.resolve(undefined);
+    throw new NotImplementedException();
   }
 }

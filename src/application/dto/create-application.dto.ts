@@ -5,5 +5,5 @@ export class CreateApplicationDto {
   @IsDefined()
   @ApiProperty()
   @IsString()
-  readonly name: string;
+  readonly name!: string;
 }

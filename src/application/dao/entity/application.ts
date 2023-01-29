@@ -13,7 +13,7 @@ const TABLE_NAME = 'applications';
 @Entity(TABLE_NAME)
 export class Application extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  public readonly id: string;
+  public readonly id!: string;
 
   @Column({
     nullable: false,
@@ -34,12 +34,12 @@ export class Application extends BaseEntity {
   public readonly owner?: AuthUser | undefined;
 
   @CreateDateColumn()
-  public readonly createdAt: string;
+  public readonly createdAt!: string;
 
   constructor(name?: string, secret?: string, owner?: AuthUser) {
     super();
-    this.name = name;
-    this.secret = secret;
+    this.name = name as string;
+    this.secret = secret as string;
     if (owner) {
       this.owner = owner;
     }

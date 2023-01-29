@@ -7,7 +7,7 @@ import { EnvProviderService } from '@ledius/env';
 export class LocalEnvService {
   constructor(private readonly envProviderService: EnvProviderService) {}
 
-  public get(key: LocalEnvPathEnum): string {
+  public get(key: LocalEnvPathEnum): string | undefined {
     return this.envProviderService.get(key);
   }
 

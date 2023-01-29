@@ -38,10 +38,10 @@ export class VirtualTransaction {
     type: 'text',
     default: '',
   })
-  public readonly note: string;
+  public readonly note!: string;
 
   @CreateDateColumn()
-  public readonly createdAt: Date;
+  public readonly createdAt!: Date;
 
   constructor(
     from: string,

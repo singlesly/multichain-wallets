@@ -6,10 +6,10 @@ export class CreateTemporaryWalletDto {
   @ApiProperty({
     enum: NetworkEnum,
   })
-  public readonly network: NetworkEnum;
+  public readonly network!: NetworkEnum;
 
   @ApiProperty({
     enum: CoinEnum,
   })
-  public readonly coin: CoinEnum;
+  public readonly coin!: CoinEnum;
 }

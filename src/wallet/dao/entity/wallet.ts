@@ -20,7 +20,7 @@ export class Wallet {
     type: 'uuid',
     generated: 'uuid',
   })
-  public readonly id: string;
+  public readonly id!: string;
 
   @Column({
     type: 'varchar',
@@ -56,10 +56,10 @@ export class Wallet {
   public owners: string[];
 
   @CreateDateColumn()
-  public readonly createdAt: Date;
+  public readonly createdAt!: Date;
 
   @UpdateDateColumn()
-  public readonly updatedAt: Date;
+  public readonly updatedAt!: Date;
 
   @DeleteDateColumn()
   public readonly deletedAt?: Date;

@@ -45,7 +45,7 @@ export class TronNetworkExceptionFactory {
 
     if (
       typeof error === 'object' &&
-      error?.message.includes('account does not exist')
+      error?.message?.includes('account does not exist')
     ) {
       throw new BaseException(
         {

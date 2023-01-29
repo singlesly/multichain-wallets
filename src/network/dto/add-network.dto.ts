@@ -24,17 +24,17 @@ export class AddNetworkDto
   @ApiProperty()
   @IsString()
   @IsLowercase()
-  public readonly code: string;
+  public readonly code!: string;
 
   @IsDefined()
   @ApiProperty()
   @IsString()
-  public readonly name: string;
+  public readonly name!: string;
 
   @IsDefined()
   @IsEnum(NetworkKindEnum)
   @ApiProperty()
-  public readonly kind: NetworkKindEnum.BITCOIN &
+  public readonly kind!: NetworkKindEnum.BITCOIN &
     NetworkKindEnum.ETHEREUM_COMPATIBLE &
     NetworkKindEnum.TRON_COMPATIBLE;
 
@@ -42,7 +42,7 @@ export class AddNetworkDto
   @IsString()
   @IsUrl()
   @ApiProperty()
-  readonly url: string;
+  readonly url!: string;
 
   @ValidateIf(
     (dto: AddNetworkDto) => dto.kind === NetworkKindEnum.TRON_COMPATIBLE,

@@ -12,6 +12,7 @@ import { CheckGroupAmountService } from '@app/payment/services/check-group-amoun
 import { CheckAmountCompatibleWalletService } from '@app/payment/services/check-amount-compatible-wallet.service';
 import { WalletModule } from '@app/wallet/wallet.module';
 import { PaymentController } from '@app/payment/controllers/payment.controller';
+import { GetPaymentService } from '@app/payment/services/get-payment.service';
 
 @Module({
   imports: [
@@ -29,6 +30,8 @@ import { PaymentController } from '@app/payment/controllers/payment.controller';
     CheckGroupAmountService,
     CheckAmountCompatibleWalletService,
     PaymentRepository,
+    GetPaymentService,
+    CreatePaymentService,
   ],
 })
 export class PaymentModule {}

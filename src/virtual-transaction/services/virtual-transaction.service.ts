@@ -24,7 +24,7 @@ export class VirtualTransactionService {
 
   public async getById(
     transactionId: string,
-  ): Promise<VirtualTransaction | undefined> {
+  ): Promise<VirtualTransaction | null> {
     return this.virtualTransactionPgRepository.getById(transactionId);
   }
 

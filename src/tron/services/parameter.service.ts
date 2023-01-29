@@ -28,7 +28,11 @@ export class ParameterService {
       } else if (type == 'address[]' && Array.isArray(value)) {
         value = value.map((v) => toHex(v).replace(ADDRESS_PREFIX_REGEX, '0x'));
       }
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       types.push(type);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       values.push(value);
     }
 

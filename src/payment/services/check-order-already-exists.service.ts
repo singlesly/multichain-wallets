@@ -13,7 +13,7 @@ export class CheckOrderAlreadyExistsService {
     application: Application,
   ): Promise<string> {
     const compoundOrderId = `${application.id}-${orderId}`;
-    const exists = this.paymentRepository.getByOrderId(compoundOrderId);
+    const exists = await this.paymentRepository.getByOrderId(compoundOrderId);
     if (exists) {
       throw new BaseException({
         message: 'Order id already exists',

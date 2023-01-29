@@ -11,7 +11,7 @@ import { TokenTypeEnum } from '@app/token/enums/token-type.enum';
 @Entity('tokens')
 export class Token {
   @PrimaryGeneratedColumn('uuid')
-  public readonly id: string;
+  public readonly id!: string;
 
   @Column()
   public readonly symbol: string;

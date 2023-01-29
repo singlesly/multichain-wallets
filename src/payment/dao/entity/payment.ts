@@ -64,7 +64,7 @@ export class Payment {
   })
   public paidNetworkCode: string | null = null;
 
-  @Column({
+  @Column('text', {
     nullable: true,
     default: null,
   })

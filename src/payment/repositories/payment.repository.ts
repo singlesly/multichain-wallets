@@ -38,7 +38,7 @@ export class PaymentRepository {
     return found;
   }
 
-  public async getByOrderId(orderId: string): Promise<Payment | undefined> {
+  public async getByOrderId(orderId: string): Promise<Payment | null> {
     return this.repository.findOne({
       where: {
         orderId,

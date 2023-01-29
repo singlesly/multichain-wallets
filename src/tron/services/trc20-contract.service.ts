@@ -15,6 +15,7 @@ import {
 import { BigNumber } from 'ethers';
 import { base58Address } from '@app/utils';
 import { ParameterService } from '@app/tron/services/parameter.service';
+import { ForbiddenException } from '@nestjs/common';
 
 export class Trc20ContractService implements TRC20Interface {
   private readonly contract: Promise<TRC20Contract>;
@@ -24,6 +25,9 @@ export class Trc20ContractService implements TRC20Interface {
     private readonly tronWeb: TronWeb,
     private readonly token: Token,
   ) {
+    if (!this.token.contractAddress) {
+      throw new ForbiddenException('Contract address not provided');
+    }
     this.contract = this.tronWeb.contract().at(this.token.contractAddress);
   }
 
@@ -43,7 +47,7 @@ export class Trc20ContractService implements TRC20Interface {
     ] as [{ type: Address; value: string }, { type: Uint256; value: number }];
     const transaction =
       await this.tronWeb.transactionBuilder.triggerSmartContract(
-        this.token.contractAddress,
+        this.token.contractAddress as string,
         'transfer(address,uint256)',
         {},
         parameter,

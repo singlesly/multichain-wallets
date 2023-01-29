@@ -5,5 +5,5 @@ export class Web3AuthDto {
   @ApiProperty()
   @IsDefined()
   @IsString()
-  public readonly signature: string;
+  public readonly signature!: string;
 }

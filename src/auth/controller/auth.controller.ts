@@ -16,22 +16,10 @@ export class AuthController {
     private readonly web3AuthService: Web3AuthService,
   ) {}
 
-  @Post('login')
-  @ApiOkResponse({
-    type: AuthResponse,
-  })
-  @UseFeatures(LocalEnvPathEnum.FEATURE_AUTHENTICATION)
-  public async auth(@Body() dto: AuthDto): Promise<AuthResponse> {
-    return new AuthResponse(
-      await this.authService.auth(dto.login, dto.password),
-    );
-  }
-
   @Post('web3')
   @ApiOkResponse({
     type: AuthResponse,
   })
-  @UseFeatures(LocalEnvPathEnum.FEATURE_AUTHENTICATION)
   public async web3Auth(@Body() dto: Web3AuthDto): Promise<AuthResponse> {
     return new AuthResponse(await this.web3AuthService.web3Auth(dto.signature));
   }

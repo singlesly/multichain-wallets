@@ -11,20 +11,20 @@ export class DefaultAdminUserService implements OnModuleInit {
     private readonly localEnvService: LocalEnvService,
   ) {}
 
-  public async defineDefaultAdmin(): Promise<AuthUser> {
-    const login = this.localEnvService.getSafety(LocalEnvPathEnum.ADMIN_LOGIN);
-    const password = this.localEnvService.getSafety(
-      LocalEnvPathEnum.ADMIN_PASSWORD,
-    );
-    const exists = await this.authUserPgRepository.getByLogin(login);
-    if (exists) {
-      return exists;
+  public async defineDefaultAdmin(): Promise<void> {
+    const adminAddresses = this.localEnvService.getAdminAddresses();
+
+    for (const address of adminAddresses) {
+      const exists = await this.authUserPgRepository.getByAddress(address);
+
+      if (exists) {
+        // TODO: Make admin
+        continue;
+      }
+
+      const admin = AuthUser.createByAddress(address);
+      await this.authUserPgRepository.save(admin);
     }
-
-    const authUser = AuthUser.createByLogin(login, password);
-    await this.authUserPgRepository.save(authUser);
-
-    return authUser;
   }
 
   public async onModuleInit(): Promise<void> {

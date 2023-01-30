@@ -34,8 +34,12 @@ export class AuthUserPgRepository {
     throw new NotImplementedException();
   }
 
-  public async getByAddress(address: string): Promise<AuthUser> {
-    throw new NotImplementedException();
+  public async getByAddress(address: string): Promise<AuthUser | null> {
+    return this.repository.findOne({
+      where: {
+        address,
+      },
+    });
   }
 
   public async getByLogin(login: string): Promise<AuthUser | null> {

@@ -7,6 +7,13 @@ import { EnvProviderService } from '@ledius/env';
 export class LocalEnvService {
   constructor(private readonly envProviderService: EnvProviderService) {}
 
+  public getAdminAddresses(): string[] {
+    const admins =
+      this.envProviderService.get(LocalEnvPathEnum.ADMIN_ADDRESSES) || '';
+
+    return admins.split(',');
+  }
+
   public get(key: LocalEnvPathEnum): string | undefined {
     return this.envProviderService.get(key);
   }

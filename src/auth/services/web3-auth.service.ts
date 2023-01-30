@@ -5,14 +5,16 @@ import { AuthUser } from '@app/auth/dao/entity/auth-user';
 import { EthereumWeb3Service } from '@app/ethereum/services/ethereum-web3.service';
 import web3 from 'web3';
 import { JwtService } from '@nestjs/jwt';
+import Web3 from 'web3';
 
 @Injectable()
 export class Web3AuthService {
   private readonly signMessage = 'Authentication';
 
+  private readonly web3: Web3 = new Web3();
+
   constructor(
     private readonly authUserPgRepository: AuthUserPgRepository,
-    private readonly web3: EthereumWeb3Service,
     private readonly tokenService: JwtService,
   ) {}
 
@@ -28,7 +30,10 @@ export class Web3AuthService {
       await this.authUserPgRepository.save(authUser);
     }
 
-    const token = await this.tokenService.signAsync(authUser);
+    const token = await this.tokenService.signAsync({
+      ownerId: authUser.id,
+      userId: authUser.id,
+    });
 
     return { token };
   }

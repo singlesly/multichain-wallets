@@ -38,7 +38,6 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
-  @ApiBearerAuth()
   public async createWallet(
     @Param('network') network: string,
     @Param('symbol') symbol: string,
@@ -62,7 +61,6 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
-  @ApiBearerAuth()
   public async getBalance(
     @Param('network') network: string,
     @Param('symbol') coin: string,
@@ -85,7 +83,6 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
-  @ApiBearerAuth()
   @ApiOkResponse({
     type: TransactionResponse,
   })
@@ -119,7 +116,6 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
-  @ApiBearerAuth()
   public async estimateFee(
     @Param('network') network: NetworkEnum,
     @Param('symbol') symbol: CoinEnum,
@@ -141,7 +137,6 @@ export class BridgeController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
-  @ApiBearerAuth()
   public async getTransaction(
     @Param('network') network: NetworkEnum,
     @Param('symbol') symbol: CoinEnum,

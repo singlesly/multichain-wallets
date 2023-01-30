@@ -9,6 +9,7 @@ import {
 } from '@nestjs/swagger';
 import { AppGuard } from '@app/application/guard/app.guard';
 import { WalletsListDto } from '@app/wallet/dto/wallets-list.dto';
+import { AuthGuard } from '@app/auth/guards/auth.guard';
 
 @Controller()
 @ApiTags('Wallets')
@@ -20,8 +21,7 @@ export class WalletController {
     type: WalletResponse,
     isArray: true,
   })
-  @UseGuards(AppGuard)
-  @ApiBasicAuth()
+  @UseGuards(AuthGuard)
   @ApiBearerAuth()
   public async list(@Query() dto: WalletsListDto): Promise<WalletResponse[]> {
     const wallets = await this.walletPgRepository.findBy({
@@ -37,7 +37,6 @@ export class WalletController {
   })
   @UseGuards(AppGuard)
   @ApiBasicAuth()
-  @ApiBearerAuth()
   public async get(@Param('address') address: string): Promise<WalletResponse> {
     return new WalletResponse(
       await this.walletPgRepository.getByAddress(address),

@@ -12,6 +12,7 @@ import { NetworkService } from '@app/network/services/network.service';
 import { Network } from '@app/network/dao/entity/network';
 import { AddNetworkDto } from '@app/network/dto/add-network.dto';
 import { AppGuard } from '@app/application/guard/app.guard';
+import { AuthGuard } from '@app/auth/guards/auth.guard';
 
 @Controller()
 @ApiTags('Network')
@@ -19,7 +20,7 @@ export class NetworkController {
   constructor(private readonly networkService: NetworkService) {}
 
   @Post('network')
-  @UseGuards(AppGuard)
+  @UseGuards(AuthGuard)
   @ApiBearerAuth()
   public async add(@Body() dto: AddNetworkDto): Promise<Network> {
     return this.networkService.add(dto);
@@ -31,7 +32,7 @@ export class NetworkController {
   }
 
   @Delete('network/:code')
-  @UseGuards(AppGuard)
+  @UseGuards(AuthGuard)
   @ApiBearerAuth()
   public async remove(@Param('code') code: string): Promise<void> {
     await this.networkService.remove(code);

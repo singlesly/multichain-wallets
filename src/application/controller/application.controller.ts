@@ -5,6 +5,7 @@ import { CreateApplicationDto } from '@app/application/dto/create-application.dt
 import { ApplicationResponse } from '@app/application/interfaces/application.response';
 import { AppGuard } from '@app/application/guard/app.guard';
 import { Application } from '@app/application/dao/entity/application';
+import { AuthGuard } from '@app/auth/guards/auth.guard';
 
 @Controller()
 @ApiTags('Application')
@@ -13,7 +14,7 @@ export class ApplicationController {
 
   @Post('application')
   @ApiBearerAuth()
-  @UseGuards(AppGuard)
+  @UseGuards(AuthGuard)
   public async create(
     @Body() dto: CreateApplicationDto,
   ): Promise<ApplicationResponse> {
@@ -31,10 +32,8 @@ export class ApplicationController {
 
   @Get('applications')
   @ApiBearerAuth()
-  @UseGuards(AppGuard)
+  @UseGuards(AuthGuard)
   public async list(): Promise<ApplicationResponse[]> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const apps = await Application.find();
 
     return apps.map((app) => ({

@@ -7,9 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener('load', () => {
   authContainer().append(MetamaskAuth());
-  const modal = document.querySelector('.modal-ux-content');
-  console.log(modal);
-  console.log('a10');
 });
 
 function MetamaskAuth() {
@@ -48,10 +45,20 @@ function MetamaskAuth() {
 }
 
 function TokenCopyToClipboard(token) {
+  const exists = document.querySelector('#token-copy-to-clipboard');
+  if (exists) {
+    exists.remove();
+  }
   const btn = document.createElement('button');
+  btn.id = 'token-copy-to-clipboard';
   btn.classList.add('btn');
+  btn.style.marginLeft = '10px';
   btn.onclick = async () => {
     await navigator.clipboard.writeText(token);
+    btn.innerText = 'copied...';
+    setTimeout(() => {
+      btn.innerText = 'Copy Token';
+    }, 1000);
   };
   const span = document.createElement('span');
   span.innerText = 'Copy Token';
@@ -62,6 +69,5 @@ function TokenCopyToClipboard(token) {
 
 const authContainer = () => {
   const el = document.querySelector('.auth-wrapper');
-  el.style.gap = '5px';
   return el;
 };

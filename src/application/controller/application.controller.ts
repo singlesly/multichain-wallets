@@ -6,6 +6,8 @@ import { ApplicationResponse } from '@app/application/interfaces/application.res
 import { AppGuard } from '@app/application/guard/app.guard';
 import { Application } from '@app/application/dao/entity/application';
 import { AuthGuard } from '@app/auth/guards/auth.guard';
+import { RequestPayload } from '@app/auth/decorators/request-payload';
+import { RequestMeta } from '@app/auth/contants';
 
 @Controller()
 @ApiTags('Application')
@@ -17,9 +19,11 @@ export class ApplicationController {
   @UseGuards(AuthGuard)
   public async create(
     @Body() dto: CreateApplicationDto,
+    @RequestPayload() meta: RequestMeta,
   ): Promise<ApplicationResponse> {
     const app = await this.applicationService.create({
       name: dto.name,
+      userId: meta.userId as string,
     });
 
     return {
@@ -27,6 +31,10 @@ export class ApplicationController {
       id: app.id,
       authId: app.authId(),
       secretKey: app.secret,
+      owner: {
+        address: app.owner?.address,
+        id: app.owner?.id,
+      },
     };
   }
 
@@ -34,13 +42,19 @@ export class ApplicationController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   public async list(): Promise<ApplicationResponse[]> {
-    const apps = await Application.find();
+    const apps = await Application.find({
+      relations: ['owner'],
+    });
 
     return apps.map((app) => ({
       id: app.id,
       name: app.name,
       authId: app.authId(),
       secretKey: app.secret,
+      owner: {
+        address: app.owner?.address,
+        id: app.owner?.id,
+      },
     }));
   }
 }

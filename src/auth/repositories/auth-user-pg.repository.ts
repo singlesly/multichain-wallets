@@ -1,5 +1,9 @@
 import { AuthUser } from '@app/auth/dao/entity/auth-user';
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  NotImplementedException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -15,7 +19,17 @@ export class AuthUserPgRepository {
   }
 
   public async getById(id: string): Promise<AuthUser> {
-    throw new NotImplementedException();
+    const found = await this.repository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!found) {
+      throw new NotFoundException('User not found');
+    }
+
+    return found;
   }
 
   public async findById(id: string): Promise<AuthUser> {
@@ -34,12 +48,18 @@ export class AuthUserPgRepository {
     throw new NotImplementedException();
   }
 
-  public async getByAddress(address: string): Promise<AuthUser | null> {
-    return this.repository.findOne({
+  public async getByAddress(address: string): Promise<AuthUser> {
+    const found = await this.repository.findOne({
       where: {
         address,
       },
     });
+
+    if (!found) {
+      throw new NotFoundException('User not found');
+    }
+
+    return found;
   }
 
   public async getByLogin(login: string): Promise<AuthUser | null> {

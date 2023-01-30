@@ -8,9 +8,10 @@ import { JwtModule } from '@app/jwt/jwt.module';
 import { ApplicationService } from '@app/application/service/application.service';
 import { ApplicationController } from '@app/application/controller/application.controller';
 import { ApplicationRepository } from '@app/application/repositories/application.repository';
+import { AuthModule } from '@app/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Application]), JwtModule],
+  imports: [TypeOrmModule.forFeature([Application]), JwtModule, AuthModule],
   controllers: [ApplicationController],
   providers: [
     AppCommand,

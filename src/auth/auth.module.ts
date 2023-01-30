@@ -26,5 +26,6 @@ import { LocalEnvModule } from '@app/local-env/local-env.module';
     AuthUserPgRepository,
     DefaultAdminUserService,
   ],
+  exports: [AuthUserPgRepository],
 })
 export class AuthModule {}

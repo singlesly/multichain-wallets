@@ -26,6 +26,10 @@ export class PaymentResponse {
       authId: payment.application.authId(),
       name: payment.application.name,
       id: payment.application.id,
+      owner: {
+        address: payment.application.owner?.address,
+        id: payment.application.owner?.id,
+      },
     };
     this.webhook = payment.webhook;
     this.groupAmount = payment.groupAmount;

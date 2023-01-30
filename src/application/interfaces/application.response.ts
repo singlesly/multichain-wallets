@@ -4,4 +4,9 @@ export interface ApplicationResponse {
   authId: string;
 
   secretKey?: string;
+
+  owner: {
+    id?: string;
+    address?: string;
+  };
 }

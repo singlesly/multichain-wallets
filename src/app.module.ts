@@ -33,7 +33,7 @@ import { WalletBalanceModule } from '@app/wallet-balance/wallet-balance.module';
     RouterModule.register(routes),
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, '..', 'public'),
-      serveRoot: '/public',
+      serveRoot: '/api/public',
     }),
     JwtModule,
     FeatureModule.forRoot(),

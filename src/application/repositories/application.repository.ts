@@ -22,4 +22,17 @@ export class ApplicationRepository {
 
     return found;
   }
+
+  public async getApplicationsByUserId(
+    ownerId: string,
+  ): Promise<Application[]> {
+    return this.repository.find({
+      where: {
+        owner: {
+          id: ownerId,
+        },
+      },
+      relations: ['owner'],
+    });
+  }
 }

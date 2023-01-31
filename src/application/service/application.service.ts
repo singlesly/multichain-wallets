@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Application } from '@app/application/dao/entity/application';
 import { createHash, randomBytes } from 'crypto';
 import { AuthUserPgRepository } from '@app/auth/repositories/auth-user-pg.repository';
+import { ApplicationRepository } from '@app/application/repositories/application.repository';
 
 export interface CreateApplicationOptions {
   name: string;
@@ -10,7 +11,10 @@ export interface CreateApplicationOptions {
 
 @Injectable()
 export class ApplicationService {
-  constructor(private readonly userRepository: AuthUserPgRepository) {}
+  constructor(
+    private readonly userRepository: AuthUserPgRepository,
+    private readonly applicationRepository: ApplicationRepository,
+  ) {}
   public async create(options: CreateApplicationOptions): Promise<Application> {
     const user = await this.userRepository.getById(options.userId);
     const salt = randomBytes(64).toString('hex');
@@ -20,5 +24,11 @@ export class ApplicationService {
       .digest('hex');
 
     return new Application(options.name, secret, user).save();
+  }
+
+  public async getApplicationsByOwnerId(
+    ownerId: string,
+  ): Promise<Application[]> {
+    return this.applicationRepository.getApplicationsByUserId(ownerId);
   }
 }

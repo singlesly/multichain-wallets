@@ -57,4 +57,26 @@ export class ApplicationController {
       },
     }));
   }
+
+  @Get('my-applications')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  public async myApplications(
+    @RequestPayload() meta: RequestMeta,
+  ): Promise<ApplicationResponse[]> {
+    const apps = await this.applicationService.getApplicationsByOwnerId(
+      meta.userId as string,
+    );
+
+    return apps.map((app) => ({
+      id: app.id,
+      name: app.name,
+      authId: app.authId(),
+      secretKey: app.secret,
+      owner: {
+        address: app.owner?.address,
+        id: app.owner?.id,
+      },
+    }));
+  }
 }

@@ -15,7 +15,7 @@ export class DefaultAdminUserService implements OnModuleInit {
     const adminAddresses = this.localEnvService.getAdminAddresses();
 
     for (const address of adminAddresses) {
-      const exists = await this.authUserPgRepository.getByAddress(address);
+      const exists = await this.authUserPgRepository.findByAddress(address);
 
       if (exists) {
         // TODO: Make admin

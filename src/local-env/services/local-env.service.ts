@@ -8,10 +8,15 @@ export class LocalEnvService {
   constructor(private readonly envProviderService: EnvProviderService) {}
 
   public getAdminAddresses(): string[] {
-    const admins =
-      this.envProviderService.get(LocalEnvPathEnum.ADMIN_ADDRESSES) || '';
+    const admins = this.envProviderService.get(
+      LocalEnvPathEnum.ADMIN_ADDRESSES,
+    );
 
-    return admins.split(',');
+    if (!admins) {
+      return [];
+    }
+
+    return admins.split(',').filter((item) => item.length > 0);
   }
 
   public get(key: LocalEnvPathEnum): string | undefined {

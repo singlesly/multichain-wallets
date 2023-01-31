@@ -17,7 +17,7 @@ export class AuthUser {
   public address!: string;
 
   @CreateDateColumn()
-  public readonly createdAt!: string;
+  public readonly createdAt!: Date;
 
   constructor() {
     this.id = v4();

@@ -18,6 +18,10 @@ export class AuthUserPgRepository {
     await this.repository.save(authUser);
   }
 
+  public async getAll(): Promise<AuthUser[]> {
+    return this.repository.find();
+  }
+
   public async getById(id: string): Promise<AuthUser> {
     const found = await this.repository.findOne({
       where: {

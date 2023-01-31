@@ -1,5 +1,5 @@
-import { AuthResult } from '@app/auth/services/auth.service';
 import { ApiProperty } from '@nestjs/swagger';
+import { AuthResult } from '@app/auth/services/web3-auth.service';
 
 export class AuthResponse {
   @ApiProperty()

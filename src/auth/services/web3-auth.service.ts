@@ -1,11 +1,13 @@
 import { AuthUserPgRepository } from '@app/auth/repositories/auth-user-pg.repository';
 import { Injectable } from '@nestjs/common';
-import { AuthResult } from '@app/auth/services/auth.service';
 import { AuthUser } from '@app/auth/dao/entity/auth-user';
-import { EthereumWeb3Service } from '@app/ethereum/services/ethereum-web3.service';
 import web3 from 'web3';
 import { JwtService } from '@nestjs/jwt';
 import Web3 from 'web3';
+
+export interface AuthResult {
+  token: string;
+}
 
 @Injectable()
 export class Web3AuthService {

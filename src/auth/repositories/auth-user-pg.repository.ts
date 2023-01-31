@@ -44,10 +44,6 @@ export class AuthUserPgRepository {
     });
   }
 
-  public async findByLogin(login: string): Promise<AuthUser | undefined> {
-    throw new NotImplementedException();
-  }
-
   public async getByAddress(address: string): Promise<AuthUser> {
     const found = await this.repository.findOne({
       where: {
@@ -60,13 +56,5 @@ export class AuthUserPgRepository {
     }
 
     return found;
-  }
-
-  public async getByLogin(login: string): Promise<AuthUser | null> {
-    return await this.repository.findOne({
-      where: {
-        login,
-      },
-    });
   }
 }

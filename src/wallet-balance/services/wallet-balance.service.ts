@@ -27,15 +27,22 @@ export class WalletBalanceService {
     owners?: string[],
   ): Promise<WalletWithBalances[]> {
     const wallets = await this.getWalletService.getWallets({ owners });
-    return Promise.all(
+    const balances = await Promise.all(
       wallets.map((wallet) => this.getBalancesForWallet(wallet)),
     );
+
+    return balances.filter(
+      (balance) => balance !== null,
+    ) as WalletWithBalances[];
   }
 
   public async getBalancesForWallet(
     wallet: Wallet,
-  ): Promise<WalletWithBalances> {
-    const network = await this.networkService.getByCode(wallet.networkCode);
+  ): Promise<WalletWithBalances | null> {
+    const network = await this.networkService.findByCode(wallet.networkCode);
+    if (!network) {
+      return null;
+    }
     const tokens = await this.tokenService.getByNetwork(network.code);
     const balances: Balance = {};
     for (const token of tokens) {

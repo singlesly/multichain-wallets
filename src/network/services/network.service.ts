@@ -33,6 +33,14 @@ export class NetworkService {
     return network;
   }
 
+  public async findByCode(code: string): Promise<Network | null> {
+    return await this.repository.findOne({
+      where: {
+        code,
+      },
+    });
+  }
+
   public async add(dto: AddNetworkDto): Promise<Network> {
     const exists = await this.repository.exist({
       where: {

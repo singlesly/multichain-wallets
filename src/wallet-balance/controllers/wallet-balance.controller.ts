@@ -12,8 +12,6 @@ import { AuthGuard } from '@app/auth/guards/auth.guard';
 @ApiTags('Wallet Balances')
 export class WalletBalanceController {
   constructor(private readonly walletBalanceService: WalletBalanceService) {}
-  z;
-
   @Get('wallet-balances')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()

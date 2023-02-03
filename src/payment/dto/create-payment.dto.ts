@@ -34,7 +34,6 @@ export class CreatePaymentDto {
     each: true,
   })
   @IsArray()
-  @MinLength(1)
   @ApiProperty({
     type: GroupAmountDto,
     isArray: true,
@@ -47,7 +46,6 @@ export class CreatePaymentDto {
     each: true,
   })
   @IsArray()
-  @MinLength(1)
   @ApiProperty({
     type: RecipientWalletDto,
     isArray: true,

@@ -11,6 +11,7 @@ import {
 import { GroupAmountDto } from '@app/payment/dto/group-amount.dto';
 import { RecipientWalletDto } from '@app/payment/dto/recipient-wallet.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class CreatePaymentDto {
   @IsDefined()
@@ -38,6 +39,7 @@ export class CreatePaymentDto {
     type: GroupAmountDto,
     isArray: true,
   })
+  @Type(() => GroupAmountDto)
   public readonly groupAmount: GroupAmountDto[] = [];
 
   @IsDefined()
@@ -50,5 +52,6 @@ export class CreatePaymentDto {
     type: RecipientWalletDto,
     isArray: true,
   })
+  @Type(() => RecipientWalletDto)
   public readonly recipientWallets: RecipientWalletDto[] = [];
 }

@@ -81,6 +81,21 @@ declare module 'tronweb' {
         : Record<string, any>[],
       issuerAddress?: string,
     ): Promise<TransactionResult<TransactionData>>;
+
+    public async estimateEnergy<F extends FunctionSelector>(
+      contractAddress: string,
+      functionSelector: F,
+      options: {
+        feeLimit?: number;
+        callValue?: number;
+        tokenValue?: number;
+        tokenId?: number;
+      },
+      parameter: F extends TransferFunctionSelector
+        ? [{ type: Address; value: string }, { type: Uint256; value: number }]
+        : Record<string, any>[],
+      issuerAddress?: string,
+    ): Promise<{ energy_required: number; result: unknown }>;
   }
 
   declare interface utils {

@@ -16,6 +16,7 @@ import { BigNumber } from 'ethers';
 import { base58Address } from '@app/utils';
 import { ParameterService } from '@app/tron/services/parameter.service';
 import { ForbiddenException } from '@nestjs/common';
+import { chain, multiply } from 'mathjs';
 
 export class Trc20ContractService implements TRC20Interface {
   private readonly contract: Promise<TRC20Contract>;
@@ -65,9 +66,19 @@ export class Trc20ContractService implements TRC20Interface {
     }
     howManyNeed = Math.ceil(howManyNeed / 2) + 69;
 
+    const { energy_required } =
+      await this.tronWeb.transactionBuilder.estimateEnergy(
+        this.token.contractAddress as string,
+        'transfer(address,uint256)',
+        {},
+        parameter,
+        from,
+      );
+    const energyNeed = BigInt(energy_required * 420);
+
     return {
       decimals: this.token.decimals,
-      amount: BigInt(howManyNeed * 1_000),
+      amount: BigInt(howManyNeed * 1_000) + energyNeed,
     };
   }
 

@@ -6931,10 +6931,10 @@
   "resolved" "https://registry.npmjs.org/tree-kill/-/tree-kill-1.2.2.tgz"
   "version" "1.2.2"
 
-"tronweb@^5.0.0":
-  "integrity" "sha512-cKwYWYSGJ5ROyY2ybWSHGF38puML4pCl4Uax7sEOtJpMnjgO0RWrs6swCj/6RnM75rPL1O+RZshGXD0JuED2zg=="
-  "resolved" "https://registry.npmjs.org/tronweb/-/tronweb-5.0.0.tgz"
-  "version" "5.0.0"
+"tronweb@^5.1.0":
+  "integrity" "sha512-8a+mYKVUzsUWjeTHSAKcxAp82FseFTLlNLoLQ0KIL1rIt6Dy5whcyJwYatxUktbaztl55lnImHbupkKqMdIj1w=="
+  "resolved" "https://registry.npmjs.org/tronweb/-/tronweb-5.1.0.tgz"
+  "version" "5.1.0"
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@tronweb3/google-protobuf" "^3.21.2"

@@ -31,10 +31,16 @@ import { WalletBalanceModule } from '@app/wallet-balance/wallet-balance.module';
     RequestContextModule,
     LoggerModule,
     RouterModule.register(routes),
-    ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, '..', 'public'),
-      serveRoot: '/api/public',
-    }),
+    ServeStaticModule.forRoot(
+      {
+        rootPath: path.join(__dirname, '..', 'public'),
+        serveRoot: '/api/public',
+      },
+      {
+        rootPath: path.join(__dirname, '..', 'public', 'ui', 'build'),
+        serveRoot: '/',
+      },
+    ),
     JwtModule,
     FeatureModule.forRoot(),
     NetworkModule,

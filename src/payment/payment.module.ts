@@ -13,6 +13,8 @@ import { CheckAmountCompatibleWalletService } from '@app/payment/services/check-
 import { WalletModule } from '@app/wallet/wallet.module';
 import { PaymentController } from '@app/payment/controllers/payment.controller';
 import { GetPaymentService } from '@app/payment/services/get-payment.service';
+import { BridgeModule } from '@app/bridge/bridge.module';
+import { PayPaymentService } from '@app/payment/services/pay-payment.service';
 
 @Module({
   imports: [
@@ -21,6 +23,7 @@ import { GetPaymentService } from '@app/payment/services/get-payment.service';
     NetworkModule,
     TokenModule,
     WalletModule,
+    BridgeModule,
   ],
   controllers: [PaymentController],
   providers: [
@@ -32,6 +35,7 @@ import { GetPaymentService } from '@app/payment/services/get-payment.service';
     PaymentRepository,
     GetPaymentService,
     CreatePaymentService,
+    PayPaymentService,
   ],
 })
 export class PaymentModule {}

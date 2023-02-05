@@ -5,6 +5,8 @@ import { CreatePaymentDto } from '@app/payment/dto/create-payment.dto';
 import { PaymentResponse } from '@app/payment/controllers/payment.response';
 import { AppGuard } from '@app/application/guard/app.guard';
 import { GetPaymentService } from '@app/payment/services/get-payment.service';
+import { PayPaymentDto } from '@app/payment/dto/pay-payment.dto';
+import { PayPaymentService } from '@app/payment/services/pay-payment.service';
 
 @Controller()
 @ApiTags('Payments')
@@ -12,6 +14,7 @@ export class PaymentController {
   constructor(
     private readonly createPaymentService: CreatePaymentService,
     private readonly getPaymentService: GetPaymentService,
+    private readonly payPaymentService: PayPaymentService,
   ) {}
 
   @Post('payment')
@@ -39,6 +42,21 @@ export class PaymentController {
     @Param('paymentId') paymentId: string,
   ): Promise<PaymentResponse> {
     const payment = await this.getPaymentService.getPaymentById(paymentId);
+
+    return new PaymentResponse(payment);
+  }
+
+  @Post('payment/:paymentId/pay')
+  @UseGuards(AppGuard)
+  @ApiBasicAuth()
+  public async pay(
+    @Param('paymentId') paymentId: string,
+    @Body() dto: PayPaymentDto,
+  ): Promise<PaymentResponse> {
+    const payment = await this.payPaymentService.pay({
+      paymentId,
+      ...dto,
+    });
 
     return new PaymentResponse(payment);
   }

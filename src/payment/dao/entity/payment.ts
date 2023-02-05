@@ -13,18 +13,23 @@ import { PaymentWebhookStatusEnum } from '@app/payment/enums/payment-webhook-sta
 import { v4 } from 'uuid';
 import { Network } from '@app/network/dao/entity/network';
 import { Token } from '@app/token/dao/entity/token';
+import { NotFoundException } from '@nestjs/common';
 
-export type GroupAmount = {
+export type GroupAmountItem = {
   networkCode: string;
   tokenSymbol: string;
   decimals: number;
   amountScaled: string;
-}[];
+};
 
-export type Wallets = {
+export type GroupAmount = GroupAmountItem[];
+
+export type RecipientWalletItem = {
   networkCode: string;
   address: string;
-}[];
+};
+
+export type Wallets = RecipientWalletItem[];
 
 export type PaidAmount = {
   decimals: number;
@@ -153,5 +158,29 @@ export class Payment {
     this.declinedReason = reason;
 
     return this;
+  }
+
+  public getRequiredAmount(
+    networkCode: string,
+    symbol: string,
+  ): GroupAmountItem {
+    const item = this.groupAmount.find(
+      (item) => item.networkCode === networkCode && item.tokenSymbol === symbol,
+    );
+    if (!item) {
+      throw new NotFoundException('Required amount not specified');
+    }
+
+    return item;
+  }
+
+  public getRequiredRecipient(networkCode: string): RecipientWalletItem {
+    const item = this.wallets.find((item) => item.networkCode == networkCode);
+
+    if (!item) {
+      throw new NotFoundException('Not found recipient');
+    }
+
+    return item;
   }
 }

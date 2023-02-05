@@ -49,3 +49,10 @@ migration-revert:
 
 cli:
 	docker-compose exec $(appContainer) crypto-bridge $(c)
+
+use-ui: rm-ui
+	git clone git@github.com:Eugene362624/crypto_bridge.git ./public/ui
+	cd public/ui && npm i && npm run build
+rm-ui:
+	rm -rf ./public/ui
+

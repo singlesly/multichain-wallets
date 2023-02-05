@@ -101,10 +101,10 @@ export class Payment {
   public webhookStatus: PaymentWebhookStatusEnum | null = null;
 
   @Column('text')
-  private status: PaymentStatusEnum;
+  public status: PaymentStatusEnum;
 
   @Column('text')
-  private declinedReason = '';
+  public declinedReason = '';
 
   @CreateDateColumn()
   public readonly createdAt!: Date;

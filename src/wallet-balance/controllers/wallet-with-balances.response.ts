@@ -1,6 +1,5 @@
 import {
   Balance,
-  WalletBalanceService,
   WalletWithBalances,
 } from '@app/wallet-balance/services/wallet-balance.service';
 import { ApiProperty } from '@nestjs/swagger';

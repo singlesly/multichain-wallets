@@ -3,7 +3,6 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ApplicationService } from '@app/application/service/application.service';
 import { CreateApplicationDto } from '@app/application/dto/create-application.dto';
 import { ApplicationResponse } from '@app/application/interfaces/application.response';
-import { AppGuard } from '@app/application/guard/app.guard';
 import { Application } from '@app/application/dao/entity/application';
 import { AuthGuard } from '@app/auth/guards/auth.guard';
 import { RequestPayload } from '@app/auth/decorators/request-payload';

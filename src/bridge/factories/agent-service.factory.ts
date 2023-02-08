@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { AgentServiceInterface } from '@app/bridge/interfaces/agent-service.interface';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
-import { ModuleRef } from '@nestjs/core';
 import { NetworkService } from '@app/network/services/network.service';
 import { TokenService } from '@app/token/services/token.service';
 import { TronCompatibleFactory } from '@app/tron/services/tron-compatible.factory';

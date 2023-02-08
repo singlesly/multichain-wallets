@@ -1,9 +1,6 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import {
-  WalletBalanceService,
-  WalletWithBalances,
-} from '@app/wallet-balance/services/wallet-balance.service';
+import { WalletBalanceService } from '@app/wallet-balance/services/wallet-balance.service';
 import { WalletsListDto } from '@app/wallet/dto/wallets-list.dto';
 import { WalletWithBalancesResponse } from '@app/wallet-balance/controllers/wallet-with-balances.response';
 import { AuthGuard } from '@app/auth/guards/auth.guard';

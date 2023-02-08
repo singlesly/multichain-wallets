@@ -17,5 +17,7 @@ export class AlterCoinEnumValues1655409718280 implements MigrationInterface {
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(): Promise<any> {
+    return Promise.resolve(undefined);
+  }
 }

@@ -11,7 +11,6 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { NetworkService } from '@app/network/services/network.service';
 import { Network } from '@app/network/dao/entity/network';
 import { AddNetworkDto } from '@app/network/dto/add-network.dto';
-import { AppGuard } from '@app/application/guard/app.guard';
 import { AuthGuard } from '@app/auth/guards/auth.guard';
 
 @Controller()

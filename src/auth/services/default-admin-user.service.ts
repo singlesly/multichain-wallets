@@ -2,7 +2,6 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { AuthUserPgRepository } from '@app/auth/repositories/auth-user-pg.repository';
 import { AuthUser } from '@app/auth/dao/entity/auth-user';
 import { LocalEnvService } from '@app/local-env/services/local-env.service';
-import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 
 @Injectable()
 export class DefaultAdminUserService implements OnModuleInit {

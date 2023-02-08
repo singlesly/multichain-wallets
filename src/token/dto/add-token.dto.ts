@@ -1,6 +1,3 @@
-import { Column, ManyToOne } from 'typeorm';
-import { Network } from '@app/network/dao/entity/network';
-import { JoinColumn } from 'typeorm/browser';
 import { TokenTypeEnum } from '@app/token/enums/token-type.enum';
 import {
   IsDefined,

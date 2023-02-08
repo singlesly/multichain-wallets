@@ -36,7 +36,7 @@ export class AuthUserPgRepository {
     return found;
   }
 
-  public async findById(id: string): Promise<AuthUser> {
+  public async findById(): Promise<AuthUser> {
     throw new NotImplementedException();
   }
 

@@ -12,8 +12,6 @@ import { Wallet } from '@app/wallet/dao/entity/wallet';
 import { CreateWalletService } from '@app/wallet/services/create-wallet.service';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
-import { NetworkEnum } from '@app/common/network.enum';
-import { CoinEnum } from '@app/common/coin.enum';
 import { Network } from '@app/network/dao/entity/network';
 import { Token } from '@app/token/dao/entity/token';
 

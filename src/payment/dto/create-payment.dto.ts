@@ -5,7 +5,6 @@ import {
   IsString,
   IsUrl,
   IsUUID,
-  MinLength,
   ValidateNested,
 } from 'class-validator';
 import { GroupAmountDto } from '@app/payment/dto/group-amount.dto';

@@ -36,8 +36,6 @@ export class PaymentController {
   }
 
   @Get('payment/:paymentId')
-  @UseGuards(AppGuard)
-  @ApiBasicAuth()
   public async getPayment(
     @Param('paymentId') paymentId: string,
   ): Promise<PaymentResponse> {
@@ -47,8 +45,6 @@ export class PaymentController {
   }
 
   @Post('payment/:paymentId/pay')
-  @UseGuards(AppGuard)
-  @ApiBasicAuth()
   public async pay(
     @Param('paymentId') paymentId: string,
     @Body() dto: PayPaymentDto,

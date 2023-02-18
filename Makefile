@@ -3,7 +3,7 @@ check: lint test-full
 test-full: init test-unit test-e2e
 up: docker-up app-up
 
-appContainer = ledius-crypto-bridge
+appContainer = sipex-core
 
 logs:
 	docker-compose logs -f

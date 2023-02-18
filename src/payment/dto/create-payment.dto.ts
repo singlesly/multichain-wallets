@@ -25,7 +25,10 @@ export class CreatePaymentDto {
 
   @IsOptional()
   @IsUrl()
-  @ApiProperty()
+  @ApiProperty({
+    type: 'string',
+    nullable: true,
+  })
   public readonly webhook: string | null = null;
 
   @IsDefined()

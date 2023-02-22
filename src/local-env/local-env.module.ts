@@ -5,6 +5,6 @@ import { EnvModule } from '@ledius/env';
 @Module({
   imports: [EnvModule],
   providers: [LocalEnvService],
-  exports: [LocalEnvService],
+  exports: [LocalEnvService, EnvModule],
 })
 export class LocalEnvModule {}

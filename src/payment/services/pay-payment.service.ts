@@ -4,6 +4,14 @@ import { NetworkService } from '@app/network/services/network.service';
 import { TokenService } from '@app/token/services/token.service';
 import { PaymentRepository } from '@app/payment/repositories/payment.repository';
 import { AgentServiceFactory } from '@app/bridge/factories/agent-service.factory';
+import { InjectQueue } from '@nestjs/bull';
+import { PaymentConsumerEnum } from '@app/payment/enums/payment-consumer.enum';
+import { Queue } from 'bull';
+import { PaymentJob } from '@app/payment/dto/payment.job';
+import {
+  PAYMENT_CHECK_CONFIRMATION_ATTEMPTS,
+  PAYMENT_CHECK_CONFIRMATION_DELAY_IN_MILLIS,
+} from '@app/payment/constants';
 
 export interface PayOptions {
   paymentId: string;
@@ -19,6 +27,8 @@ export class PayPaymentService {
     private readonly tokenService: TokenService,
     private readonly paymentRepository: PaymentRepository,
     private readonly agentServiceFactory: AgentServiceFactory,
+    @InjectQueue(PaymentConsumerEnum.PAYMENT_QUEUE)
+    private readonly paymentQueue: Queue,
   ) {}
 
   public async pay(options: PayOptions): Promise<Payment> {
@@ -68,6 +78,19 @@ export class PayPaymentService {
     );
 
     await this.paymentRepository.save(payment);
+    await this.paymentQueue.add(
+      PaymentConsumerEnum.PAYMENT_CHECK_CONFIRMATIONS,
+      {
+        paymentId: payment.id,
+      } as PaymentJob,
+      {
+        attempts: PAYMENT_CHECK_CONFIRMATION_ATTEMPTS,
+        backoff: {
+          delay: PAYMENT_CHECK_CONFIRMATION_DELAY_IN_MILLIS,
+          type: 'fixed',
+        },
+      },
+    );
 
     return payment;
   }

@@ -6,12 +6,8 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { NetworkEnum } from '@app/common/network.enum';
-import { CoinEnum } from '@app/common/coin.enum';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
-import { LocalEnvService } from '@app/local-env/services/local-env.service';
-import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 import { WalletTypeEnum } from '@app/wallet/constants/wallet-type.enum';
 
 @Entity('wallets')

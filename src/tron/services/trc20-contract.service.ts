@@ -16,7 +16,6 @@ import { BigNumber } from 'ethers';
 import { base58Address } from '@app/utils';
 import { ParameterService } from '@app/tron/services/parameter.service';
 import { ForbiddenException } from '@nestjs/common';
-import { chain, multiply } from 'mathjs';
 
 export class Trc20ContractService implements TRC20Interface {
   private readonly contract: Promise<TRC20Contract>;
@@ -119,6 +118,7 @@ export class Trc20ContractService implements TRC20Interface {
       amount: BigInt(amountBn.toString()),
       from: base58Address(parameter.value.owner_address),
       confirmations,
+      isConfirmed: confirmations >= 20,
     };
   }
 

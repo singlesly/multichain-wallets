@@ -85,6 +85,7 @@ export class NativeContractService implements NativeInterface {
       amount: BigInt(parameter.value.amount),
       from: base58Address(parameter.value.owner_address),
       confirmations,
+      isConfirmed: confirmations >= 20,
     };
   }
 

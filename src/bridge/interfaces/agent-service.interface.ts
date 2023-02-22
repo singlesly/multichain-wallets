@@ -26,6 +26,7 @@ export interface TransactionInfo {
   readonly to: string;
   readonly amount: bigint;
   readonly confirmations: number;
+  readonly isConfirmed: boolean;
 }
 
 export interface AgentCallOptions {

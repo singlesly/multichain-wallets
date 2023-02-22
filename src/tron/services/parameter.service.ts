@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ethers } from 'ethers';
 import { toHex } from '@app/utils';
-import { FunctionArgumentTypes, Uint256 } from 'tronweb';
+import { FunctionArgumentTypes } from 'tronweb';
 
 const AbiCoder = ethers.utils.AbiCoder;
 const ADDRESS_PREFIX_REGEX = /^(41)/;

@@ -149,6 +149,10 @@ export class Payment {
     this.txId = txId;
     this.paymentDate = paymentDate;
 
+    return this;
+  }
+
+  public confirm() {
     this.status = PaymentStatusEnum.PAID;
 
     return this;

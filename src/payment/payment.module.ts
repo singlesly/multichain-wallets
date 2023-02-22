@@ -15,10 +15,16 @@ import { PaymentController } from '@app/payment/controllers/payment.controller';
 import { GetPaymentService } from '@app/payment/services/get-payment.service';
 import { BridgeModule } from '@app/bridge/bridge.module';
 import { PayPaymentService } from '@app/payment/services/pay-payment.service';
+import { BullModule } from '@nestjs/bull';
+import { PaymentConsumerEnum } from '@app/payment/enums/payment-consumer.enum';
+import { PaymentProcessor } from '@app/payment/processors/payment.processor';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Payment]),
+    BullModule.registerQueue({
+      name: PaymentConsumerEnum.PAYMENT_QUEUE,
+    }),
     ApplicationModule,
     NetworkModule,
     TokenModule,
@@ -36,6 +42,7 @@ import { PayPaymentService } from '@app/payment/services/pay-payment.service';
     GetPaymentService,
     CreatePaymentService,
     PayPaymentService,
+    PaymentProcessor,
   ],
 })
 export class PaymentModule {}

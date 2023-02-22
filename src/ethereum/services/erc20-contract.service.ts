@@ -19,28 +19,19 @@ export class Erc20ContractService implements Erc20Interface {
     return this.web3.eth.accounts.create();
   }
 
-  public async estimateFee(
-    from: string,
-    to: string,
-    amount: bigint,
-    privateKey: string,
-  ): Promise<Balance> {
+  public async estimateFee(): Promise<Balance> {
     throw new NotImplementedException();
   }
 
-  public async getBalance(address: string): Promise<Balance> {
+  public async getBalance(): Promise<Balance> {
     throw new NotImplementedException();
   }
 
-  public async getTransaction(id: string): Promise<TransactionInfo> {
+  public async getTransaction(): Promise<TransactionInfo> {
     throw new NotImplementedException();
   }
 
-  public async transfer(
-    fromPrivateKey: string,
-    to: string,
-    amount: bigint,
-  ): Promise<TxID> {
+  public async transfer(): Promise<TxID> {
     throw new NotImplementedException();
   }
 }

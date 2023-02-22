@@ -2,7 +2,6 @@ import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AgentServiceFactory } from '../factories/agent-service.factory';
 import {
   ApiBasicAuth,
-  ApiBearerAuth,
   ApiOkResponse,
   ApiParam,
   ApiTags,
@@ -20,7 +19,6 @@ import { TransactionResponse } from '@app/bridge/controller/transaction.response
 import { RequestPayload } from '@app/auth/decorators/request-payload';
 import { RequestMeta } from '@app/auth/contants';
 import { BalanceResponse } from '@app/bridge/controller/balance.response';
-import { response } from 'express';
 
 @Controller()
 @ApiTags('Bridge')

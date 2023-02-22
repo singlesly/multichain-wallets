@@ -5,7 +5,6 @@ import {
   IsString,
   IsUrl,
   IsUUID,
-  MinLength,
   ValidateNested,
 } from 'class-validator';
 import { GroupAmountDto } from '@app/payment/dto/group-amount.dto';
@@ -26,7 +25,10 @@ export class CreatePaymentDto {
 
   @IsOptional()
   @IsUrl()
-  @ApiProperty()
+  @ApiProperty({
+    type: 'string',
+    nullable: true,
+  })
   public readonly webhook: string | null = null;
 
   @IsDefined()

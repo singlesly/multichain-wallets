@@ -19,3 +19,9 @@ services:
       - VIRTUAL_PORT=3000
     networks:
       - ledius
+
+  sipex-core-redis:
+    image: redis:6
+    container_name: sipex-core-redis
+    networks:
+      - ledius

@@ -20,6 +20,7 @@ export type GroupAmountItem = {
   tokenSymbol: string;
   decimals: number;
   amountScaled: string;
+  isFiat: boolean;
 };
 
 export type GroupAmount = GroupAmountItem[];
@@ -186,5 +187,14 @@ export class Payment {
     }
 
     return item;
+  }
+
+  public getFiatAmount(): GroupAmountItem {
+    const fiat = this.groupAmount.find((group) => group.isFiat);
+    if (!fiat) {
+      throw new NotFoundException('Cannot fiat payment');
+    }
+
+    return fiat;
   }
 }

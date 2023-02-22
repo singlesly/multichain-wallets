@@ -18,6 +18,7 @@ import { PayPaymentService } from '@app/payment/services/pay-payment.service';
 import { BullModule } from '@nestjs/bull';
 import { PaymentConsumerEnum } from '@app/payment/enums/payment-consumer.enum';
 import { PaymentProcessor } from '@app/payment/processors/payment.processor';
+import { HttpEpayModule } from '@app/http-epay/http-epay.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { PaymentProcessor } from '@app/payment/processors/payment.processor';
     TokenModule,
     WalletModule,
     BridgeModule,
+    HttpEpayModule,
   ],
   controllers: [PaymentController],
   providers: [

@@ -1,4 +1,9 @@
-import { IsDefined, IsNumberString, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDefined,
+  IsNumberString,
+  IsString,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class GroupAmountDto {
@@ -19,4 +24,12 @@ export class GroupAmountDto {
     example: '10000',
   })
   public readonly amountScaled!: string;
+
+  @IsDefined()
+  @IsBoolean()
+  @ApiProperty({
+    type: 'boolean',
+    example: false,
+  })
+  public readonly isFiat: boolean = false;
 }

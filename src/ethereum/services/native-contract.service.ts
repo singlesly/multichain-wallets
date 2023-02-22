@@ -88,6 +88,7 @@ export class NativeContractService implements NativeInterface {
       transactionId: transaction.hash,
       from: transaction.from,
       confirmations: confirmations,
+      isConfirmed: confirmations >= 20,
     };
   }
 

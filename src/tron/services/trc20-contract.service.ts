@@ -118,6 +118,7 @@ export class Trc20ContractService implements TRC20Interface {
       amount: BigInt(amountBn.toString()),
       from: base58Address(parameter.value.owner_address),
       confirmations,
+      isConfirmed: confirmations >= 20,
     };
   }
 

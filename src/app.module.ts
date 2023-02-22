@@ -18,6 +18,10 @@ import { NetworkModule } from '@app/network/network.module';
 import { TokenModule } from '@app/token/token.module';
 import { PaymentModule } from '@app/payment/payment.module';
 import { WalletBalanceModule } from '@app/wallet-balance/wallet-balance.module';
+import { BullModule } from '@nestjs/bull';
+import { LocalEnvModule } from '@app/local-env/local-env.module';
+import { EnvProviderService } from '@ledius/env';
+import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 
 @Module({
   imports: [
@@ -43,6 +47,17 @@ import { WalletBalanceModule } from '@app/wallet-balance/wallet-balance.module';
     ),
     JwtModule,
     FeatureModule.forRoot(),
+    BullModule.forRootAsync({
+      imports: [LocalEnvModule],
+      useFactory: (env: EnvProviderService) => ({
+        redis: {
+          db: 1,
+          host: env.getOrFail(LocalEnvPathEnum.REDIS_HOST),
+          port: +env.getOrFail(LocalEnvPathEnum.REDIS_PORT),
+        },
+      }),
+      inject: [EnvProviderService],
+    }),
     NetworkModule,
     PaymentModule,
     TokenModule,

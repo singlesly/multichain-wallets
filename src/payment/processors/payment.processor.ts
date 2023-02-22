@@ -1,11 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  OnGlobalQueueError,
-  OnGlobalQueueFailed,
-  OnQueueFailed,
-  Process,
-  Processor,
-} from '@nestjs/bull';
+import { OnGlobalQueueFailed, Process, Processor } from '@nestjs/bull';
 import { PaymentConsumerEnum } from '@app/payment/enums/payment-consumer.enum';
 import { Job } from 'bull';
 import { PaymentJob } from '@app/payment/dto/payment.job';

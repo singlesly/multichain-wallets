@@ -4,7 +4,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export interface ExceptionData {
   statusCode: number;
-  message?: string;
+  message?: string | null;
 }
 
 export type Cause = Error | BaseException | string | unknown;
@@ -32,7 +32,7 @@ export class BaseException {
 
 export class BaseExceptionResponse implements ExceptionData {
   @ApiPropertyOptional()
-  public readonly message?: string | null = null;
+  public readonly message?: string | null | undefined = null;
 
   @ApiProperty({
     enum: Object.values(WebErrorsEnum),

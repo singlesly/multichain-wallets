@@ -12,7 +12,13 @@ export class GetWalletService {
     return this.temporaryWalletPgRepository.getByAddress(pubKey);
   }
 
-  public async findByAddress(pubKey: string): Promise<Wallet | undefined> {
+  public async findByAddress(pubKey: string): Promise<Wallet | null> {
     return this.temporaryWalletPgRepository.findByAddress(pubKey);
+  }
+
+  public async getWallets(options: { owners?: string[] }): Promise<Wallet[]> {
+    return await this.temporaryWalletPgRepository.findBy({
+      owners: options.owners,
+    });
   }
 }

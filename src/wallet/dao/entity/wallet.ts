@@ -6,12 +6,8 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { NetworkEnum } from '@app/common/network.enum';
-import { CoinEnum } from '@app/common/coin.enum';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
-import { LocalEnvService } from '@app/local-env/services/local-env.service';
-import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 import { WalletTypeEnum } from '@app/wallet/constants/wallet-type.enum';
 
 @Entity('wallets')
@@ -20,7 +16,7 @@ export class Wallet {
     type: 'uuid',
     generated: 'uuid',
   })
-  public readonly id: string;
+  public readonly id!: string;
 
   @Column({
     type: 'varchar',
@@ -44,18 +40,10 @@ export class Wallet {
   public readonly type: WalletTypeEnum;
 
   @Column({
-    type: 'enum',
-    enum: NetworkEnum,
+    type: 'text',
     nullable: false,
   })
-  public readonly network: NetworkEnum;
-
-  @Column({
-    type: 'enum',
-    enum: CoinEnum,
-    nullable: false,
-  })
-  public readonly coin: CoinEnum;
+  public readonly networkCode: string;
 
   @Column('varchar', {
     array: true,
@@ -64,10 +52,10 @@ export class Wallet {
   public owners: string[];
 
   @CreateDateColumn()
-  public readonly createdAt: Date;
+  public readonly createdAt!: Date;
 
   @UpdateDateColumn()
-  public readonly updatedAt: Date;
+  public readonly updatedAt!: Date;
 
   @DeleteDateColumn()
   public readonly deletedAt?: Date;
@@ -75,24 +63,18 @@ export class Wallet {
   constructor(
     pubKey: string,
     privateKey: string,
-    network: NetworkEnum,
-    coin: CoinEnum,
+    networkCode: string,
     owners: string[] = [],
     type: WalletTypeEnum = WalletTypeEnum.MAIN,
   ) {
     this.pubKey = pubKey;
     this.privateKey = privateKey;
-    this.network = network;
-    this.coin = coin;
+    this.networkCode = networkCode;
     this.owners = owners;
     this.type = type;
   }
 
-  public checkOwnerOrFail(owner: string, env: LocalEnvService): void {
-    if (!env.getBoolean(LocalEnvPathEnum.FEATURE_CHECK_OWNERS_PERMISSION)) {
-      return;
-    }
-
+  public checkOwnerOrFail(owner: string): void {
     const has = (this.owners || []).some((item) => item === owner);
     if (!has) {
       throw new BaseException({

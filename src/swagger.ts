@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import {
   DocumentBuilder,
-  ExpressSwaggerCustomOptions,
+  SwaggerCustomOptions,
   SwaggerModule,
 } from '@nestjs/swagger';
 
@@ -26,6 +26,7 @@ export async function useSwagger(app: INestApplication): Promise<void> {
 
   SwaggerModule.setup('/api/docs', app, document, {
     customSiteTitle: 'Crypto Bridge',
-    customCssUrl: '/public/swagger/theme-feeling-blue.css',
-  } as ExpressSwaggerCustomOptions);
+    customCssUrl: '/api/public/swagger/theme-feeling-blue.css',
+    customJs: ['/api/public/swagger/js/web3.js'],
+  } as SwaggerCustomOptions);
 }

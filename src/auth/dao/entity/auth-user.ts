@@ -1,5 +1,3 @@
-import { BaseException } from '@app/common/base-exception';
-import { WebErrorsEnum } from '@app/common/web-errors.enum';
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 import { v4 } from 'uuid';
 
@@ -14,24 +12,12 @@ export class AuthUser {
 
   @Column({
     type: 'varchar',
-    nullable: true,
+    nullable: false,
   })
-  public readonly login?: string;
-
-  @Column({
-    type: 'varchar',
-    nullable: true,
-  })
-  public readonly password?: string;
-
-  @Column({
-    type: 'varchar',
-    nullable: true,
-  })
-  public address?: string;
+  public address!: string;
 
   @CreateDateColumn()
-  public readonly createdAt: string;
+  public readonly createdAt!: Date;
 
   constructor() {
     this.id = v4();
@@ -41,14 +27,5 @@ export class AuthUser {
     const authUser = new AuthUser();
     authUser.address = address;
     return authUser;
-  }
-
-  public verifyPassword(password: string): void {
-    if (password !== this.password || !this.password) {
-      throw new BaseException({
-        message: 'Unauthorized',
-        statusCode: WebErrorsEnum.UNAUTHORIZED,
-      });
-    }
   }
 }

@@ -1,7 +1,11 @@
-import { HealthModule } from './health/health.module';
 import { BridgeModule } from '@app/bridge/bridge.module';
 import { WalletModule } from '@app/wallet/wallet.module';
 import { AuthModule } from '@app/auth/auth.module';
+import { NetworkModule } from '@app/network/network.module';
+import { TokenModule } from '@app/token/token.module';
+import { ApplicationModule } from '@app/application/application.module';
+import { WalletBalanceModule } from '@app/wallet-balance/wallet-balance.module';
+import { PaymentModule } from '@app/payment/payment.module';
 
 export const routes = [
   {
@@ -13,11 +17,27 @@ export const routes = [
     module: WalletModule,
   },
   {
-    path: '/api/bridge/health',
-    module: HealthModule,
-  },
-  {
     path: '/api/auth',
     module: AuthModule,
+  },
+  {
+    path: '/api',
+    module: NetworkModule,
+  },
+  {
+    path: '/api',
+    module: PaymentModule,
+  },
+  {
+    path: '/api',
+    module: TokenModule,
+  },
+  {
+    path: '/api',
+    module: ApplicationModule,
+  },
+  {
+    path: '/api',
+    module: WalletBalanceModule,
   },
 ];

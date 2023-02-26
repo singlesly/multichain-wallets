@@ -1,9 +1,9 @@
-init: docker-down-clear docker-build docker-up app-wait-db app-migration app-stop app-up
+init: docker-down-clear docker-build docker-up app-wait-db migration-run app-stop app-up
 check: lint test-full
 test-full: init test-unit test-e2e
 up: docker-up app-up
 
-appContainer = ledius-crypto-bridge
+appContainer = sipex-core
 
 logs:
 	docker-compose logs -f
@@ -35,20 +35,24 @@ app-up:
 app-wait-db:
 	sleep 5
 
-app-migration:
-	docker-compose run --rm $(appContainer) npx typeorm migration:run
-
 docker-build:
 	docker-compose build
 
 migration-gen:
-	docker-compose run --rm $(appContainer) npx typeorm migration:generate -n $(n) -d ./src/$(m)/dao/migrations && sudo chown -R ${USER}:${USER} src/$(m)
+	docker-compose run --rm $(appContainer) npm run typeorm migration:generate -- ./src/$(m)/dao/migrations/$(n) -d ./src/data-source.ts && sudo chown -R ${USER}:${USER} src/$(m)
 
 migration-run:
-	docker-compose run --rm $(appContainer) npx typeorm migration:run
+	docker-compose run --rm $(appContainer) npm run typeorm migration:run -- -d ./src/data-source.ts
 
 migration-revert:
-	docker-compose run --rm $(appContainer) npx typeorm migration:revert
+	docker-compose run --rm $(appContainer) npm run typeorm migration:revert -- -d ./src/data-source.ts
 
 cli:
 	docker-compose exec $(appContainer) crypto-bridge $(c)
+
+use-ui: rm-ui
+	git clone git@github.com:Eugene362624/crypto_bridge.git ./public/ui
+	cd public/ui && npm i && npm run build
+rm-ui:
+	rm -rf ./public/ui
+

@@ -9,21 +9,8 @@ export class EthereumWeb3Service {
   public readonly eth: Eth;
   public readonly utils: Utils;
 
-  constructor(
-    private readonly host: string,
-    private readonly username: string,
-    private readonly password: string,
-  ) {
-    this.web3 = new Web3(
-      new Web3.providers.HttpProvider(host, {
-        headers: [
-          {
-            name: 'Authorization',
-            value: `Basic ${username}:${password}`,
-          },
-        ],
-      }),
-    );
+  constructor(private readonly host: string) {
+    this.web3 = new Web3(new Web3.providers.HttpProvider(host));
     this.eth = this.web3.eth;
     this.utils = this.web3.utils;
   }

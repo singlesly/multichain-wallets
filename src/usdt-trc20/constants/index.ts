@@ -1,1 +1,0 @@
-export const USDT_CONTRACT = 'USDT_CONTRACT';

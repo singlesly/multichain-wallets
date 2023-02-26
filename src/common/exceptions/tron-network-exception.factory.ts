@@ -45,7 +45,7 @@ export class TronNetworkExceptionFactory {
 
     if (
       typeof error === 'object' &&
-      error?.message.includes('account does not exist')
+      error?.message?.includes('account does not exist')
     ) {
       throw new BaseException(
         {
@@ -66,10 +66,20 @@ export class TronNetworkExceptionFactory {
       );
     }
 
+    if (typeof e === 'string' && e.includes('Invalid address provided')) {
+      throw new BaseException(
+        {
+          statusCode: WebErrorsEnum.INVALID_ARGUMENT,
+          message: 'Invalid address provided',
+        },
+        e,
+      );
+    }
+
     throw new BaseException(
       {
         statusCode: WebErrorsEnum.INTERNAL_ERROR,
-        message: 'Unhandled tron exception',
+        message: typeof e === 'string' ? e : 'Unhandled tron exception',
       },
       e,
     );

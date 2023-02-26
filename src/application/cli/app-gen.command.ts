@@ -1,25 +1,29 @@
 import { CommandRunner, SubCommand } from 'nest-commander';
-import { randomBytes, createHash } from 'crypto';
-import { Application } from '../dao/entity/application';
-import { ConsoleLogger } from '@nestjs/common';
+import { ConsoleLogger, Injectable } from '@nestjs/common';
+import { ApplicationService } from '@app/application/service/application.service';
+import { AuthUserPgRepository } from '@app/auth/repositories/auth-user-pg.repository';
 
 @SubCommand({
   name: 'gen',
-  arguments: '<name>',
+  arguments: '<name> <address>',
   description: 'generate new application',
 })
-export class AppGenCommand implements CommandRunner {
+@Injectable()
+export class AppGenCommand extends CommandRunner {
   private readonly logger: ConsoleLogger = new ConsoleLogger();
+
+  constructor(
+    private readonly applicationService: ApplicationService,
+    private readonly authUserRepository: AuthUserPgRepository,
+  ) {
+    super();
+  }
 
   public async run(passedParams: string[]): Promise<void> {
     const name = passedParams[0];
-    const salt = randomBytes(64).toString('hex');
-    const nameSha = createHash('sha256').update(name).digest('hex');
-    const secret = createHash('sha256')
-      .update(salt + nameSha)
-      .digest('hex');
-
-    const app = await new Application(name, secret).save();
+    const address = passedParams[1];
+    const user = await this.authUserRepository.getByAddress(address);
+    const app = await this.applicationService.create({ name, userId: user.id });
 
     this.logger.log(`[Name] | id | secret`);
     this.logger.log(`[${app.name}] | ${app.authId()} | ${app.secret}`);

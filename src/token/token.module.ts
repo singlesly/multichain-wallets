@@ -1,18 +1,13 @@
-import { Global, Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { LocalEnvModule } from '@app/local-env/local-env.module';
-import { LocalEnvService } from '@app/local-env/services/local-env.service';
-import { TokenService } from '@app/token/token.service';
+import { Module } from '@nestjs/common';
+import { NetworkModule } from '@app/network/network.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Token } from '@app/token/dao/entity/token';
+import { TokenService } from '@app/token/services/token.service';
+import { TokenController } from '@app/token/controllers/token.controller';
 
-@Global()
 @Module({
-  imports: [
-    JwtModule.registerAsync({
-      imports: [LocalEnvModule],
-      inject: [LocalEnvService],
-      useFactory: (env: LocalEnvService) => env.getJwtOptions(),
-    }),
-  ],
+  imports: [NetworkModule, TypeOrmModule.forFeature([Token])],
+  controllers: [TokenController],
   providers: [TokenService],
   exports: [TokenService],
 })

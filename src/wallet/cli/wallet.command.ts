@@ -6,7 +6,7 @@ import { ExportWalletCommand } from '@app/wallet/cli/export-wallet.command';
   description: 'wallets commands',
   subCommands: [ExportWalletCommand],
 })
-export class WalletCommand implements CommandRunner {
+export class WalletCommand extends CommandRunner {
   public async run(): Promise<void> {
     return void 0;
   }

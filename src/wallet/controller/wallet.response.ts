@@ -1,6 +1,4 @@
 import { Wallet } from '../dao/entity/wallet';
-import { NetworkEnum } from '@app/common/network.enum';
-import { CoinEnum } from '@app/common/coin.enum';
 import { ApiProperty } from '@nestjs/swagger';
 import { WalletTypeEnum } from '@app/wallet/constants/wallet-type.enum';
 
@@ -8,15 +6,8 @@ export class WalletResponse {
   @ApiProperty()
   public readonly address: string;
 
-  @ApiProperty({
-    enum: NetworkEnum,
-  })
-  public readonly network: NetworkEnum;
-
-  @ApiProperty({
-    enum: CoinEnum,
-  })
-  public readonly coin: CoinEnum;
+  @ApiProperty({})
+  public readonly network: string;
 
   @ApiProperty({
     type: 'string',
@@ -35,8 +26,7 @@ export class WalletResponse {
 
   constructor(wallet: Wallet) {
     this.address = wallet.pubKey;
-    this.coin = wallet.coin;
-    this.network = wallet.network;
+    this.network = wallet.networkCode;
     this.owners = wallet.owners;
     this.type = wallet.type;
     this.createdAt = wallet.createdAt;

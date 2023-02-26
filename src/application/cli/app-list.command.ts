@@ -6,7 +6,7 @@ import { ConsoleLogger } from '@nestjs/common';
   name: 'list',
   description: 'get current application with secrets',
 })
-export class AppListCommand implements CommandRunner {
+export class AppListCommand extends CommandRunner {
   private readonly logger: ConsoleLogger = new ConsoleLogger();
 
   public async run(): Promise<void> {

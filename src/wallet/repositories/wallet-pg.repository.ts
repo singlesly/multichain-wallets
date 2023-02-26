@@ -51,7 +51,7 @@ export class WalletPgRepository {
     return wallet;
   }
 
-  public async findByAddress(address: string): Promise<Wallet | undefined> {
+  public async findByAddress(address: string): Promise<Wallet | null> {
     return await this.repository.findOne({
       where: {
         pubKey: address,

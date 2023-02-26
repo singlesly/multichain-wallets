@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { LocalEnvModule } from '../local-env/local-env.module';
 import { LocalEnvService } from '../local-env/services/local-env.service';
 import { LocalEnvPathEnum } from '../local-env/contants/local-env-path.enum';
-import { TronClientService } from './services/tron-client.service';
 import { HttpModule } from '@nestjs/axios';
 import { LoggerModule } from '@ledius/logger';
 import { RequestContextModule } from '@ledius/request-context';
 import { HttpClientLoggingInterceptor } from '../common/interceptors/http-client-logging.interceptor';
 import { ParameterService } from '@app/tron/services/parameter.service';
 import TronWeb from 'tronweb';
+import { TronCompatibleFactory } from '@app/tron/services/tron-compatible.factory';
 
 @Module({
   imports: [
@@ -25,8 +25,8 @@ import TronWeb from 'tronweb';
   ],
   providers: [
     HttpClientLoggingInterceptor,
-    TronClientService,
     ParameterService,
+    TronCompatibleFactory,
     {
       provide: TronWeb,
       useFactory: (env: LocalEnvService) => {
@@ -43,6 +43,6 @@ import TronWeb from 'tronweb';
       inject: [LocalEnvService],
     },
   ],
-  exports: [TronClientService, ParameterService, TronWeb],
+  exports: [ParameterService, TronWeb, TronCompatibleFactory],
 })
 export class TronModule {}

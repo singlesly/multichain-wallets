@@ -1,52 +1,65 @@
 import { Injectable } from '@nestjs/common';
-import { AgentService } from '@app/bridge/services/agent.service';
-import { NetworkEnum } from '@app/common/network.enum';
-import { CoinEnum } from '@app/common/coin.enum';
-import { BitcoinAgentService } from '../services/bitcoin-agent.service';
-import { EthereumAgentService } from '../services/ethereum-agent.service';
-import { TronAgentService } from '../services/tron-agent.service';
-import { UsdtTrc20AgentService } from '@app/bridge/services/usdt-trc20-agent.service';
+import { AgentServiceInterface } from '@app/bridge/interfaces/agent-service.interface';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
-import { ModuleRef } from '@nestjs/core';
-import { VirtualAgentServiceFactory } from '@app/bridge/factories/virtual-agent-service.factory';
+import { NetworkService } from '@app/network/services/network.service';
+import { TokenService } from '@app/token/services/token.service';
+import { TronCompatibleFactory } from '@app/tron/services/tron-compatible.factory';
+import { AgentService } from '@app/bridge/services/agent.service';
+import { CreateWalletService } from '@app/wallet/services/create-wallet.service';
+import { GetWalletService } from '@app/wallet/services/get-wallet.service';
+import { EncryptService } from '@app/encrypt/services/encrypt.service';
+import { EthereumCompatibleFactory } from '@app/ethereum/services/ethereum-compatible.factory';
 
 @Injectable()
 export class AgentServiceFactory {
-  public readonly supportedMap = {
-    [NetworkEnum.BTC]: {
-      [CoinEnum.BTC]: BitcoinAgentService,
-    },
-    [NetworkEnum.ETH]: {
-      [CoinEnum.ETH]: EthereumAgentService,
-    },
-    [NetworkEnum.TRON]: {
-      [CoinEnum.TRX]: TronAgentService,
-      [CoinEnum.USDT]: UsdtTrc20AgentService,
-    },
-  };
-
   constructor(
-    private readonly moduleRef: ModuleRef,
-    private readonly virtualAgentServiceFactory: VirtualAgentServiceFactory,
+    private readonly tronCompatibleFactory: TronCompatibleFactory,
+    private readonly ethereumCompatibleFactory: EthereumCompatibleFactory,
+    private readonly networkService: NetworkService,
+    private readonly tokenService: TokenService,
+    private readonly getWalletService: GetWalletService,
+    private readonly createWalletService: CreateWalletService,
+    private readonly encrypt: EncryptService,
   ) {}
 
-  public for(
-    network: NetworkEnum,
-    coin: CoinEnum = network as unknown as CoinEnum,
-  ): AgentService {
-    const agentService =
-      this.supportedMap[network.toUpperCase()]?.[coin.toUpperCase()];
+  public async for(
+    networkCode: string,
+    tokenSymbol: string,
+  ): Promise<AgentServiceInterface> {
+    const network = await this.networkService.getByCode(networkCode);
+    const token = await this.tokenService.getBySymbol(tokenSymbol, networkCode);
+    if (network.isTronCompatible()) {
+      const contract = await this.tronCompatibleFactory
+        .for(network)
+        .then(({ at }) => at(token));
 
-    if (!agentService) {
-      throw new BaseException({
-        message: `Unsupported ${network}:${coin}`,
-        statusCode: WebErrorsEnum.INVALID_ARGUMENT,
-      });
+      return new AgentService(
+        network,
+        token,
+        contract,
+        this.createWalletService,
+        this.getWalletService,
+        this.encrypt,
+      );
+    } else if (network.isEthereumCompatible()) {
+      const contract = await this.ethereumCompatibleFactory
+        .for(network)
+        .then(({ at }) => at(token));
+
+      return new AgentService(
+        network,
+        token,
+        contract,
+        this.createWalletService,
+        this.getWalletService,
+        this.encrypt,
+      );
     }
 
-    const resolveAgent = this.moduleRef.get(agentService);
-
-    return this.virtualAgentServiceFactory.for(resolveAgent);
+    throw new BaseException({
+      message: 'Network compatible is not supported',
+      statusCode: WebErrorsEnum.INTERNAL_ERROR,
+    });
   }
 }

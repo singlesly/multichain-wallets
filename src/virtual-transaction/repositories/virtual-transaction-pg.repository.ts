@@ -12,7 +12,7 @@ export class VirtualTransactionPgRepository {
     private readonly repository: Repository<VirtualTransaction>,
   ) {}
 
-  public async getById(id: string): Promise<VirtualTransaction | undefined> {
+  public async getById(id: string): Promise<VirtualTransaction | null> {
     return await this.repository.findOne({
       where: {
         id,

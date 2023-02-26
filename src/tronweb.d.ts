@@ -1,6 +1,9 @@
 declare module 'tronweb' {
+  import { TxID } from '@app/bridge/interfaces/agent-service.interface';
+
   declare class TronWeb {
     public readonly trx: Trx;
+    public readonly utils: utils;
     public readonly transactionBuilder: TransactionBuilder;
     public readonly address: {
       fromPrivateKey(privateKey: string): string;
@@ -16,6 +19,9 @@ declare module 'tronweb' {
   }
 
   declare class Trx {
+    public async getAccountResources(
+      address: string,
+    ): Promise<TronAccountResources>;
     public async getBalance(address: string): Promise<number>;
     public async sign(
       transaction: TransactionData | string,
@@ -53,6 +59,7 @@ declare module 'tronweb' {
   }
 
   declare class TransactionBuilder {
+    public async sendToken(): Promise<SignedTransaction>;
     public async sendTrx(
       to: string,
       amount: number,
@@ -74,6 +81,28 @@ declare module 'tronweb' {
         : Record<string, any>[],
       issuerAddress?: string,
     ): Promise<TransactionResult<TransactionData>>;
+
+    public async estimateEnergy<F extends FunctionSelector>(
+      contractAddress: string,
+      functionSelector: F,
+      options: {
+        feeLimit?: number;
+        callValue?: number;
+        tokenValue?: number;
+        tokenId?: number;
+      },
+      parameter: F extends TransferFunctionSelector
+        ? [{ type: Address; value: string }, { type: Uint256; value: number }]
+        : Record<string, any>[],
+      issuerAddress?: string,
+    ): Promise<{ energy_required: number; result: unknown }>;
+  }
+
+  declare interface utils {
+    transaction: {
+      txJsonToPb(txJson: SignedTransaction): object;
+      txPbToTxID(): TxID;
+    };
   }
 
   interface InitOptions {
@@ -96,13 +125,24 @@ declare module 'tronweb' {
     };
   }
 
-  interface TronAccount {
+  export interface TronAccount {
     address: {
       base58: string;
       hex: string;
     };
     publicKey: string;
     privateKey: string;
+  }
+
+  export interface TronAccountResources {
+    freeNetLimit: number;
+    freeNetUsed?: number;
+    NetLimit: number;
+    TotalNetLimit: number;
+    TotalNetWeight: number;
+    EnergyLimit: number;
+    TotalEnergyLimit: number;
+    TotalEnergyWeight: number;
   }
 
   export interface TRC20Contract {

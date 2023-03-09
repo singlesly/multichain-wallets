@@ -16,7 +16,10 @@ export class LocalEnvService {
       return [];
     }
 
-    return admins.split(',').filter((item) => item.length > 0);
+    return admins
+      .split(',')
+      .map((str) => str.toLowerCase())
+      .filter((item) => item.length > 0);
   }
 
   public get(key: LocalEnvPathEnum): string | undefined {

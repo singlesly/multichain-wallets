@@ -33,7 +33,7 @@ export class Token {
   @Column('jsonb', {
     default: '{"type": "UNAVAILABLE"}',
   })
-  public readonly fiatDistributionOptions: FiatDistributionOptions = {
+  public fiatDistributionOptions: FiatDistributionOptions = {
     type: FiatDistributionEnum.UNAVAILABLE,
   };
 
@@ -58,5 +58,10 @@ export class Token {
 
   public isNative(): this is { type: TokenTypeEnum.NATIVE } {
     return this.type === TokenTypeEnum.NATIVE;
+  }
+
+  public useFiatOptions(fiatOptions: FiatDistributionOptions): this {
+    this.fiatDistributionOptions = fiatOptions;
+    return this;
   }
 }

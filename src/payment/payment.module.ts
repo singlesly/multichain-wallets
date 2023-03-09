@@ -20,6 +20,8 @@ import { PaymentConsumerEnum } from '@app/payment/enums/payment-consumer.enum';
 import { PaymentProcessor } from '@app/payment/processors/payment.processor';
 import { HttpEpayModule } from '@app/http-epay/http-epay.module';
 import { TinkoffModule } from '@app/tinkoff/tinkoff.module';
+import { GetPaymentLinkService } from '@app/payment/services/get-payment-link.service';
+import { ConverterModule } from '@app/converter/converter.module';
 
 @Module({
   imports: [
@@ -34,6 +36,7 @@ import { TinkoffModule } from '@app/tinkoff/tinkoff.module';
     BridgeModule,
     HttpEpayModule,
     TinkoffModule,
+    ConverterModule,
   ],
   controllers: [PaymentController],
   providers: [
@@ -47,6 +50,7 @@ import { TinkoffModule } from '@app/tinkoff/tinkoff.module';
     CreatePaymentService,
     PayPaymentService,
     PaymentProcessor,
+    GetPaymentLinkService,
   ],
 })
 export class PaymentModule {}

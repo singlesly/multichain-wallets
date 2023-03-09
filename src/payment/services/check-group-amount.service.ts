@@ -15,17 +15,6 @@ export class CheckGroupAmountService {
     const amounts = [] as GroupAmount;
 
     for (const groupAmount of groupAmounts) {
-      if (groupAmount.isFiat) {
-        amounts.push({
-          amountScaled: groupAmount.amountScaled,
-          decimals: 0,
-          networkCode: 'rub',
-          tokenSymbol: 'rub',
-          isFiat: true,
-        });
-        continue;
-      }
-
       const network = await this.networkService.getByCode(
         groupAmount.networkCode,
       );
@@ -39,7 +28,7 @@ export class CheckGroupAmountService {
         decimals: token.decimals,
         networkCode: network.code,
         tokenSymbol: token.symbol,
-        isFiat: false,
+        isFiat: groupAmount.isFiat,
       });
     }
 

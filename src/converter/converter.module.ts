@@ -15,5 +15,6 @@ import { CryptoCurrencyConverterService } from '@app/converter/services/coin-gec
   ],
   controllers: [ConverterController],
   providers: [CoinListService, CryptoCurrencyConverterService],
+  exports: [CryptoCurrencyConverterService],
 })
 export class ConverterModule {}

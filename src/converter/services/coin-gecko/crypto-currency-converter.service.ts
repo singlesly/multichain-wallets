@@ -43,7 +43,7 @@ export class CryptoCurrencyConverterService implements ConverterInterface {
     ).then((res) => res.data);
 
     const amount = from.amount;
-    const price = BigInt(Math.round(rate.current_price));
+    const price = BigInt(Math.ceil(rate.current_price));
     const pow = BigInt(10 ** Math.abs(from.decimals - to.decimals));
 
     return (amount * price) / pow;

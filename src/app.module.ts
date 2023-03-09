@@ -22,6 +22,7 @@ import { BullModule } from '@nestjs/bull';
 import { LocalEnvModule } from '@app/local-env/local-env.module';
 import { EnvProviderService } from '@ledius/env';
 import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
+import { ConverterModule } from '@app/converter/converter.module';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
     NetworkModule,
     PaymentModule,
     TokenModule,
+    ConverterModule,
   ],
   controllers: [],
   providers: [

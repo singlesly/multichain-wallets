@@ -6,6 +6,7 @@ import { TokenModule } from '@app/token/token.module';
 import { ApplicationModule } from '@app/application/application.module';
 import { WalletBalanceModule } from '@app/wallet-balance/wallet-balance.module';
 import { PaymentModule } from '@app/payment/payment.module';
+import { ConverterModule } from '@app/converter/converter.module';
 
 export const routes = [
   {
@@ -39,5 +40,9 @@ export const routes = [
   {
     path: '/api',
     module: WalletBalanceModule,
+  },
+  {
+    path: '/api',
+    module: ConverterModule,
   },
 ];

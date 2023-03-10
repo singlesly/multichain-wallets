@@ -36,7 +36,11 @@ export class GetPaymentLinkOfferService {
 
     return this.tinkoffService.getPaymentLink({
       orderId: v4(),
-      amount: Number(amount),
+      amount: Number(await this.addFee(amount)),
     });
+  }
+
+  public async addFee(amount: bigint): Promise<bigint> {
+    return BigInt(Math.ceil(Number(amount) * 1.1));
   }
 }

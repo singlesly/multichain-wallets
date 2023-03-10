@@ -6,10 +6,19 @@ import { TokenModule } from '@app/token/token.module';
 import { CreateOfferService } from '@app/offer/services/create-offer.service';
 import { OfferRepository } from '@app/offer/repositories/offer.repository';
 import { OfferController } from '@app/offer/controllers/offer.controller';
+import { GetPaymentLinkOfferService } from '@app/offer/services/get-payment-link-offer.service';
+import { ConverterModule } from '@app/converter/converter.module';
+import { TinkoffModule } from '@app/tinkoff/tinkoff.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Offer]), WalletModule, TokenModule],
+  imports: [
+    TypeOrmModule.forFeature([Offer]),
+    WalletModule,
+    TokenModule,
+    ConverterModule,
+    TinkoffModule,
+  ],
   controllers: [OfferController],
-  providers: [CreateOfferService, OfferRepository],
+  providers: [CreateOfferService, OfferRepository, GetPaymentLinkOfferService],
 })
 export class OfferModule {}

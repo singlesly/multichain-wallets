@@ -23,6 +23,7 @@ import { LocalEnvModule } from '@app/local-env/local-env.module';
 import { EnvProviderService } from '@ledius/env';
 import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 import { ConverterModule } from '@app/converter/converter.module';
+import { OfferModule } from '@app/offer/offer.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { ConverterModule } from '@app/converter/converter.module';
     PaymentModule,
     TokenModule,
     ConverterModule,
+    OfferModule,
   ],
   controllers: [],
   providers: [

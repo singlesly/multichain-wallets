@@ -23,6 +23,7 @@ export class AddTokenDto {
   @IsNumber()
   @ApiProperty()
   @IsPositive()
+  @Type(() => Number)
   public readonly decimals!: number;
 
   @IsDefined()
@@ -44,8 +45,8 @@ export class AddTokenDto {
   @ApiProperty({
     type: FiatOptionsDto,
   })
-  @IsDefined()
+  @IsOptional()
   @ValidateNested()
   @Type(() => FiatOptionsDto)
-  public readonly fiatOptions!: FiatOptionsDto;
+  public readonly fiatOptions?: FiatOptionsDto;
 }

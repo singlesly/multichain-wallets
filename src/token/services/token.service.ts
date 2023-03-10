@@ -24,7 +24,11 @@ export class TokenService {
       network,
       dto.type,
       dto.contractAddress,
-    ).useFiatOptions(dto.fiatOptions);
+    );
+
+    if (dto.fiatOptions) {
+      token.useFiatOptions(dto.fiatOptions);
+    }
 
     return this.repository.save(token);
   }

@@ -7,6 +7,17 @@ import { ApplicationModule } from '@app/application/application.module';
 import { WalletBalanceModule } from '@app/wallet-balance/wallet-balance.module';
 import { PaymentModule } from '@app/payment/payment.module';
 import { ConverterModule } from '@app/converter/converter.module';
+import { OfferModule } from '@app/offer/offer.module';
+
+const modules = [
+  ApplicationModule,
+  ConverterModule,
+  NetworkModule,
+  OfferModule,
+  PaymentModule,
+  TokenModule,
+  WalletBalanceModule,
+];
 
 export const routes = [
   {
@@ -21,28 +32,5 @@ export const routes = [
     path: '/api/auth',
     module: AuthModule,
   },
-  {
-    path: '/api',
-    module: NetworkModule,
-  },
-  {
-    path: '/api',
-    module: PaymentModule,
-  },
-  {
-    path: '/api',
-    module: TokenModule,
-  },
-  {
-    path: '/api',
-    module: ApplicationModule,
-  },
-  {
-    path: '/api',
-    module: WalletBalanceModule,
-  },
-  {
-    path: '/api',
-    module: ConverterModule,
-  },
+  ...modules.map((module) => ({ path: '/api', module })),
 ];

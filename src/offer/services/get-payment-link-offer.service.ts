@@ -22,6 +22,7 @@ export class GetPaymentLinkOfferService {
 
   public async getPaymentLink(
     offerId: string,
+    userId: string,
     dto: GetOfferPaymentLinkDto,
   ): Promise<GetPaymentLinkResult> {
     const offer = await this.offerRepository.getByIdOrFail(offerId);
@@ -40,6 +41,7 @@ export class GetPaymentLinkOfferService {
     return this.tinkoffService.getPaymentLink<PaymentDataInterface>({
       orderId: v4(),
       amount: Number(await this.addFee(amount)),
+      customerKey: userId,
       notificationUrl: new URL(
         '/api/offer/webhook',
         this.env.getOrFail(LocalEnvPathEnum.APP_URL),

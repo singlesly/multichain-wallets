@@ -24,5 +24,10 @@ export class WebhookDto<T = Record<string, string>> {
   @ApiProperty()
   @IsDefined()
   @IsString()
+  public readonly CustomerKey!: string;
+
+  @ApiProperty()
+  @IsDefined()
+  @IsString()
   public readonly Token!: string;
 }

@@ -1,5 +1,13 @@
-import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateOfferService } from '@app/offer/services/create-offer.service';
 import { CreateOfferDto } from '@app/offer/dto/create-offer.dto';
 import { Offer } from '@app/offer/dao/entity/offer';
@@ -10,6 +18,9 @@ import { GetPaymentLinkOfferService } from '@app/offer/services/get-payment-link
 import { WebhookDto } from '@app/tinkoff/dto/webhook.dto';
 import { PaymentDataInterface } from '@app/offer/interfaces/payment-data.interface';
 import { ConfirmOfferService } from '@app/offer/services/confirm-offer.service';
+import { AuthGuard } from '@app/auth/guards/auth.guard';
+import { RequestPayload } from '@app/auth/decorators/request-payload';
+import { RequestMeta } from '@app/auth/contants';
 
 @Controller()
 @ApiTags('Offers')
@@ -27,11 +38,18 @@ export class OfferController {
   }
 
   @Post('offer/:offerId/pay')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   public async getOfferPaymentLink(
     @Param('offerId') offerId: string,
+    @RequestPayload() meta: RequestMeta,
     @Body() dto: GetOfferPaymentLinkDto,
   ): Promise<GetPaymentLinkResult> {
-    return this.getPaymentLinkOfferService.getPaymentLink(offerId, dto);
+    return this.getPaymentLinkOfferService.getPaymentLink(
+      offerId,
+      meta.userId as string,
+      dto,
+    );
   }
 
   @Post('offer')

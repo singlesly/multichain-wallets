@@ -24,19 +24,26 @@ import { EnvProviderService } from '@ledius/env';
 import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 import { ConverterModule } from '@app/converter/converter.module';
 import { OfferModule } from '@app/offer/offer.module';
+import { OfferHistoryModule } from '@app/offer-history/offer-history.module';
 
 @Module({
   imports: [
     ApplicationModule,
     AuthModule,
     BridgeModule,
+    ConverterModule,
     DatabaseModule,
     EncryptModule,
-    WalletModule,
-    WalletBalanceModule,
-    RequestContextModule,
     LoggerModule,
+    NetworkModule,
+    OfferHistoryModule,
+    OfferModule,
+    PaymentModule,
+    RequestContextModule,
     RouterModule.register(routes),
+    TokenModule,
+    WalletBalanceModule,
+    WalletModule,
     ServeStaticModule.forRoot(
       {
         rootPath: path.join(__dirname, '..', 'public'),
@@ -60,11 +67,6 @@ import { OfferModule } from '@app/offer/offer.module';
       }),
       inject: [EnvProviderService],
     }),
-    NetworkModule,
-    PaymentModule,
-    TokenModule,
-    ConverterModule,
-    OfferModule,
   ],
   controllers: [],
   providers: [

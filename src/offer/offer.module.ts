@@ -13,6 +13,7 @@ import { LocalEnvModule } from '@app/local-env/local-env.module';
 import { ConfirmOfferService } from '@app/offer/services/confirm-offer.service';
 import { BridgeModule } from '@app/bridge/bridge.module';
 import { LoggerModule } from '@ledius/logger';
+import { OfferHistoryModule } from '@app/offer-history/offer-history.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { LoggerModule } from '@ledius/logger';
     LocalEnvModule,
     BridgeModule,
     LoggerModule,
+    OfferHistoryModule,
   ],
   controllers: [OfferController],
   providers: [

@@ -6,6 +6,7 @@ import { LoggerService } from '@ledius/logger';
 import { OfferRepository } from '@app/offer/repositories/offer.repository';
 import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { AgentServiceFactory } from '@app/bridge/factories/agent-service.factory';
+import { OfferHistoryService } from '@app/offer-history/services/offer-history.service';
 
 @Injectable()
 export class ConfirmOfferService {
@@ -13,6 +14,7 @@ export class ConfirmOfferService {
     private readonly offerRepository: OfferRepository,
     private readonly getWalletService: GetWalletService,
     private readonly agentServiceFactory: AgentServiceFactory,
+    private readonly offerHistoryService: OfferHistoryService,
     private readonly logger: LoggerService,
   ) {}
   public async confirm(dto: WebhookDto<PaymentDataInterface>): Promise<void> {
@@ -38,10 +40,19 @@ export class ConfirmOfferService {
       offer.token.network.code,
       offer.token.symbol,
     );
-    await agent.transfer(
+    const txId = await agent.transfer(
       liquidityWallet.pubKey,
       recipientWallet.pubKey,
       BigInt(amountScaled),
     );
+
+    await this.offerHistoryService.create({
+      txId,
+      quoteAmountScaled: dto.Amount.toString(10),
+      baseAmountScaled: amountScaled,
+      userId: dto.CustomerKey,
+      token: offer.token,
+      direction: offer.direction,
+    });
   }
 }

@@ -10,6 +10,9 @@ import { GetPaymentLinkOfferService } from '@app/offer/services/get-payment-link
 import { ConverterModule } from '@app/converter/converter.module';
 import { TinkoffModule } from '@app/tinkoff/tinkoff.module';
 import { LocalEnvModule } from '@app/local-env/local-env.module';
+import { ConfirmOfferService } from '@app/offer/services/confirm-offer.service';
+import { BridgeModule } from '@app/bridge/bridge.module';
+import { LoggerModule } from '@ledius/logger';
 
 @Module({
   imports: [
@@ -19,8 +22,15 @@ import { LocalEnvModule } from '@app/local-env/local-env.module';
     ConverterModule,
     TinkoffModule,
     LocalEnvModule,
+    BridgeModule,
+    LoggerModule,
   ],
   controllers: [OfferController],
-  providers: [CreateOfferService, OfferRepository, GetPaymentLinkOfferService],
+  providers: [
+    CreateOfferService,
+    OfferRepository,
+    GetPaymentLinkOfferService,
+    ConfirmOfferService,
+  ],
 })
 export class OfferModule {}

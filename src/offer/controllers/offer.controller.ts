@@ -9,6 +9,7 @@ import { GetOfferPaymentLinkDto } from '@app/offer/dto/get-offer-payment-link.dt
 import { GetPaymentLinkOfferService } from '@app/offer/services/get-payment-link-offer.service';
 import { WebhookDto } from '@app/tinkoff/dto/webhook.dto';
 import { PaymentDataInterface } from '@app/offer/interfaces/payment-data.interface';
+import { ConfirmOfferService } from '@app/offer/services/confirm-offer.service';
 
 @Controller()
 @ApiTags('Offers')
@@ -17,6 +18,7 @@ export class OfferController {
     private readonly createOfferService: CreateOfferService,
     private readonly getPaymentLinkOfferService: GetPaymentLinkOfferService,
     private readonly offerRepository: OfferRepository,
+    private readonly confirmOfferService: ConfirmOfferService,
   ) {}
 
   @Get('offers')
@@ -42,6 +44,7 @@ export class OfferController {
   public async handleWebhook(
     @Body() dto: WebhookDto<PaymentDataInterface>,
   ): Promise<string> {
+    await this.confirmOfferService.confirm(dto);
     return 'OK';
   }
 }

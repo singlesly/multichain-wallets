@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { catchError, lastValueFrom, map, of, throwError } from 'rxjs';
+import { lastValueFrom, map } from 'rxjs';
 import { EnvProviderService } from '@ledius/env';
 import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 import { handleHttpError } from '@app/common/operators/handleHttpError';
 
-export interface GetPaymentLinkOptions {
+export interface GetPaymentLinkOptions<T = Record<string, string>> {
   terminalKey?: string;
   amount: number;
   orderId: string;
@@ -18,6 +18,7 @@ export interface GetPaymentLinkOptions {
   notificationUrl?: string;
   successUrl?: string;
   failUrl?: string;
+  data?: T;
 }
 
 export interface GetPaymentLinkResult {
@@ -34,8 +35,8 @@ export class TinkoffService {
   /**
    * https://www.tinkoff.ru/kassa/develop/api/payments/init-description/
    */
-  public async getPaymentLink(
-    options: GetPaymentLinkOptions,
+  public async getPaymentLink<T = Record<string, string>>(
+    options: GetPaymentLinkOptions<T>,
   ): Promise<GetPaymentLinkResult> {
     return lastValueFrom(
       this.http
@@ -54,6 +55,7 @@ export class TinkoffService {
           NotificationURL: options.notificationUrl,
           SuccessURL: options.successUrl,
           FailURL: options.failUrl,
+          DATA: options.data,
         })
         .pipe(
           handleHttpError,

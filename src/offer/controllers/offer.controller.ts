@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateOfferService } from '@app/offer/services/create-offer.service';
 import { CreateOfferDto } from '@app/offer/dto/create-offer.dto';
@@ -7,6 +7,8 @@ import { OfferRepository } from '@app/offer/repositories/offer.repository';
 import { GetPaymentLinkResult } from '@app/tinkoff/services/tinkoff.service';
 import { GetOfferPaymentLinkDto } from '@app/offer/dto/get-offer-payment-link.dto';
 import { GetPaymentLinkOfferService } from '@app/offer/services/get-payment-link-offer.service';
+import { WebhookDto } from '@app/tinkoff/dto/webhook.dto';
+import { PaymentDataInterface } from '@app/offer/interfaces/payment-data.interface';
 
 @Controller()
 @ApiTags('Offers')
@@ -33,5 +35,13 @@ export class OfferController {
   @Post('offer')
   public async create(@Body() dto: CreateOfferDto): Promise<Offer> {
     return this.createOfferService.create(dto);
+  }
+
+  @Post('/offer/webhook')
+  @HttpCode(200)
+  public async handleWebhook(
+    @Body() dto: WebhookDto<PaymentDataInterface>,
+  ): Promise<string> {
+    return 'OK';
   }
 }

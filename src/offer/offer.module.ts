@@ -9,6 +9,7 @@ import { OfferController } from '@app/offer/controllers/offer.controller';
 import { GetPaymentLinkOfferService } from '@app/offer/services/get-payment-link-offer.service';
 import { ConverterModule } from '@app/converter/converter.module';
 import { TinkoffModule } from '@app/tinkoff/tinkoff.module';
+import { LocalEnvModule } from '@app/local-env/local-env.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TinkoffModule } from '@app/tinkoff/tinkoff.module';
     TokenModule,
     ConverterModule,
     TinkoffModule,
+    LocalEnvModule,
   ],
   controllers: [OfferController],
   providers: [CreateOfferService, OfferRepository, GetPaymentLinkOfferService],

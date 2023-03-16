@@ -22,6 +22,7 @@ import { HttpEpayModule } from '@app/http-epay/http-epay.module';
 import { TinkoffModule } from '@app/tinkoff/tinkoff.module';
 import { GetPaymentLinkService } from '@app/payment/services/get-payment-link.service';
 import { ConverterModule } from '@app/converter/converter.module';
+import { LoggerModule } from '@ledius/logger';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { ConverterModule } from '@app/converter/converter.module';
     HttpEpayModule,
     TinkoffModule,
     ConverterModule,
+    LoggerModule,
   ],
   controllers: [PaymentController],
   providers: [

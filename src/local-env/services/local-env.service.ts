@@ -40,30 +40,4 @@ export class LocalEnvService {
       secret: this.getSafety(LocalEnvPathEnum.JWT_SECRET),
     };
   }
-
-  public getUsdtContractAddress(): string {
-    const fromEnvsAddress = this.envProviderService.get(
-      LocalEnvPathEnum.USDT_CONTRACT_ADDRESS,
-    );
-
-    if (fromEnvsAddress) {
-      return fromEnvsAddress;
-    }
-
-    const networkAddressMap = {
-      'nile.trongrid.io': 'TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj',
-    };
-
-    const tronNetworkUrl = new URL(
-      this.envProviderService.getOrFail(LocalEnvPathEnum.TRON_RPC_BASE_URL),
-    );
-    const mapAddress = networkAddressMap[tronNetworkUrl.host];
-
-    if (mapAddress) {
-      return mapAddress;
-    }
-
-    // Production tron address
-    return 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t';
-  }
 }

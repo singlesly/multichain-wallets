@@ -18,9 +18,6 @@ import { PayPaymentService } from '@app/payment/services/pay-payment.service';
 import { BullModule } from '@nestjs/bull';
 import { PaymentConsumerEnum } from '@app/payment/enums/payment-consumer.enum';
 import { PaymentProcessor } from '@app/payment/processors/payment.processor';
-import { HttpEpayModule } from '@app/http-epay/http-epay.module';
-import { TinkoffModule } from '@app/tinkoff/tinkoff.module';
-import { GetPaymentLinkService } from '@app/payment/services/get-payment-link.service';
 import { ConverterModule } from '@app/converter/converter.module';
 import { LoggerModule } from '@ledius/logger';
 
@@ -35,8 +32,6 @@ import { LoggerModule } from '@ledius/logger';
     TokenModule,
     WalletModule,
     BridgeModule,
-    HttpEpayModule,
-    TinkoffModule,
     ConverterModule,
     LoggerModule,
   ],
@@ -52,7 +47,6 @@ import { LoggerModule } from '@ledius/logger';
     CreatePaymentService,
     PayPaymentService,
     PaymentProcessor,
-    GetPaymentLinkService,
   ],
 })
 export class PaymentModule {}

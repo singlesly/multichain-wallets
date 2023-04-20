@@ -7,15 +7,11 @@ import { ApplicationModule } from '@app/application/application.module';
 import { WalletBalanceModule } from '@app/wallet-balance/wallet-balance.module';
 import { PaymentModule } from '@app/payment/payment.module';
 import { ConverterModule } from '@app/converter/converter.module';
-import { OfferModule } from '@app/offer/offer.module';
-import { OfferHistoryModule } from '@app/offer-history/offer-history.module';
 
 const modules = [
   ApplicationModule,
   ConverterModule,
   NetworkModule,
-  OfferHistoryModule,
-  OfferModule,
   PaymentModule,
   TokenModule,
   WalletBalanceModule,

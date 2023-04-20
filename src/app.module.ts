@@ -23,8 +23,6 @@ import { LocalEnvModule } from '@app/local-env/local-env.module';
 import { EnvProviderService } from '@ledius/env';
 import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 import { ConverterModule } from '@app/converter/converter.module';
-import { OfferModule } from '@app/offer/offer.module';
-import { OfferHistoryModule } from '@app/offer-history/offer-history.module';
 
 @Module({
   imports: [
@@ -36,8 +34,6 @@ import { OfferHistoryModule } from '@app/offer-history/offer-history.module';
     EncryptModule,
     LoggerModule,
     NetworkModule,
-    OfferHistoryModule,
-    OfferModule,
     PaymentModule,
     RequestContextModule,
     RouterModule.register(routes),

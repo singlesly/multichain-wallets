@@ -1,4 +1,3 @@
-import { Erc20Interface } from '@app/ethereum/interfaces/erc20.interface';
 import { EthereumWeb3Service } from '@app/ethereum/services/ethereum-web3.service';
 import { Token } from '@app/token/dao/entity/token';
 import { Account } from 'web3-core';
@@ -8,10 +7,11 @@ import {
   TransactionInfo,
   TxID,
 } from '@app/bridge/interfaces/agent-service.interface';
-import { ForbiddenException, NotImplementedException } from '@nestjs/common';
+import { ForbiddenException } from '@nestjs/common';
 import { DEFAULT_ABI } from '@app/ethereum/abi/default.abi';
+import { Bep20Interface } from '@app/ethereum/interfaces/bep20.interface';
 
-export class Erc20ContractService implements Erc20Interface {
+export class Bep20ContractService implements Bep20Interface {
   private readonly contract: Contract;
   constructor(
     private readonly web3: EthereumWeb3Service,

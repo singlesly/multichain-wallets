@@ -6,24 +6,15 @@ import { APP_FILTER, APP_INTERCEPTOR, RouterModule } from '@nestjs/core';
 import { RequestContextModule } from '@ledius/request-context';
 import { LoggerModule } from '@ledius/logger';
 import { routes } from '@app/routes';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import path from 'path';
 import { BridgeModule } from '@app/bridge/bridge.module';
 import { BaseExceptionFilter } from '@app/common/filters/base-exception.filter';
-import { FeatureModule } from '@ledius/feature/dist/feature.module';
 import { NetworkModule } from '@app/network/network.module';
 import { TokenModule } from '@app/token/token.module';
 import { WalletBalanceModule } from '@app/wallet-balance/wallet-balance.module';
-import { BullModule } from '@nestjs/bull';
-import { LocalEnvModule } from '@app/local-env/local-env.module';
-import { EnvProviderService } from '@ledius/env';
-import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
-import { ConverterModule } from '@app/converter/converter.module';
 
 @Module({
   imports: [
     BridgeModule,
-    ConverterModule,
     DatabaseModule,
     EncryptModule,
     LoggerModule,
@@ -33,28 +24,6 @@ import { ConverterModule } from '@app/converter/converter.module';
     TokenModule,
     WalletBalanceModule,
     WalletModule,
-    ServeStaticModule.forRoot(
-      {
-        rootPath: path.join(__dirname, '..', 'public'),
-        serveRoot: '/api/public',
-      },
-      {
-        rootPath: path.join(__dirname, '..', 'public', 'ui', 'build'),
-        serveRoot: '/',
-      },
-    ),
-    FeatureModule.forRoot(),
-    BullModule.forRootAsync({
-      imports: [LocalEnvModule],
-      useFactory: (env: EnvProviderService) => ({
-        redis: {
-          db: 1,
-          host: env.getOrFail(LocalEnvPathEnum.REDIS_HOST),
-          port: +env.getOrFail(LocalEnvPathEnum.REDIS_PORT),
-        },
-      }),
-      inject: [EnvProviderService],
-    }),
   ],
   controllers: [],
   providers: [

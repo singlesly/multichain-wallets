@@ -26,10 +26,6 @@ export class TokenService {
       dto.contractAddress,
     );
 
-    if (dto.fiatOptions) {
-      token.useFiatOptions(dto.fiatOptions);
-    }
-
     return this.repository.save(token);
   }
 

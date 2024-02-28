@@ -41,12 +41,4 @@ export class AddTokenDto {
   @IsString()
   @ApiProperty()
   public readonly contractAddress?: string;
-
-  @ApiProperty({
-    type: FiatOptionsDto,
-  })
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => FiatOptionsDto)
-  public readonly fiatOptions?: FiatOptionsDto;
 }

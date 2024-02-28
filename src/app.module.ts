@@ -8,15 +8,11 @@ import { LoggerModule } from '@ledius/logger';
 import { routes } from '@app/routes';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import path from 'path';
-import { ApplicationModule } from '@app/application/application.module';
 import { BridgeModule } from '@app/bridge/bridge.module';
 import { BaseExceptionFilter } from '@app/common/filters/base-exception.filter';
-import { AuthModule } from '@app/auth/auth.module';
-import { JwtModule } from '@app/jwt/jwt.module';
 import { FeatureModule } from '@ledius/feature/dist/feature.module';
 import { NetworkModule } from '@app/network/network.module';
 import { TokenModule } from '@app/token/token.module';
-import { PaymentModule } from '@app/payment/payment.module';
 import { WalletBalanceModule } from '@app/wallet-balance/wallet-balance.module';
 import { BullModule } from '@nestjs/bull';
 import { LocalEnvModule } from '@app/local-env/local-env.module';
@@ -26,15 +22,12 @@ import { ConverterModule } from '@app/converter/converter.module';
 
 @Module({
   imports: [
-    ApplicationModule,
-    AuthModule,
     BridgeModule,
     ConverterModule,
     DatabaseModule,
     EncryptModule,
     LoggerModule,
     NetworkModule,
-    PaymentModule,
     RequestContextModule,
     RouterModule.register(routes),
     TokenModule,
@@ -50,7 +43,6 @@ import { ConverterModule } from '@app/converter/converter.module';
         serveRoot: '/',
       },
     ),
-    JwtModule,
     FeatureModule.forRoot(),
     BullModule.forRootAsync({
       imports: [LocalEnvModule],

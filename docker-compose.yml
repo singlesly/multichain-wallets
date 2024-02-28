@@ -33,9 +33,3 @@ services:
       - POSTGRES_PASSWORD=${DB_PASS}
     networks:
       - multichain-wallets
-
-  multichain-wallets-redis:
-    image: redis:6
-    container_name: multichain-wallets-redis
-    networks:
-      - multichain-wallets

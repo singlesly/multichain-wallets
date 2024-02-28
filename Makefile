@@ -38,6 +38,9 @@ app-wait-db:
 docker-build:
 	docker-compose build
 
+migration-create:
+	docker-compose run --rm $(appContainer) npm run typeorm migration:create -- ./src/$(m)/dao/migrations/$(n) && sudo chown -R ${USER}:${USER} src/$(m)
+
 migration-gen:
 	docker-compose run --rm $(appContainer) npm run typeorm migration:generate -- ./src/$(m)/dao/migrations/$(n) -d ./src/data-source.ts && sudo chown -R ${USER}:${USER} src/$(m)
 

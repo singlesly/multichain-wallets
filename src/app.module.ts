@@ -11,6 +11,8 @@ import { BaseExceptionFilter } from '@app/common/filters/base-exception.filter';
 import { NetworkModule } from '@app/network/network.module';
 import { TokenModule } from '@app/token/token.module';
 import { WalletBalanceModule } from '@app/wallet-balance/wallet-balance.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -24,6 +26,10 @@ import { WalletBalanceModule } from '@app/wallet-balance/wallet-balance.module';
     TokenModule,
     WalletBalanceModule,
     WalletModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/api/public',
+    }),
   ],
   controllers: [],
   providers: [

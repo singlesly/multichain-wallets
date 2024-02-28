@@ -7,9 +7,7 @@ import {
 
 export async function useSwagger(app: INestApplication): Promise<void> {
   const config = new DocumentBuilder()
-    .setTitle('Crypto Bridge')
-    .addBasicAuth()
-    .addBearerAuth()
+    .setTitle('Multichain Wallets')
     .setDescription(
       'Welcome! Using endpoints below to interact with blockchains in any supported cryptocurrencies',
     )
@@ -25,7 +23,7 @@ export async function useSwagger(app: INestApplication): Promise<void> {
   const document = SwaggerModule.createDocument(app, config);
 
   SwaggerModule.setup('/api/docs', app, document, {
-    customSiteTitle: 'Crypto Bridge',
+    customSiteTitle: 'Multichain Wallets',
     customCssUrl: '/api/public/swagger/theme-feeling-blue.css',
     customJs: ['/api/public/swagger/js/web3.js'],
   } as SwaggerCustomOptions);

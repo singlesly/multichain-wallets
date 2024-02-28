@@ -3,7 +3,7 @@ check: lint test-full
 test-full: init test-unit test-e2e
 up: docker-up app-up
 
-appContainer = sipex-core
+appContainer = multichain-wallets
 
 logs:
 	docker-compose logs -f
@@ -46,13 +46,4 @@ migration-run:
 
 migration-revert:
 	docker-compose run --rm $(appContainer) npm run typeorm migration:revert -- -d ./src/data-source.ts
-
-cli:
-	docker-compose exec $(appContainer) crypto-bridge $(c)
-
-use-ui: rm-ui
-	git clone git@github.com:Eugene362624/crypto_bridge.git ./public/ui
-	cd public/ui && npm i && npm run build
-rm-ui:
-	rm -rf ./public/ui
 

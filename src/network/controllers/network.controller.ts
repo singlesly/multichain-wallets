@@ -28,7 +28,6 @@ export class NetworkController {
   }
 
   @Delete('network/:code')
-  @ApiBearerAuth()
   public async remove(@Param('code') code: string): Promise<void> {
     await this.networkService.remove(code);
   }

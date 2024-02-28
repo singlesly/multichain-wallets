@@ -22,19 +22,24 @@ import { BullModule } from '@nestjs/bull';
 import { LocalEnvModule } from '@app/local-env/local-env.module';
 import { EnvProviderService } from '@ledius/env';
 import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
+import { ConverterModule } from '@app/converter/converter.module';
 
 @Module({
   imports: [
     ApplicationModule,
     AuthModule,
     BridgeModule,
+    ConverterModule,
     DatabaseModule,
     EncryptModule,
-    WalletModule,
-    WalletBalanceModule,
-    RequestContextModule,
     LoggerModule,
+    NetworkModule,
+    PaymentModule,
+    RequestContextModule,
     RouterModule.register(routes),
+    TokenModule,
+    WalletBalanceModule,
+    WalletModule,
     ServeStaticModule.forRoot(
       {
         rootPath: path.join(__dirname, '..', 'public'),
@@ -58,9 +63,6 @@ import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
       }),
       inject: [EnvProviderService],
     }),
-    NetworkModule,
-    PaymentModule,
-    TokenModule,
   ],
   controllers: [],
   providers: [

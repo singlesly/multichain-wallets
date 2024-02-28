@@ -7,8 +7,11 @@ import {
   IsOptional,
   IsPositive,
   IsString,
+  ValidateNested,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { FiatOptionsDto } from '@app/token/dto/fiat-options.dto';
+import { Type } from 'class-transformer';
 
 export class AddTokenDto {
   @IsDefined()
@@ -20,6 +23,7 @@ export class AddTokenDto {
   @IsNumber()
   @ApiProperty()
   @IsPositive()
+  @Type(() => Number)
   public readonly decimals!: number;
 
   @IsDefined()
@@ -37,4 +41,12 @@ export class AddTokenDto {
   @IsString()
   @ApiProperty()
   public readonly contractAddress?: string;
+
+  @ApiProperty({
+    type: FiatOptionsDto,
+  })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => FiatOptionsDto)
+  public readonly fiatOptions?: FiatOptionsDto;
 }

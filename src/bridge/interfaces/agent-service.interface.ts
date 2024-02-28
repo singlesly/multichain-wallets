@@ -7,7 +7,7 @@ export interface AgentServiceInterface {
     from: string,
     to: string,
     amount: bigint,
-    options: AgentCallOptions,
+    options?: AgentCallOptions,
   ): Promise<TxID>;
   estimateFee(from: string, to: string, amount: bigint): Promise<Balance>;
   getTransaction(id: string): Promise<TransactionInfo>;

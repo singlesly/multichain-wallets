@@ -8,6 +8,8 @@ import { NativeContractService } from '@app/ethereum/services/native-contract.se
 import { Erc20Interface } from '@app/ethereum/interfaces/erc20.interface';
 import { NativeInterface } from '@app/ethereum/interfaces/native.interface';
 import { Erc20ContractService } from '@app/ethereum/services/erc20-contract.service';
+import { TokenTypeEnum } from '@app/token/enums/token-type.enum';
+import { Bep20ContractService } from '@app/ethereum/services/bep20-contract.service';
 
 @Injectable()
 export class EthereumCompatibleFactory {
@@ -27,6 +29,10 @@ export class EthereumCompatibleFactory {
       at: (token: Token) => {
         if (token.isNative()) {
           return new NativeContractService(web3, token);
+        }
+
+        if (token.type === TokenTypeEnum.BEP20) {
+          return new Bep20ContractService(web3, token);
         }
 
         return new Erc20ContractService(web3, token);

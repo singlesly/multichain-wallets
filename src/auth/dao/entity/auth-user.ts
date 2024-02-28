@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 import { v4 } from 'uuid';
+import { RoleEnum } from '@app/jwt/enums/role.enum';
 
 const TABLE_NAME = 'auth_users';
 
@@ -16,6 +17,12 @@ export class AuthUser {
   })
   public address!: string;
 
+  @Column({
+    type: 'jsonb',
+    default: '{}',
+  })
+  public roles: RoleEnum[] = [RoleEnum.USER];
+
   @CreateDateColumn()
   public readonly createdAt!: Date;
 
@@ -27,5 +34,14 @@ export class AuthUser {
     const authUser = new AuthUser();
     authUser.address = address;
     return authUser;
+  }
+
+  public getRoles(): RoleEnum[] {
+    return this.roles || [];
+  }
+
+  public addRole(role: RoleEnum): this {
+    this.roles = [...this.getRoles(), role];
+    return this;
   }
 }

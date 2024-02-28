@@ -6,9 +6,7 @@ networks:
 
 services:
   sipex-core:
-    build:
-      dockerfile: docker/app/Dockerfile
-      context: .
+    build: .
     container_name: sipex-core
     extra_hosts:
       - "host.docker.internal:host-gateway"

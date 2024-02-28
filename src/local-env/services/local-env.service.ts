@@ -16,7 +16,10 @@ export class LocalEnvService {
       return [];
     }
 
-    return admins.split(',').filter((item) => item.length > 0);
+    return admins
+      .split(',')
+      .map((str) => str.toLowerCase())
+      .filter((item) => item.length > 0);
   }
 
   public get(key: LocalEnvPathEnum): string | undefined {
@@ -36,31 +39,5 @@ export class LocalEnvService {
     return {
       secret: this.getSafety(LocalEnvPathEnum.JWT_SECRET),
     };
-  }
-
-  public getUsdtContractAddress(): string {
-    const fromEnvsAddress = this.envProviderService.get(
-      LocalEnvPathEnum.USDT_CONTRACT_ADDRESS,
-    );
-
-    if (fromEnvsAddress) {
-      return fromEnvsAddress;
-    }
-
-    const networkAddressMap = {
-      'nile.trongrid.io': 'TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj',
-    };
-
-    const tronNetworkUrl = new URL(
-      this.envProviderService.getOrFail(LocalEnvPathEnum.TRON_RPC_BASE_URL),
-    );
-    const mapAddress = networkAddressMap[tronNetworkUrl.host];
-
-    if (mapAddress) {
-      return mapAddress;
-    }
-
-    // Production tron address
-    return 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t';
   }
 }

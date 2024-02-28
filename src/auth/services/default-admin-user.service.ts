@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { AuthUserPgRepository } from '@app/auth/repositories/auth-user-pg.repository';
 import { AuthUser } from '@app/auth/dao/entity/auth-user';
 import { LocalEnvService } from '@app/local-env/services/local-env.service';
+import { RoleEnum } from '@app/jwt/enums/role.enum';
 
 @Injectable()
 export class DefaultAdminUserService implements OnModuleInit {
@@ -18,6 +19,8 @@ export class DefaultAdminUserService implements OnModuleInit {
 
       if (exists) {
         // TODO: Make admin
+        exists.addRole(RoleEnum.ADMIN);
+        await this.authUserPgRepository.save(exists);
         continue;
       }
 

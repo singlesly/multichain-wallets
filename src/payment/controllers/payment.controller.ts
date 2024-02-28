@@ -7,8 +7,6 @@ import { AppGuard } from '@app/application/guard/app.guard';
 import { GetPaymentService } from '@app/payment/services/get-payment.service';
 import { PayPaymentDto } from '@app/payment/dto/pay-payment.dto';
 import { PayPaymentService } from '@app/payment/services/pay-payment.service';
-import { HttpEpayService } from '@app/http-epay/services/http-epay.service';
-import { TinkoffService } from '@app/tinkoff/services/tinkoff.service';
 
 @Controller()
 @ApiTags('Payments')
@@ -17,7 +15,6 @@ export class PaymentController {
     private readonly createPaymentService: CreatePaymentService,
     private readonly getPaymentService: GetPaymentService,
     private readonly payPaymentService: PayPaymentService,
-    private readonly tinkoffService: TinkoffService,
   ) {}
 
   @Post('payment')
@@ -58,15 +55,5 @@ export class PaymentController {
     });
 
     return new PaymentResponse(payment);
-  }
-
-  @Get('payment/:paymentId/pay/fiat')
-  public async fiatPay(@Param('paymentId') paymentId: string) {
-    const payment = await this.getPaymentService.getPaymentById(paymentId);
-
-    return this.tinkoffService.getPaymentLink({
-      orderId: payment.orderId,
-      amount: Number(payment.getFiatAmount().amountScaled),
-    });
   }
 }

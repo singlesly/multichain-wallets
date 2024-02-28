@@ -1,3 +1,33 @@
+### Get started
+1. Create `docker-compose.yaml`  
+
+```yaml
+services:
+  multichain-wallets:
+    image: singlesly/multichains-wallets
+    environment:
+      - CIPHER_PASSWORD=1234
+      - DB_HOST=multichain-wallets-postgres
+      - DB_PORT=5432
+      - DB_NAME=multichain_wallets
+      - DB_USER=root
+      - DB_PASS=1234
+    ports:
+      - "3000:3000"
+    networks:
+      - multichain-wallets
+
+  multichain-wallets-postgres:
+    image: postgres:14
+    environment:
+      - POSTGRES_DB=multichain_wallets
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=1234
+    networks:
+      - multichain-wallets
+```
+2. Open `http://localhost:3000/api/docs` to interact with api
+
 ### Cryptocurrency bridge
 
 Provide API for working with BTC & ERC20 wallets.  
@@ -5,42 +35,15 @@ Application architecture is flexible and can be scaled for another networks.
 
 ### Supported networks and coins
 
-- [X] [Bitcoin](https://developer.bitcoin.org/index.html)
-  - [X] BTC
-    - [X] Create Wallet (means Bitcoin address in wallet)
-    - [X] Get Balance
-    - [X] Transfer
-    - [X] Estimate Fee  
-  
-
-- [X] [Ethereum](https://ethereum.org/en/)
-  - [X] ETH
-    - [X] Create Wallet (means Account)
-    - [X] Get Balance
-    - [X] Transfer
-    - [X] Estimate Fee
-  
-- [X] [Tron](https://tron.network/)
-  - [X] [TRX](https://tron.network/trx?lng=en)
-    - [X] Create Wallet (means Account)
-    - [X] Get Balance
-    - [ ] Transfer
-    - [ ] Estimate Fee
-  - [ ] [USDT](https://tron.network/usdt?lng=en)
-    - [ ] Create Wallet (means Account)
-    - [ ] Get Balance
-    - [ ] Transfer
-    - [ ] Estimate Fee
-
-- [ ] [TON - The Open Network](https://ton.org/)
-  - [ ] TON
-    - [ ] Create Wallet
-    - [ ] Get Balance
-    - [ ] Transfer
-    - [ ] Estimate Fee
-
-- [ ] [ZHCash](https://zh.cash/)
-
+| Network                                             |    Tokens     |
+|:----------------------------------------------------|:-------------:|
+| [Tron](https://tron.network/)                       | Native, TRC20 |
+| [Ethereum](https://ethereum.org/en/)                | Native, ERC20 |
+| [Bitcoin](https://developer.bitcoin.org/index.html) |    Native     |
+| [TON - The Open Network](https://ton.org/)          |    **TDB**    |
+| [ZHCash](https://zh.cash/)                          |    **TDB**    |
+| [Solana](https://solana.com/)                       |    **TDB**    |
+| [Binance Smart Chain](https://bscscan.com/)         |    **TDB**    |
 
 ### Wallet encryption
 
@@ -58,15 +61,9 @@ to encrypt without complex refactoring and migration otherwise you lost private 
 
 ### Environment variables
 
-`APP_NAME` - is just application name not used. Defined for future in MS arch.  
 `CIPHER_PASSWORD` - secret password used for encyption please read - *Wallet encryption* topic for explain details  
 `DB_HOST` - database host   
 `DB_PORT` - database port  
 `DB_USER` - db user  
 `DB_PASS` - db pass  
-`DB_NAME` - db name  
-`BTC_RPC_BASE_URL` - bitcoin daemon rpc url like http://youhost.com:8332  
-`BTC_RPC_AUTH_USERNAME` - rpc bitcoin user  
-`BTC_RPC_AUTH_PASSWORD` - rpc bitcoin password  
-`ETH_RPC_BASE_URL` - Ethereum network rpc url
-`TRON_RPC_BASE_URL` - Tron network RPC url
+`DB_NAME` - db name 

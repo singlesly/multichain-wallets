@@ -23,7 +23,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build the Docker image
-        run: docker build . --tag devsinglesly:$GITHUB_REF_NAME
+        run: docker build . --tag devsinglesly/multichain-wallets:$GITHUB_REF_NAME
 
       - name: Push in to Docker Hub
-        run: docker push devsinglesly:$GITHUB_REF_NAME
+        run: docker push devsinglesly/multichain-wallets:$GITHUB_REF_NAME

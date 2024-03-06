@@ -1,10 +1,14 @@
 ### Get started
+
+[Docker Hub](https://hub.docker.com/r/devsinglesly/multichain-wallets)
+
+
 1. Create `docker-compose.yaml`  
 
 ```yaml
 services:
   multichain-wallets:
-    image: singlesly/multichains-wallets
+    image: devsinglesly/multichains-wallets
     environment:
       - CIPHER_PASSWORD=1234
       - DB_HOST=multichain-wallets-postgres

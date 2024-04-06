@@ -2,13 +2,14 @@ FROM node:18-alpine3.14
 
 ENV MODE prod
 ENV MIGRATIONS_RUN true
+RUN npm i -g yarn
 
 # Build
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --force
+RUN yarn
 COPY . .
-RUN npm run build
+RUN yarn build
 RUN chmod a+x ./dist/cli.js && npm link
 RUN rm -rf ./src
 

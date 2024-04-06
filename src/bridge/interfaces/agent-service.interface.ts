@@ -11,6 +11,12 @@ export interface AgentServiceInterface {
   ): Promise<TxID>;
   estimateFee(from: string, to: string, amount: bigint): Promise<Balance>;
   getTransaction(id: string): Promise<TransactionInfo>;
+  request<T = void>(
+    from: string,
+    type: 'call' | 'send',
+    methodName: string,
+    ...params: string[]
+  ): Promise<T>;
 }
 
 export type TxID = string;

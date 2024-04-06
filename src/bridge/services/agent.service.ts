@@ -14,6 +14,7 @@ import { GetWalletService } from '@app/wallet/services/get-wallet.service';
 import { EncryptService } from '@app/encrypt/services/encrypt.service';
 import { Network } from '@app/network/dao/entity/network';
 import { Token } from '@app/token/dao/entity/token';
+import { ContractCallableInterface } from '@app/ethereum/interfaces/contract-callable.interface';
 
 export type SupportedContracts =
   | NativeInterface
@@ -80,6 +81,26 @@ export class AgentService implements AgentServiceInterface {
       await this.encryptService.decrypt(wallet.privateKey),
       to,
       amount,
+    );
+  }
+
+  public async request<T = void>(
+    from: string,
+    type: 'call' | 'send',
+    methodName: string,
+    ...params: string[]
+  ): Promise<T> {
+    const wallet = await this.getWalletService.getByAddress(from);
+
+    const method = (this.contract as unknown as ContractCallableInterface)[
+      type
+    ];
+
+    return method.call(
+      this.contract,
+      await this.encryptService.decrypt(wallet.privateKey),
+      methodName,
+      ...params,
     );
   }
 }

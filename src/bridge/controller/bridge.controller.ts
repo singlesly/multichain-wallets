@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AgentServiceFactory } from '../factories/agent-service.factory';
-import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import {
   Balance,
   TransactionInfo,
@@ -11,6 +11,7 @@ import { TransferWalletDto } from '@app/wallet/dto/transfer-wallet.dto';
 import { WalletResponse } from '@app/wallet/controller/wallet.response';
 import { TransactionResponse } from '@app/bridge/controller/transaction.response';
 import { BalanceResponse } from '@app/bridge/controller/balance.response';
+import { ContractCallDto } from '@app/bridge/dto/contract-call.dto';
 
 @Controller('bridge')
 @ApiTags('Bridge')
@@ -119,5 +120,57 @@ export class BridgeController {
     return this.agentServiceFactory
       .for(network.toLowerCase(), symbol.toLowerCase())
       .then((agent) => agent.getTransaction(transactionId));
+  }
+
+  @Post(':network/:symbol/contract/:method/call')
+  @ApiParam({
+    name: 'network',
+    example: 'shar',
+  })
+  @ApiParam({
+    name: 'symbol',
+    example: 'rub',
+  })
+  @ApiParam({
+    name: 'method',
+    example: 'balanceOf',
+  })
+  public async contractCall(
+    @Param('network') network: NetworkEnum,
+    @Param('symbol') symbol: CoinEnum,
+    @Param('method') method: string,
+    @Body() dto: ContractCallDto,
+  ) {
+    const result = await this.agentServiceFactory
+      .for(network.toLowerCase(), symbol.toLowerCase())
+      .then((agent) => agent.request(dto.from, 'call', method, ...dto.params));
+
+    return { result };
+  }
+
+  @Post(':network/:symbol/contract/:method/send')
+  @ApiParam({
+    name: 'network',
+    example: 'shar',
+  })
+  @ApiParam({
+    name: 'symbol',
+    example: 'rub',
+  })
+  @ApiParam({
+    name: 'method',
+    example: 'transfer',
+  })
+  public async contractSend(
+    @Param('network') network: NetworkEnum,
+    @Param('symbol') symbol: CoinEnum,
+    @Param('method') method: string,
+    @Body() dto: ContractCallDto,
+  ) {
+    const result = await this.agentServiceFactory
+      .for(network.toLowerCase(), symbol.toLowerCase())
+      .then((agent) => agent.request(dto.from, 'send', method, ...dto.params));
+
+    return { result };
   }
 }

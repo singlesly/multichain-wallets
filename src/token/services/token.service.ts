@@ -19,7 +19,7 @@ export class TokenService {
   public async add(dto: AddTokenDto): Promise<Token> {
     const network = await this.networkService.getByCode(dto.networkCode);
     const token = new Token(
-      dto.symbol,
+      dto.symbol.toLowerCase(),
       dto.decimals,
       network,
       dto.type,

@@ -9,8 +9,12 @@ import {
   TxID,
 } from '@app/bridge/interfaces/agent-service.interface';
 import { ForbiddenException } from '@nestjs/common';
+import { ContractCallableInterface } from '@app/ethereum/interfaces/contract-callable.interface';
+import { String } from 'bitcoinjs-lib/src/types';
 
-export class Erc20ContractService implements Erc20Interface {
+export class Erc20ContractService
+  implements Erc20Interface, ContractCallableInterface
+{
   private readonly contract: Contract;
   constructor(
     private readonly web3: EthereumWeb3Service,
@@ -84,5 +88,69 @@ export class Erc20ContractService implements Erc20Interface {
     });
 
     return receipt.transactionhash;
+  }
+
+  async burn(amount: bigint, fromPrivateKey: string): Promise<void> {
+    const account = this.web3.eth.accounts.privateKeyToAccount(fromPrivateKey);
+    this.web3.eth.accounts.wallet.add(account);
+    await this.contract.methods.burn(amount).send({
+      from: account.address,
+      gasPrice: await this.web3.eth.getGasPrice(),
+      gas: await this.web3.eth.estimateGas({ from: account.address }),
+    });
+  }
+
+  async mint(
+    to: string,
+    amount: bigint,
+    fromPrivateKey: string,
+  ): Promise<void> {
+    const account = this.web3.eth.accounts.privateKeyToAccount(fromPrivateKey);
+    this.web3.eth.accounts.wallet.add(account);
+    await this.contract.methods.mint(to, amount).send({
+      from: account.address,
+      gasPrice: await this.web3.eth.getGasPrice(),
+      gas: await this.web3.eth.estimateGas({ from: account.address }),
+    });
+  }
+
+  public async send<T>(
+    fromPrivateKey: string,
+    methodName: string,
+    ...params: string[]
+  ): Promise<T> {
+    const account = this.web3.eth.accounts.privateKeyToAccount(fromPrivateKey);
+    this.web3.eth.accounts.wallet.add(account);
+
+    const method = await this.contract.methods[methodName];
+    if (!method) {
+      throw new ForbiddenException(
+        `Method ${methodName} not exists on contract`,
+      );
+    }
+
+    return await method(...params).send({
+      from: account.address,
+      gasPrice: await this.web3.eth.getGasPrice(),
+      gas: await this.web3.eth.estimateGas({ from: account.address }),
+    });
+  }
+
+  async call<T>(
+    fromPrivateKey: string,
+    methodName: string,
+    ...params: string[]
+  ): Promise<T> {
+    const account = this.web3.eth.accounts.privateKeyToAccount(fromPrivateKey);
+    this.web3.eth.accounts.wallet.add(account);
+
+    const method = await this.contract.methods[methodName];
+    if (!method) {
+      throw new ForbiddenException(
+        `Method ${methodName} not exists on contract`,
+      );
+    }
+
+    return await method(...params).call();
   }
 }

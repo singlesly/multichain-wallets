@@ -1,6 +1,5 @@
 import { ConsoleLogger, Injectable } from '@nestjs/common';
 import { NativeInterface } from '@app/ethereum/interfaces/native.interface';
-import { Account, TransactionConfig } from 'web3-core';
 import {
   Balance,
   TransactionInfo,
@@ -11,6 +10,8 @@ import { Token } from '@app/token/dao/entity/token';
 import { BaseException } from '@app/common/base-exception';
 import { WebErrorsEnum } from '@app/common/web-errors.enum';
 import utils from 'web3-utils';
+import { Web3Account } from 'web3-eth-accounts';
+import { Transaction } from 'web3-types';
 
 @Injectable()
 export class NativeContractService implements NativeInterface {
@@ -21,7 +22,7 @@ export class NativeContractService implements NativeInterface {
     private readonly token: Token,
   ) {}
 
-  public async createWallet(): Promise<Account> {
+  public async createWallet(): Promise<Web3Account> {
     return this.web3.eth.accounts.create();
   }
 
@@ -32,7 +33,7 @@ export class NativeContractService implements NativeInterface {
   ): Promise<Balance> {
     const gasPrice = await this.web3.eth.getGasPrice();
 
-    const transactionConfig: TransactionConfig = {
+    const transactionConfig: Transaction = {
       value: String(amount),
       to,
       from,
@@ -51,12 +52,10 @@ export class NativeContractService implements NativeInterface {
           ),
         );
 
-        return utils.toWei(utils.toBN(5), 'gwei').toString();
+        return utils.toWei(utils.toBigInt(5), 'gwei').toString();
       });
 
-    const feeAmount = BigInt(
-      utils.toBN(gas).mul(utils.toBN(gasPrice)).toString(),
-    );
+    const feeAmount = BigInt(utils.toBigInt(gas) * utils.toBigInt(gasPrice));
 
     return {
       amount: feeAmount,
@@ -77,17 +76,16 @@ export class NativeContractService implements NativeInterface {
     const transaction = await this.web3.eth.getTransaction(id);
     const currentBlock = await this.web3.eth.getBlockNumber();
 
-    const confirmations =
-      transaction.blockNumber === null
-        ? 0
-        : currentBlock - transaction.blockNumber;
+    const confirmations = !transaction.blockNumber
+      ? 0
+      : currentBlock - BigInt(transaction.blockNumber);
 
     return {
       amount: BigInt(transaction.value),
       to: transaction.to as string,
       transactionId: transaction.hash,
       from: transaction.from,
-      confirmations: confirmations,
+      confirmations: Number(confirmations),
       isConfirmed: confirmations >= 20,
     };
   }
@@ -97,15 +95,12 @@ export class NativeContractService implements NativeInterface {
     to: string,
     amount: bigint,
   ): Promise<TxID> {
-    const account = await this.web3.eth.accounts.privateKeyToAccount(
-      fromPrivateKey,
-    );
-    await this.web3.eth.accounts.wallet.add({
-      address: account.address,
-      privateKey: account.privateKey,
-    });
+    const account =
+      await this.web3.eth.accounts.privateKeyToAccount(fromPrivateKey);
 
-    const transactionConfig: TransactionConfig = {
+    this.web3.eth.accounts.wallet.add(account.privateKey);
+
+    const transactionConfig: Transaction = {
       value: String(amount),
       to,
       from: account.address,
@@ -117,6 +112,6 @@ export class NativeContractService implements NativeInterface {
       gas: await this.web3.eth.estimateGas(transactionConfig),
     });
 
-    return receipt.transactionHash;
+    return receipt.transactionHash.toString();
   }
 }

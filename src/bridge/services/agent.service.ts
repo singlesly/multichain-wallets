@@ -1,5 +1,3 @@
-import { NativeInterface } from '@app/tron/interfaces/native.interface';
-import { TRC20Interface } from '@app/tron/interfaces/trc20.interface';
 import { NativeInterface as EthNativeInterface } from '@app/ethereum/interfaces/native.interface';
 import { Erc20Interface as EthErc20Interface } from '@app/ethereum/interfaces/erc20.interface';
 import {
@@ -16,11 +14,7 @@ import { Network } from '@app/network/dao/entity/network';
 import { Token } from '@app/token/dao/entity/token';
 import { ContractCallableInterface } from '@app/ethereum/interfaces/contract-callable.interface';
 
-export type SupportedContracts =
-  | NativeInterface
-  | TRC20Interface
-  | EthNativeInterface
-  | EthErc20Interface;
+export type SupportedContracts = EthNativeInterface | EthErc20Interface;
 
 export class AgentService implements AgentServiceInterface {
   constructor(
@@ -34,10 +28,7 @@ export class AgentService implements AgentServiceInterface {
 
   public async createWallet(owners: string[] = []): Promise<Wallet> {
     const account = await this.contract.createWallet();
-    const address =
-      typeof account.address === 'string'
-        ? account.address
-        : account.address.base58;
+    const address = account.address;
 
     return this.createWalletService.create({
       privateKey: account.privateKey,

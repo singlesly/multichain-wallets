@@ -1,13 +1,13 @@
 import Web3 from 'web3';
-import { Eth } from 'web3-eth';
-import { Utils } from 'web3-utils';
+import * as utils from 'web3-utils';
 import { Injectable } from '@nestjs/common';
+import { Web3EthInterface } from 'web3/src/types';
 
 @Injectable()
 export class EthereumWeb3Service {
   private readonly web3: Web3;
-  public readonly eth: Eth;
-  public readonly utils: Utils;
+  public readonly eth: Web3EthInterface;
+  public readonly utils: typeof utils;
 
   constructor(private readonly host: string) {
     this.web3 = new Web3(new Web3.providers.HttpProvider(host));

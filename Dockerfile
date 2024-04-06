@@ -1,4 +1,4 @@
-FROM node:18-alpine3.14
+FROM node:20-alpine3.19
 
 ENV MODE prod
 ENV MIGRATIONS_RUN true
@@ -6,9 +6,10 @@ ENV MIGRATIONS_RUN true
 # Build
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --force
+COPY yarn* ./
+RUN yarn
 COPY . .
-RUN npm run build
+RUN yarn build
 RUN chmod a+x ./dist/cli.js && npm link
 RUN rm -rf ./src
 

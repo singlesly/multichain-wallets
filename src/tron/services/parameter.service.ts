@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { toHex } from '@app/utils';
 import { FunctionArgumentTypes } from 'tronweb';
 
-const AbiCoder = ethers.utils.AbiCoder;
+const AbiCoder = ethers.AbiCoder;
 const ADDRESS_PREFIX_REGEX = /^(41)/;
 const ADDRESS_PREFIX = '41';
 

@@ -6,7 +6,7 @@ export function hexToBase58Check(hex: string): string {
 }
 
 export function base58CheckToHex(base58check: string): string {
-  return bs58check.decode(base58check).toString('hex').toUpperCase();
+  return bs58check.decode(base58check).toString().toUpperCase();
 }
 
 export function hexAddress(base58check: string): string {

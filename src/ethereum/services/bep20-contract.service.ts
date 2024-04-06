@@ -1,18 +1,17 @@
 import { EthereumWeb3Service } from '@app/ethereum/services/ethereum-web3.service';
 import { Token } from '@app/token/dao/entity/token';
-import { Account } from 'web3-core';
-import { Contract } from 'web3-eth-contract';
+
 import {
   Balance,
   TransactionInfo,
   TxID,
 } from '@app/bridge/interfaces/agent-service.interface';
 import { ForbiddenException } from '@nestjs/common';
-import { DEFAULT_ABI } from '@app/ethereum/abi/default.abi';
 import { Bep20Interface } from '@app/ethereum/interfaces/bep20.interface';
+import { Web3Account } from 'web3-eth-accounts';
 
 export class Bep20ContractService implements Bep20Interface {
-  private readonly contract: Contract;
+  private readonly contract: any;
   constructor(
     private readonly web3: EthereumWeb3Service,
     private readonly token: Token,
@@ -21,12 +20,12 @@ export class Bep20ContractService implements Bep20Interface {
       throw new ForbiddenException('Contract address not found');
     }
     this.contract = new this.web3.eth.Contract(
-      DEFAULT_ABI,
+      token.getAbi(),
       this.token.contractAddress,
     );
   }
 
-  public async createWallet(): Promise<Account> {
+  public async createWallet(): Promise<Web3Account> {
     return this.web3.eth.accounts.create();
   }
 
@@ -64,8 +63,12 @@ export class Bep20ContractService implements Bep20Interface {
     return {
       amount: BigInt(tx.value.toString()),
       from: tx.from,
-      confirmations: tx.blockNumber ? currentBlock - tx.blockNumber : 0,
-      isConfirmed: tx.blockNumber ? currentBlock - tx.blockNumber >= 20 : false,
+      confirmations: Number(
+        tx.blockNumber ? currentBlock - BigInt(tx.blockNumber) : 0,
+      ),
+      isConfirmed: tx.blockNumber
+        ? currentBlock - BigInt(tx.blockNumber) >= 20
+        : false,
       transactionId: id,
       to: String(tx.to),
     };

@@ -1,8 +1,6 @@
 import { Erc20Interface } from '@app/ethereum/interfaces/erc20.interface';
 import { EthereumWeb3Service } from '@app/ethereum/services/ethereum-web3.service';
 import { Token } from '@app/token/dao/entity/token';
-import { Account } from 'web3-core';
-import { Contract } from 'web3-eth-contract';
 import {
   Balance,
   TransactionInfo,
@@ -11,11 +9,12 @@ import {
 import { ForbiddenException } from '@nestjs/common';
 import { ContractCallableInterface } from '@app/ethereum/interfaces/contract-callable.interface';
 import { String } from 'bitcoinjs-lib/src/types';
+import { Web3Account } from 'web3-eth-accounts';
 
 export class Erc20ContractService
   implements Erc20Interface, ContractCallableInterface
 {
-  private readonly contract: Contract;
+  private readonly contract: any;
   constructor(
     private readonly web3: EthereumWeb3Service,
     private readonly token: Token,
@@ -29,7 +28,7 @@ export class Erc20ContractService
     );
   }
 
-  public async createWallet(): Promise<Account> {
+  public async createWallet(): Promise<Web3Account> {
     return this.web3.eth.accounts.create();
   }
 
@@ -67,8 +66,12 @@ export class Erc20ContractService
     return {
       amount: BigInt(tx.value.toString()),
       from: tx.from,
-      confirmations: tx.blockNumber ? currentBlock - tx.blockNumber : 0,
-      isConfirmed: tx.blockNumber ? currentBlock - tx.blockNumber >= 20 : false,
+      confirmations: Number(
+        tx.blockNumber ? currentBlock - BigInt(tx.blockNumber) : 0,
+      ),
+      isConfirmed: tx.blockNumber
+        ? currentBlock - BigInt(tx.blockNumber) >= 20
+        : false,
       transactionId: id,
       to: String(tx.to),
     };
@@ -88,30 +91,6 @@ export class Erc20ContractService
     });
 
     return receipt.transactionhash;
-  }
-
-  async burn(amount: bigint, fromPrivateKey: string): Promise<void> {
-    const account = this.web3.eth.accounts.privateKeyToAccount(fromPrivateKey);
-    this.web3.eth.accounts.wallet.add(account);
-    await this.contract.methods.burn(amount).send({
-      from: account.address,
-      gasPrice: await this.web3.eth.getGasPrice(),
-      gas: await this.web3.eth.estimateGas({ from: account.address }),
-    });
-  }
-
-  async mint(
-    to: string,
-    amount: bigint,
-    fromPrivateKey: string,
-  ): Promise<void> {
-    const account = this.web3.eth.accounts.privateKeyToAccount(fromPrivateKey);
-    this.web3.eth.accounts.wallet.add(account);
-    await this.contract.methods.mint(to, amount).send({
-      from: account.address,
-      gasPrice: await this.web3.eth.getGasPrice(),
-      gas: await this.web3.eth.estimateGas({ from: account.address }),
-    });
   }
 
   public async send<T>(

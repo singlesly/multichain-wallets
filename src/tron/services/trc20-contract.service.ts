@@ -12,7 +12,7 @@ import {
   TransactionInfo,
   TxID,
 } from '@app/bridge/interfaces/agent-service.interface';
-import { BigNumber } from 'ethers';
+import { BigNumberish } from 'ethers';
 import { base58Address } from '@app/utils';
 import { ParameterService } from '@app/tron/services/parameter.service';
 import { ForbiddenException } from '@nestjs/common';
@@ -109,7 +109,7 @@ export class Trc20ContractService implements TRC20Interface {
     const [{ parameter }] = transaction.raw_data.contract;
 
     const [hexRecipient, amountBn] = await this.parameterService.decode<
-      [string, BigNumber]
+      [string, BigNumberish]
     >(['address', 'uint256'], parameter.value.data);
 
     return {

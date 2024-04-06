@@ -3,11 +3,11 @@ import {
   TransactionInfo,
   TxID,
 } from '@app/bridge/interfaces/agent-service.interface';
-import { Account } from 'web3-core';
+import { Web3Account } from 'web3-eth-accounts';
 
 export interface NativeInterface {
   getTransaction(id: string): Promise<TransactionInfo>;
-  createWallet(): Promise<Account>;
+  createWallet(): Promise<Web3Account>;
   estimateFee(
     from: string,
     to: string,

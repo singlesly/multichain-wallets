@@ -1,5 +1,6 @@
 import { TokenTypeEnum } from '@app/token/enums/token-type.enum';
 import {
+  IsArray,
   IsDefined,
   IsEnum,
   IsLowercase,
@@ -7,11 +8,10 @@ import {
   IsOptional,
   IsPositive,
   IsString,
-  ValidateNested,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { FiatOptionsDto } from '@app/token/dto/fiat-options.dto';
 import { Type } from 'class-transformer';
+import { AbiItem } from 'web3-utils';
 
 export class AddTokenDto {
   @IsDefined()
@@ -41,4 +41,11 @@ export class AddTokenDto {
   @IsString()
   @ApiProperty()
   public readonly contractAddress?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ApiProperty({
+    default: [],
+  })
+  public readonly abi?: AbiItem[] = [];
 }

@@ -24,6 +24,7 @@ export class TokenService {
       network,
       dto.type,
       dto.contractAddress,
+      dto.abi,
     );
 
     return this.repository.save(token);

@@ -8,8 +8,7 @@ import {
   TransactionInfo,
   TxID,
 } from '@app/bridge/interfaces/agent-service.interface';
-import { ForbiddenException, NotImplementedException } from '@nestjs/common';
-import { DEFAULT_ABI } from '@app/ethereum/abi/default.abi';
+import { ForbiddenException } from '@nestjs/common';
 
 export class Erc20ContractService implements Erc20Interface {
   private readonly contract: Contract;
@@ -21,7 +20,7 @@ export class Erc20ContractService implements Erc20Interface {
       throw new ForbiddenException('Contract address not found');
     }
     this.contract = new this.web3.eth.Contract(
-      DEFAULT_ABI,
+      token.getAbi(),
       this.token.contractAddress,
     );
   }

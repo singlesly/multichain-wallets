@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { WalletModule } from '@app/wallet/wallet.module';
-import { TronModule } from '@app/tron/tron.module';
 import { EthereumModule } from '@app/ethereum/ethereum.module';
 import { BridgeController } from '@app/bridge/controller/bridge.controller';
 import { AgentServiceFactory } from '@app/bridge/factories/agent-service.factory';
@@ -13,7 +12,6 @@ import { TokenModule } from '@app/token/token.module';
 @Module({
   imports: [
     WalletModule,
-    TronModule,
     EthereumModule,
     EncryptModule,
     LoggerModule,

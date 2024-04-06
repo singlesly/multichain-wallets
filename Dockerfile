@@ -1,12 +1,12 @@
-FROM node:18-alpine3.14
+FROM node:20-alpine3.19
 
 ENV MODE prod
 ENV MIGRATIONS_RUN true
-RUN npm i -g yarn
 
 # Build
 WORKDIR /app
 COPY package*.json ./
+COPY yarn* ./
 RUN yarn
 COPY . .
 RUN yarn build

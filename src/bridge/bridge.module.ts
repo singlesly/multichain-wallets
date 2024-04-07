@@ -8,6 +8,7 @@ import { LocalEnvModule } from '@app/local-env/local-env.module';
 import { LoggerModule } from '@ledius/logger';
 import { NetworkModule } from '@app/network/network.module';
 import { TokenModule } from '@app/token/token.module';
+import { ContractDeployController } from '@app/bridge/controller/contract-deploy.controller';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { TokenModule } from '@app/token/token.module';
     NetworkModule,
     TokenModule,
   ],
-  controllers: [BridgeController],
+  controllers: [BridgeController, ContractDeployController],
   providers: [AgentServiceFactory],
   exports: [AgentServiceFactory],
 })

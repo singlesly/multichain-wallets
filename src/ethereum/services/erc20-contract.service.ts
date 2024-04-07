@@ -111,7 +111,7 @@ export class Erc20ContractService
     return await method(...params).send({
       from: account.address,
       gasPrice: await this.web3.eth.getGasPrice(),
-      gas: await this.web3.eth.estimateGas({ from: account.address }),
+      gas: await method(...params).estimateGas({ from: account.address }),
     });
   }
 

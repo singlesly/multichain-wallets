@@ -38,11 +38,11 @@ contract RUB {
     uint8 private _decimals;
     address private _owner;
 
-    constructor(string memory name, string memory symbol, uint8 decimals) {
+    constructor(string memory tokenName, string memory tokenSymbol, uint8 tokenDecimals) {
         _owner = msg.sender;
-        _name = name;
-        _symbol = symbol;
-        _decimals = decimals;
+        _name = tokenName;
+        _symbol = tokenSymbol;
+        _decimals = tokenDecimals;
     }
 
     /**
@@ -130,16 +130,16 @@ contract RUB {
      * - the caller must have a balance of at least `value`.
      */
     function transfer(address to, uint256 value) public virtual returns (bool) {
-        address owner = msg.sender;
-        _transfer(owner, to, value);
+        address ownerAddr = msg.sender;
+        _transfer(ownerAddr, to, value);
         return true;
     }
 
     /**
      * @dev See {IERC20-allowance}.
      */
-    function allowance(address owner, address spender) public view virtual returns (uint256) {
-        return _allowances[owner][spender];
+    function allowance(address ownerAddr, address spender) public view virtual returns (uint256) {
+        return _allowances[ownerAddr][spender];
     }
 
     /**
@@ -153,8 +153,8 @@ contract RUB {
      * - `spender` cannot be the zero address.
      */
     function approve(address spender, uint256 value) public virtual returns (bool) {
-        address owner = msg.sender;
-        _approve(owner, spender, value);
+        address ownerAddr = msg.sender;
+        _approve(ownerAddr, spender, value);
         return true;
     }
 
@@ -283,8 +283,8 @@ contract RUB {
      *
      * Overrides to this logic should be done to the variant with an additional `bool emitEvent` argument.
      */
-    function _approve(address owner, address spender, uint256 value) internal {
-        _approve(owner, spender, value, true);
+    function _approve(address ownerAddr, address spender, uint256 value) internal {
+        _approve(ownerAddr, spender, value, true);
     }
 
     /**
@@ -304,16 +304,16 @@ contract RUB {
      *
      * Requirements are the same as {_approve}.
      */
-    function _approve(address owner, address spender, uint256 value, bool emitEvent) internal virtual {
-        if (owner == address(0)) {
+    function _approve(address ownerAddr, address spender, uint256 value, bool emitEvent) internal virtual {
+        if (ownerAddr == address(0)) {
             revert("Invalid Approver 0");
         }
         if (spender == address(0)) {
             revert("Invalid Spender 0");
         }
-        _allowances[owner][spender] = value;
+        _allowances[ownerAddr][spender] = value;
         if (emitEvent) {
-            emit Approval(owner, spender, value);
+            emit Approval(ownerAddr, spender, value);
         }
     }
 
@@ -325,14 +325,14 @@ contract RUB {
      *
      * Does not emit an {Approval} event.
      */
-    function _spendAllowance(address owner, address spender, uint256 value) internal virtual {
-        uint256 currentAllowance = allowance(owner, spender);
+    function _spendAllowance(address ownerAddr, address spender, uint256 value) internal virtual {
+        uint256 currentAllowance = allowance(ownerAddr, spender);
         if (currentAllowance != type(uint256).max) {
             if (currentAllowance < value) {
                 revert("Invalid Allowance");
             }
             unchecked {
-                _approve(owner, spender, currentAllowance - value, false);
+                _approve(ownerAddr, spender, currentAllowance - value, false);
             }
         }
     }

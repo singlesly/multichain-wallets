@@ -26,6 +26,8 @@ services:
     image: postgres:14
     hostname: multichain-wallets-postgres
     container_name: multichain-wallets-postgres
+    volumes:
+      - ./data:/var/lib/postgresql/data
     env_file:
       - .env
     environment:

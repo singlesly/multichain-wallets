@@ -25,7 +25,7 @@ export default defineConfig({
         text: 'API',
         collapsed: true,
         items: [
-          {text: 'API', link: '/api/api'}
+          { text: 'API', link: '/api/api' }
         ]
       },
       {

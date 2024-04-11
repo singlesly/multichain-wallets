@@ -1,36 +1,6 @@
 ### Get started
 
-[Docker Hub](https://hub.docker.com/r/devsinglesly/multichain-wallets)
-
-
-1. Create `docker-compose.yaml`  
-
-```yaml
-services:
-  multichain-wallets:
-    image: devsinglesly/multichains-wallets
-    environment:
-      - CIPHER_PASSWORD=1234
-      - DB_HOST=multichain-wallets-postgres
-      - DB_PORT=5432
-      - DB_NAME=multichain_wallets
-      - DB_USER=root
-      - DB_PASS=1234
-    ports:
-      - "3000:3000"
-    networks:
-      - multichain-wallets
-
-  multichain-wallets-postgres:
-    image: postgres:14
-    environment:
-      - POSTGRES_DB=multichain_wallets
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=1234
-    networks:
-      - multichain-wallets
-```
-2. Open `http://localhost:3000/api/docs` to interact with api
+[Documentation](https://docs.chain-control.ru)
 
 ### Cryptocurrency bridge
 
@@ -50,7 +20,6 @@ Application architecture is flexible and can be scaled for another networks.
 | [Binance Smart Chain](https://bscscan.com/)         |    **TDB**    |
 
 ### Wallet encryption
-
 
 When wallet has been created successfully. Application got key pair *public key* & *private key*.  
 Public key send via rest api and used for interact with bridge. 

@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { EncryptService } from './encrypt.service';
-import { LocalEnvService } from '../../local-env/services/local-env.service';
+import { LocalEnvService } from '@app/local-env/services/local-env.service';
 
 describe('encrypt service', () => {
   let encryptService: EncryptService;
@@ -36,7 +36,7 @@ describe('encrypt service', () => {
       const encryptedText = await encryptService.encrypt(subject);
       const decryptedText = await encryptService.decrypt(encryptedText);
 
-      expect(encryptedText).not.toEqual(subject);
+      expect(encryptedText.text).not.toEqual(subject);
       expect(decryptedText).toEqual('text-to-encrypt');
     });
   });
@@ -53,6 +53,22 @@ describe('encrypt service', () => {
 
       expect(encryptedText).not.toEqual(subject);
       expect(decryptedText).not.toEqual('text-to-encrypt');
+    });
+  });
+
+  describe('encrypt & decrypt with change algo', () => {
+    it('must be successfully decrypt', async () => {
+      const subject = 'text-to-encrypt';
+
+      jest.spyOn(localEnvServiceMock, 'getSafety').mockReturnValue('pass');
+      const encryptedText = await encryptService.encrypt(subject);
+
+      Reflect.set(EncryptService, 'CipherAlgorithm', 'aes-192-gcm');
+
+      const decryptedText = await encryptService.decrypt(encryptedText);
+
+      expect(encryptedText.text).not.toEqual(subject);
+      expect(decryptedText).toEqual('text-to-encrypt');
     });
   });
 });

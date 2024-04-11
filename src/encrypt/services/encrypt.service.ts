@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { LocalEnvService } from '@app/local-env/services/local-env.service';
 import {
-  Cipher,
+  CipherGCM,
+  DecipherGCM,
   CipherGCMTypes,
   createCipheriv,
   createDecipheriv,
   scryptSync,
 } from 'crypto';
 import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
+import { randomBytes } from 'node:crypto';
 
 /**
  * !!! IMPORTANT
@@ -28,42 +30,48 @@ import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
  *         Или свяжитесь с автором кода devsinglesly@gmail.com
  */
 
+export interface EncryptedData {
+  algorithm: CipherGCMTypes;
+  text: string;
+  iv: string;
+}
+
+export interface EncryptOptions {
+  algorithm?: CipherGCMTypes;
+}
+
 @Injectable()
 export class EncryptService {
-  private static readonly CipherAlgorithm: CipherGCMTypes = 'aes-256-gcm';
-  private static readonly Iv: Buffer = Buffer.from('encrypt-service', 'utf8');
-
   constructor(private readonly localEnvService: LocalEnvService) {}
 
-  public async encrypt(data: string): Promise<string> {
-    return this.cipher.update(data, 'utf8', 'hex');
+  public async encrypt(
+    data: string,
+    options: EncryptOptions = {},
+  ): Promise<EncryptedData> {
+    const { algorithm = 'aes-256-gcm' } = options;
+    const iv = randomBytes(32).toString('hex');
+
+    const text = this.getCipher(algorithm, iv).update(data, 'utf8', 'hex');
+
+    return { algorithm, iv, text };
   }
 
-  public async decrypt(data: string): Promise<string> {
-    return this.decipher.update(data, 'hex', 'utf8');
+  public async decrypt(data: EncryptedData): Promise<string> {
+    const { iv, algorithm, text } = data;
+
+    return this.getDecipher(algorithm, iv).update(text, 'hex', 'utf8');
   }
 
-  private get cipher(): Cipher {
-    return createCipheriv(
-      EncryptService.CipherAlgorithm,
-      this.cipherKey,
-      EncryptService.Iv,
-    );
+  private getCipher(algorithm: CipherGCMTypes, iv: string): CipherGCM {
+    return createCipheriv(algorithm, this.cipherKey, iv);
   }
 
-  private get decipher(): Cipher {
-    return createDecipheriv(
-      EncryptService.CipherAlgorithm,
-      this.cipherKey,
-      EncryptService.Iv,
-    );
+  private getDecipher(algorithm: CipherGCMTypes, iv: string): DecipherGCM {
+    return createDecipheriv(algorithm, this.cipherKey, iv);
   }
 
-  private get cipherPassword(): Buffer {
-    return Buffer.from(
-      this.localEnvService.getSafety(LocalEnvPathEnum.CIPHER_PASSWORD),
-      'utf8',
-    );
+  private get cipherPassword(): string {
+    return this.localEnvService.getSafety(LocalEnvPathEnum.CIPHER_PASSWORD);
   }
 
   private get cipherKey(): Buffer {

@@ -5,7 +5,7 @@ networks:
 
 services:
   multichain-wallets:
-    image: devsinglesly/multichains-wallets
+    image: devsinglesly/multichain-wallets
     hostname: multichain-wallets
     container_name: multichain-wallets
     env_file:

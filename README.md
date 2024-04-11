@@ -63,11 +63,4 @@ When bridge need sign transaction in blockchain then application decrypt private
 to encrypt without complex refactoring and migration otherwise you lost private keys forever**
 
 
-### Environment variables
 
-`CIPHER_PASSWORD` - secret password used for encyption please read - *Wallet encryption* topic for explain details  
-`DB_HOST` - database host   
-`DB_PORT` - database port  
-`DB_USER` - db user  
-`DB_PASS` - db pass  
-`DB_NAME` - db name 

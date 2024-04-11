@@ -1,28 +1,17 @@
-1. Create `docker-compose.yaml`
+### Requirements
+* Docker
 
-```yaml
-services:
-  multichain-wallets:
-    image: devsinglesly/multichains-wallets
-    environment:
-      - CIPHER_PASSWORD=1234
-      - DB_HOST=multichain-wallets-postgres
-      - DB_PORT=5432
-      - DB_NAME=multichain_wallets
-      - DB_USER=root
-      - DB_PASS=1234
-    ports:
-      - "3000:3000"
-    networks:
-      - multichain-wallets
+Execute bash command
+```bash
+wget -qO- https://raw.githubusercontent.com/singlesly/multichain-wallets/main/production/docker/install.sh | bash
+```  
 
-  multichain-wallets-postgres:
-    image: postgres:14
-    environment:
-      - POSTGRES_DB=multichain_wallets
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=1234
-    networks:
-      - multichain-wallets
+Check running open - `http://<your-ip>:3000/api/docs`
+
+Project root is `${HOME}/.chain-control`
+
+Check database password and cipher password
+
 ```
-2. Open `http://localhost:3000/api/docs` to interact with api
+cat ${HOME}/.chain-control/.env
+```

@@ -8,18 +8,18 @@ hero:
   tagline: My great project tagline
   actions:
     - theme: brand
-      text: Markdown Examples
+      text: Quick Start
       link: /markdown-examples
     - theme: alt
-      text: API Examples
+      text: Examples
       link: /api-examples
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Wallet Management
+    details: Create, Export, Imports, Interact with wallets
+  - title: Networks
+    details: Work with any networks like Ethereum, Tron, Bitcoin
+  - title: Integration Power
+    details: Easily integrate web3 features in your projects
 ---
 

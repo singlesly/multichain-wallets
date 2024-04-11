@@ -16,8 +16,24 @@ export default defineConfig({
         text: 'Getting Started',
         collapsed: true,
         items: [
-          { text: 'docker compose', link: '/get-started/docker-compose' },
+          { text: 'Introduction', link: 'get-started/introduction' },
+          { text: 'Install', link: '/get-started/docker-compose' },
+          { text: 'Wallet encryption', link: 'get-started/wallet-encryption' }
         ],
+      },
+      {
+        text: 'API',
+        collapsed: true,
+        items: [
+          {text: 'API', link: '/api/api'}
+        ]
+      },
+      {
+        text: 'Configuration',
+        collapsed: true,
+        items: [
+          { text: 'Environment Variables', link: '/configuration/environment' }
+        ]
       }
     ],
 

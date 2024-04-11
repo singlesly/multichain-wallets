@@ -25,5 +25,7 @@ jobs:
       - name: Build the Docker image
         run: docker build . --tag devsinglesly/multichain-wallets:$GITHUB_REF_NAME
 
+      - run: docker build . --tag devsinglesly/multichain-wallets:latest
+
       - name: Push in to Docker Hub
         run: docker push devsinglesly/multichain-wallets:$GITHUB_REF_NAME

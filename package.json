@@ -1,6 +1,6 @@
 {
   "name": "multichain-wallets",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "API For interact with multiple networks",
   "author": "Artem Ilinykh <devsinglesly@gmail.com>",
   "private": false,

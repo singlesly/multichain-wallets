@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "Multichain"
   text: "Interact with Web3 blockchain networks easily"
-  tagline: My great project tagline
+  tagline: Web3 in few seconds
   actions:
     - theme: brand
       text: Quick Start

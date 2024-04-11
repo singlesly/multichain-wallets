@@ -3,7 +3,6 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Multichain",
-  base: '/multichain-wallets',
   description: "Interact with Web3 blockchain networks easily",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config

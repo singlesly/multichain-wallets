@@ -6,9 +6,8 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BaseException } from '@app/common/base-exception';
-import { WebErrorsEnum } from '@app/common/web-errors.enum';
 import { WalletTypeEnum } from '@app/wallet/constants/wallet-type.enum';
+import { EncryptedDataInterface } from '@app/encrypt/interfaces/encrypted-data.interface';
 
 @Entity('wallets')
 export class Wallet {
@@ -26,11 +25,10 @@ export class Wallet {
   public readonly pubKey: string;
 
   @Column({
-    type: 'varchar',
-    length: 4096,
+    type: 'jsonb',
     nullable: false,
   })
-  public readonly privateKey: string;
+  public readonly privateKey: EncryptedDataInterface;
 
   @Column({
     enum: WalletTypeEnum,
@@ -62,7 +60,7 @@ export class Wallet {
 
   constructor(
     pubKey: string,
-    privateKey: string,
+    privateKey: EncryptedDataInterface,
     networkCode: string,
     owners: string[] = [],
     type: WalletTypeEnum = WalletTypeEnum.MAIN,
@@ -72,15 +70,5 @@ export class Wallet {
     this.networkCode = networkCode;
     this.owners = owners;
     this.type = type;
-  }
-
-  public checkOwnerOrFail(owner: string): void {
-    const has = (this.owners || []).some((item) => item === owner);
-    if (!has) {
-      throw new BaseException({
-        statusCode: WebErrorsEnum.PERMISSION_DENIED,
-        message: 'You are not owner of wallet',
-      });
-    }
   }
 }

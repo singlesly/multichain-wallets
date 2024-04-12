@@ -25,7 +25,7 @@ export class CreateWalletService {
   }: CreateTemporaryWalletOptions): Promise<Wallet> {
     const temporaryWallet = new Wallet(
       pubKey,
-      await this.encryptService.encrypt(privateKey),
+      this.encryptService.encrypt(privateKey),
       network,
       owners,
     );

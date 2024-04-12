@@ -10,6 +10,7 @@ import {
 } from 'crypto';
 import { LocalEnvPathEnum } from '@app/local-env/contants/local-env-path.enum';
 import { randomBytes } from 'node:crypto';
+import { EncryptedDataInterface } from '@app/encrypt/interfaces/encrypted-data.interface';
 
 /**
  * !!! IMPORTANT
@@ -30,12 +31,6 @@ import { randomBytes } from 'node:crypto';
  *         Или свяжитесь с автором кода devsinglesly@gmail.com
  */
 
-export interface EncryptedData {
-  algorithm: CipherGCMTypes;
-  text: string;
-  iv: string;
-}
-
 export interface EncryptOptions {
   algorithm?: CipherGCMTypes;
 }
@@ -44,10 +39,10 @@ export interface EncryptOptions {
 export class EncryptService {
   constructor(private readonly localEnvService: LocalEnvService) {}
 
-  public async encrypt(
+  public encrypt(
     data: string,
     options: EncryptOptions = {},
-  ): Promise<EncryptedData> {
+  ): EncryptedDataInterface {
     const { algorithm = 'aes-256-gcm' } = options;
     const iv = randomBytes(32).toString('hex');
 
@@ -56,7 +51,7 @@ export class EncryptService {
     return { algorithm, iv, text };
   }
 
-  public async decrypt(data: EncryptedData): Promise<string> {
+  public decrypt(data: EncryptedDataInterface): string {
     const { iv, algorithm, text } = data;
 
     return this.getDecipher(algorithm, iv).update(text, 'hex', 'utf8');
